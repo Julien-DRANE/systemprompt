@@ -178,13 +178,14 @@ const enseignantsProductions = {
     + "Inclure : répartition des chapitres ou thèmes par période, compétences ciblées, modalités d’évaluation. "
     + "Présentation attendue : tableau clair par période (trimestre ou semestre).",
 
-  // --- Ajout : type de production dédié à la brique Partenariats & sorties ---
+  // --- Ajout : type de production dédié à la brique Partenariats & sorties (texte affiné) ---
   "Brique partenariats & sorties":
-    "Module prêt à l’emploi : "
-    + "A) 3 partenaires/dispositifs (1 local, 1 académique via DAAC/EAC, 1 monde pro/Parcours Avenir), "
-    + "B) 2 sorties/voyages (objectifs, budget indicatif, autorisations, risques), "
-    + "C) Cadre légal : conventions milieu pro (D.331-1 à D.331-4), statut scolaire (D.331-4), délibération CA pour le financement des voyages (R.421-54), calendrier DOM (D.521-6), rappel laïcité hors les murs, "
-    + "D) Modèles : courrier familles, convention-type, fiche sécurité, check-list laïcité, tickets de sortie et auto-évaluation."
+    "Module prêt à l’emploi, livrant : "
+    + "A) 3 partenariats/dispositifs ciblés (équilibrés) : 1 partenaire local (structure culturelle/atelier/association), 1 partenaire académique via DAAC/EAC (piliers rencontre–pratique–connaissances), 1 partenaire monde professionnel (Parcours Avenir : visite ou séquence d’observation conventionnée) ; "
+    + "pour chacun : objectifs pédagogiques SEGPA, tâches élèves, différenciation (difficultés, allophones, HPI), intégration des outils Eduscol (tickets de sortie, auto-évaluation, cartes mentales, classe inversée, usages numériques validés), prise en compte du créole si contexte Réunion ; "
+    + "B) 2 propositions de sorties/voyages : 1 sortie journée (proche, faible coût) et 1 séjour 2–3 jours (cohérent avec les programmes) ; pour chacune : objectifs d’apprentissage, étapes (avant/pendant/après), estimation budgétaire indicative (transport/hébergement/repas/assurances), organisation (accompagnateurs, accessibilité EBEP), documents familles ; "
+    + "C) Cadre légal explicite : conventions en milieu professionnel (D.331-1 à D.331-4, statut scolaire maintenu), décision du conseil d’administration pour le financement des voyages (R.421-54), prise en compte du calendrier DOM si Réunion (D.521-6), rappel des exigences de laïcité et de sécurité hors les murs ; "
+    + "D) Livrables concrets : tableau comparatif des partenaires, planning rétro (J-60 à J+7), modèles prêts à l’emploi (courrier familles, convention-type, autorisation parentale, fiche sécurité/soins, check-list laïcité), trames Eduscol (ticket de sortie, auto-évaluation), et grille d’évaluation interdisciplinaire des productions élèves."
 };
 
 // --- Audiences Enseignants ---
@@ -301,10 +302,10 @@ function generatePromptEnseignants() {
   const partnersDirective = wantsPartners ? `
 📦 Brique « Partenariats & sorties / voyages » (si pertinent pour le thème/niveau) :
 - Proposer 3 partenaires/dispositifs : 1 local (structure culturelle/atelier/association), 1 académique via DAAC (EAC – rencontre/pratique/connaissances), 1 monde professionnel (Parcours Avenir : visite/séquence d’observation).
-- Proposer 2 idées de sorties/voyages : 1 journée (proche, faible coût) et 1 séjour 2–3 jours (cohérent avec les programmes), avec objectifs pédagogiques, étapes, estimation budgétaire (transport/hébergement/repas/assurances) et calendrier indicatif.
+- Proposer 2 idées de sorties/voyages : 1 journée (proche, faible coût) et 1 séjour 2–3 jours (cohérent avec les programmes), avec objectifs pédagogiques, étapes (avant/pendant/après), estimation budgétaire (transport/hébergement/repas/assurances) et calendrier indicatif.
 - Pour CHAQUE proposition : différenciation (élèves en difficulté, allophones, HPI) et intégration explicite des outils Éduscol (tickets de sortie, auto-évaluation, cartes mentales, classe inversée, usages numériques validés).
 - Cadre officiel à rappeler : D.331-1 à D.331-4 (convention/accueil en milieu pro, statut scolaire), R.421-54 (vote CA pour financement des voyages), D.521-6 (calendrier DOM), rappel laïcité hors les murs.
-- Fournir des modèles prêts à l’emploi : courrier familles, convention-type, fiche sécurité, check-list laïcité, tickets de sortie & auto-évaluation dédiés.
+- Fournir des modèles prêts à l’emploi : courrier familles, convention-type, autorisation parentale, fiche sécurité/soins, check-list laïcité, tickets de sortie & auto-évaluation dédiés.
 ` : "";
 
   return `
