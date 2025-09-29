@@ -124,13 +124,21 @@ Object.keys(perdirProductions).forEach(label => {
   prodBubblesPerdir.appendChild(bubble);
 });
 
-// --- Génération bulles Audience PERDIR ---
+// --- Audiences PERDIR ---
+const perdirAudiences = {
+  "Enseignants": "Communication et cadrage à destination des professeurs.",
+  "Équipe éducative": "Production partagée avec CPE, AED, AESH et autres personnels.",
+  "Parents": "Communication claire et adaptée aux familles.",
+  "Élèves": "Production directe pour les élèves (climat scolaire, prévention).",
+  "Partenaires": "Communication destinée aux collectivités, associations ou acteurs locaux.",
+  "Autorités académiques": "Production destinée à l’institution académique (rectorat, IA-IPR)."
+};
+
 const audienceBubblesPerdir = document.getElementById("audienceBubbles-perdir");
-const perdirAudiences = ["Enseignants", "Équipe éducative", "Parents", "Élèves", "Partenaires", "Autorités académiques"];
-perdirAudiences.forEach(label => {
+Object.keys(perdirAudiences).forEach(label => {
   const bubble = document.createElement("div");
   bubble.classList.add("bubble");
-  if (label === "Enseignants") bubble.classList.add("selected"); // Par défaut
+  if (label === "Enseignants") bubble.classList.add("selected"); // par défaut
   bubble.innerText = label;
   bubble.dataset.audience = label;
   bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
@@ -156,15 +164,19 @@ function generatePromptPerdir() {
   const selectedProductions = Array.from(document.querySelectorAll("#productionBubbles-perdir .bubble.selected"))
     .map(b => perdirProductions[b.dataset.type]);
 
+  // Audiences sélectionnées
   const selectedAudiences = Array.from(document.querySelectorAll("#audienceBubbles-perdir .bubble.selected"))
     .map(b => b.dataset.audience);
+
+  const detailedAudiences = Array.from(document.querySelectorAll("#audienceBubbles-perdir .bubble.selected"))
+    .map(b => `- ${b.dataset.audience} → ${perdirAudiences[b.dataset.audience]}`);
 
   return `
 Tu es un personnel de direction d’un établissement scolaire.
 🎯 Contexte : ${contexte}
 ⚖️ Cadre d’action : ${cadre}
 
-👥 Audience cible : ${selectedAudiences.join(", ")}
+👥 Audience principale : ${selectedAudiences.join(", ") || "[à préciser]"}
 
 🎯 Objectif : ${objectif}
 ⚖️ Contraintes : ${contraintes}
@@ -177,6 +189,9 @@ ${productionTasks.map(task => `- ${task}`).join("\n")}
 
 📂 Type(s) de production à fournir :
 ${selectedProductions.map(task => `- ${task}`).join("\n")}
+
+👥 Audience détaillée :
+${detailedAudiences.join("\n") || "[à préciser]"}
 
 📑 Exemples de sortie attendue :
 ${selectedExamples.join("\n\n")}

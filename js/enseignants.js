@@ -186,13 +186,12 @@ Object.keys(enseignantsAudiences).forEach(label => {
   bubble.classList.add("bubble");
   if (label === "Élèves") bubble.classList.add("selected"); // sélection par défaut
   bubble.innerText = label;
-  bubble.dataset.type = label;
+  bubble.dataset.audience = label; 
   bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
   audienceBubblesEnseignants.appendChild(bubble);
 });
 
-
-// --- Génération bulles ---
+// --- Génération bulles problématiques Enseignants ---
 const bubblesEnseignants = document.getElementById("bubbles-enseignants");
 Object.keys(enseignantsPresets).forEach(label => {
   const bubble = document.createElement("div");
@@ -206,6 +205,7 @@ Object.keys(enseignantsPresets).forEach(label => {
   bubblesEnseignants.appendChild(bubble);
 });
 
+// --- Génération bulles types de production Enseignants ---
 const prodBubblesEnseignants = document.getElementById("productionBubbles-enseignants");
 Object.keys(enseignantsProductions).forEach(label => {
   const bubble = document.createElement("div");
@@ -236,8 +236,12 @@ function generatePromptEnseignants() {
   const selectedProductions = Array.from(document.querySelectorAll("#productionBubbles-enseignants .bubble.selected"))
     .map(b => enseignantsProductions[b.dataset.type]);
 
+  // --- Audiences sélectionnées ---
   const selectedAudiences = Array.from(document.querySelectorAll("#audienceBubbles-enseignants .bubble.selected"))
-    .map(b => b.dataset.label);
+    .map(b => b.dataset.audience); // labels simples
+
+  const detailedAudiences = Array.from(document.querySelectorAll("#audienceBubbles-enseignants .bubble.selected"))
+    .map(b => `- ${b.dataset.audience} → ${enseignantsAudiences[b.dataset.audience]}`);
 
   return `
 Tu es un enseignant de ${discipline} au niveau ${niveau}.
@@ -258,7 +262,7 @@ ${productionTasks.map(task => `- ${task}`).join("\n")}
 ${selectedProductions.map(task => `- ${task}`).join("\n")}
 
 👥 Audience ciblée :
-- ${selectedAudiences.join("\n- ") || "[à préciser]"}
+${detailedAudiences.join("\n") || "[à préciser]"}
 
 📑 Exemples de sortie attendue :
 ${selectedExamples.join("\n\n")}

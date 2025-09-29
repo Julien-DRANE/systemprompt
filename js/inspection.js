@@ -158,13 +158,21 @@ Object.keys(inspectionProductions).forEach(label => {
   prodBubblesInspection.appendChild(bubble);
 });
 
-// --- Génération bulles Audience Inspection ---
+// --- Audiences Inspection ---
+const inspectionAudiences = {
+  "Enseignant": "Production destinée au professeur observé.",
+  "Équipe pédagogique": "Production destinée à l’ensemble de l’équipe disciplinaire ou pluridisciplinaire.",
+  "Établissement": "Production à usage du chef d’établissement et de son équipe.",
+  "Académie": "Production destinée à l’institution académique (IA-IPR, rectorat).",
+  "Parents": "Communication adaptée aux familles.",
+  "Élèves": "Production destinée directement aux élèves (feedback pédagogique)."
+};
+
 const audienceBubblesInspection = document.getElementById("audienceBubbles-inspection");
-const inspectionAudiences = ["Enseignant", "Équipe pédagogique", "Établissement", "Académie", "Parents", "Élèves"];
-inspectionAudiences.forEach(label => {
+Object.keys(inspectionAudiences).forEach(label => {
   const bubble = document.createElement("div");
   bubble.classList.add("bubble");
-  if (label === "Enseignant") bubble.classList.add("selected"); // Par défaut
+  if (label === "Enseignant") bubble.classList.add("selected"); // par défaut
   bubble.innerText = label;
   bubble.dataset.audience = label;
   bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
@@ -190,15 +198,19 @@ function generatePromptInspection() {
   const selectedProductions = Array.from(document.querySelectorAll("#productionBubbles-inspection .bubble.selected"))
     .map(b => inspectionProductions[b.dataset.type]);
 
+  // Audiences sélectionnées
   const selectedAudiences = Array.from(document.querySelectorAll("#audienceBubbles-inspection .bubble.selected"))
     .map(b => b.dataset.audience);
+
+  const detailedAudiences = Array.from(document.querySelectorAll("#audienceBubbles-inspection .bubble.selected"))
+    .map(b => `- ${b.dataset.audience} → ${inspectionAudiences[b.dataset.audience]}`);
 
   return `
 Tu es un inspecteur de l’Éducation nationale.
 🎯 Contexte : ${contexte}
 ⚖️ Cadre d’évaluation : ${cadre}
 
-👥 Audience cible : ${selectedAudiences.join(", ")}
+👥 Audience principale : ${selectedAudiences.join(", ") || "[à préciser]"}
 
 🎯 Objectif : ${objectif}
 ⚖️ Contraintes : ${contraintes}
@@ -211,6 +223,9 @@ ${productionTasks.map(task => `- ${task}`).join("\n")}
 
 📂 Type(s) de production à fournir :
 ${selectedProductions.map(task => `- ${task}`).join("\n")}
+
+👥 Audience détaillée :
+${detailedAudiences.join("\n") || "[à préciser]"}
 
 📑 Exemples de sortie attendue :
 ${selectedExamples.join("\n\n")}
