@@ -74,6 +74,13 @@ const enseignantsPresets = {
     desc: "Mettre en place des actions de prévention.",
     action: "Propose un programme complet de prévention du harcèlement scolaire.",
     example: "Exemple attendu : sensibilisation par affiches, jeu de rôle, charte de classe co-construite."
+  },
+
+  // --- Ajout : brique optionnelle Partenariats & sorties ---
+  "Ouverture partenariale & sorties (optionnelle)": {
+    desc: "Identifier et proposer des partenariats (local/DAAC/monde pro) et des sorties/voyages adaptés 4e SEGPA, dans le cadre officiel.",
+    action: "Ajoute une brique « Partenariats & sorties » : 3 partenaires/dispositifs + 2 idées de sorties/voyages (1 journée, 2–3 jours) avec objectifs, étapes, budget indicatif et conformité juridique.",
+    example: "Ex. : 1 partenaire local (atelier/asso), 1 partenaire académique (DAAC/EAC), 1 partenaire monde pro (séquence d’observation) + 1 sortie courte + 1 voyage 2–3 jours ; pour chacun : objectifs SEGPA, différenciation, outils Éduscol, convention si pro, vote CA si voyage."
   }
 };
 
@@ -169,7 +176,15 @@ const enseignantsProductions = {
   "Planification annuelle": 
     "Propose une progression annuelle alignée sur le programme officiel. "
     + "Inclure : répartition des chapitres ou thèmes par période, compétences ciblées, modalités d’évaluation. "
-    + "Présentation attendue : tableau clair par période (trimestre ou semestre)."
+    + "Présentation attendue : tableau clair par période (trimestre ou semestre).",
+
+  // --- Ajout : type de production dédié à la brique Partenariats & sorties ---
+  "Brique partenariats & sorties":
+    "Module prêt à l’emploi : "
+    + "A) 3 partenaires/dispositifs (1 local, 1 académique via DAAC/EAC, 1 monde pro/Parcours Avenir), "
+    + "B) 2 sorties/voyages (objectifs, budget indicatif, autorisations, risques), "
+    + "C) Cadre légal : conventions milieu pro (D.331-1 à D.331-4), statut scolaire (D.331-4), délibération CA pour le financement des voyages (R.421-54), calendrier DOM (D.521-6), rappel laïcité hors les murs, "
+    + "D) Modèles : courrier familles, convention-type, fiche sécurité, check-list laïcité, tickets de sortie et auto-évaluation."
 };
 
 // --- Audiences Enseignants ---
@@ -253,6 +268,28 @@ function generatePromptEnseignants() {
     ? `\nDans chaque réponse, l’assistant doit non seulement s’appuyer sur les programmes officiels et le Code de l’éducation, mais aussi mobiliser explicitement les outils pédagogiques **Eduscol** (tickets de sortie, auto-évaluation, cartes mentales, classe inversée, différenciation, usages numériques validés). Ces outils doivent être intégrés comme leviers pédagogiques transversaux, et signalés comme tels.\n`
     : "";
 
+  // --- NEW : lecture du toggle et détection de la bulle
+  const inclurePartenariats = document.getElementById("toggle-partenariats")?.checked || false;
+  const selectedLabels = Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
+    .map(b => b.dataset.label);
+  const wantsPartners = inclurePartenariats
+    || selectedLabels.includes("Ouverture partenariale & sorties (optionnelle)");
+
+  // --- NEW : directive à insérer si la brique est demandée
+  const partnersDirective = wantsPartners ? `
+📦 Brique « Partenariats & sorties / voyages » (si pertinent pour le thème/niveau) :
+- Proposer 3 partenaires/dispositifs : 1 local (structure culturelle/atelier/association), 1 académique via DAAC (EAC – rencontre/pratique/connaissances), 1 monde professionnel (Parcours Avenir : visite/séquence d’observation).
+- Proposer 2 idées de sorties/voyages : 1 journée (proche, faible coût) et 1 séjour 2–3 jours (cohérent avec les programmes), avec objectifs pédagogiques, étapes, estimation budgétaire (transport/hébergement/repas/assurances) et calendrier indicatif.
+- Pour CHAQUE proposition : différenciation (élèves en difficulté, allophones, HPI) et intégration explicite des outils Éduscol (tickets de sortie, auto-évaluation, cartes mentales, classe inversée, usages numériques validés).
+- Cadre officiel à rappeler : D.331-1 à D.331-4 (convention/accueil en milieu pro, statut scolaire), R.421-54 (vote CA pour financement des voyages), D.521-6 (calendrier DOM), rappel laïcité hors les murs.
+- Fournir des modèles prêts à l’emploi : courrier familles, convention-type, fiche sécurité, check-list laïcité, tickets de sortie & auto-évaluation dédiés.
+` : "";
+
+  // --- NEW : si demandé, ajouter aussi le type de production correspondant
+  if (wantsPartners) {
+    selectedProductions.push(enseignantsProductions["Brique partenariats & sorties"]);
+  }
+
   return `
 Tu es un enseignant de ${discipline} au niveau ${niveau}.
 Ton audience principale est : ${selectedAudiences.join(", ") || "[à préciser]"}.
@@ -270,6 +307,7 @@ ${productionTasks.map(task => `- ${task}`).join("\n")}
 
 📂 Type(s) de production à fournir :
 ${selectedProductions.map(task => `- ${task}`).join("\n")}
+${partnersDirective}
 
 👥 Audience ciblée :
 ${detailedAudiences.join("\n") || "[à préciser]"}
