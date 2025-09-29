@@ -164,8 +164,7 @@ const inspectionAudiences = {
   "Équipe pédagogique": "Production destinée à l’ensemble de l’équipe disciplinaire ou pluridisciplinaire.",
   "Établissement": "Production à usage du chef d’établissement et de son équipe.",
   "Académie": "Production destinée à l’institution académique (IA-IPR, rectorat).",
-  "Parents": "Communication adaptée aux familles.",
-  "Élèves": "Production destinée directement aux élèves (feedback pédagogique)."
+  "Parents": "Communication adaptée aux familles."
 };
 
 const audienceBubblesInspection = document.getElementById("audienceBubbles-inspection");
@@ -178,6 +177,8 @@ Object.keys(inspectionAudiences).forEach(label => {
   bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
   audienceBubblesInspection.appendChild(bubble);
 });
+
+
 
 // --- Génération du prompt Inspection ---
 function generatePromptInspection() {
