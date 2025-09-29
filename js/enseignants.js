@@ -241,16 +241,60 @@ Object.keys(enseignantsProductions).forEach(label => {
   prodBubbleByLabel[label] = bubble;
 });
 
-// --- Synchronisation avec le toggle partenariats ---
+// --- UI dynamique : sélecteur d'académie + ville quand la brique Partenariats est active ---
+// Liste des académies métropole + DROM
+const academies = [
+  "Aix-Marseille","Amiens","Besançon","Bordeaux","Clermont-Ferrand","Corse","Créteil","Dijon","Grenoble",
+  "Guadeloupe","Guyane","La Réunion","Limoges","Lille","Lyon","Martinique","Mayotte","Montpellier",
+  "Nancy-Metz","Nantes","Nice","Normandie","Orléans-Tours","Paris","Poitiers","Reims","Rennes","Strasbourg",
+  "Toulouse","Versailles"
+];
+
+function ensureRegionSelector() {
+  // container juste après les bulles de production
+  let container = document.getElementById("regionPartenariatsContainer");
+  if (!container) {
+    container = document.createElement("div");
+    container.id = "regionPartenariatsContainer";
+    container.style.display = "none";
+    container.style.marginTop = "8px";
+    container.innerHTML = `
+      <label style="display:block;margin:.5rem 0 .25rem;">Académie concernée (pour la recherche locale) :</label>
+      <select id="region-academique" style="width:100%;padding:.4rem;">
+        <option value="">— choisir une académie —</option>
+        ${academies.map(a => `<option value="${a}">${a}</option>`).join("")}
+      </select>
+      <label style="display:block;margin:.75rem 0 .25rem;">Territoire / ville (optionnel) :</label>
+      <input id="region-territoire" type="text" placeholder="Ex. : Saint-Denis, Saint-Pierre..." style="width:100%;padding:.4rem;">
+    `;
+    prodBubblesEnseignants.parentNode.insertBefore(container, prodBubblesEnseignants.nextSibling);
+  }
+  return container;
+}
+
+function isPartnersBubbleSelected() {
+  const bubble = prodBubbleByLabel["Brique partenariats & sorties"];
+  return !!(bubble && bubble.classList.contains("selected"));
+}
+
+function updateRegionVisibility() {
+  const container = ensureRegionSelector();
+  container.style.display = isPartnersBubbleSelected() ? "block" : "none";
+}
+
+// Appels initiaux & écoute des clics pour mise à jour
+updateRegionVisibility();
+prodBubblesEnseignants.addEventListener("click", updateRegionVisibility);
+
+// --- Synchronisation avec le toggle partenariats (s’il existe dans le HTML) ---
 const togglePartenariats = document.getElementById("toggle-partenariats");
 if (togglePartenariats && prodBubbleByLabel["Brique partenariats & sorties"]) {
-  // État initial : si le toggle est coché au chargement, on sélectionne la bulle
   if (togglePartenariats.checked) {
     prodBubbleByLabel["Brique partenariats & sorties"].classList.add("selected");
   }
-  // Quand l’utilisateur coche/décoche, on (dé)sélectionne la bulle
   togglePartenariats.addEventListener("change", (e) => {
     prodBubbleByLabel["Brique partenariats & sorties"].classList.toggle("selected", e.target.checked);
+    updateRegionVisibility();
   });
 }
 
@@ -270,7 +314,7 @@ function generatePromptEnseignants() {
   const selectedExamples = Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
     .map(b => enseignantsPresets[b.dataset.label].example);
 
-  // --- Sélections de productions (version dédupliquée) ---
+  // --- Productions sélectionnées (dédupliquées) ---
   const selectedProductions = [...new Set(
     Array.from(document.querySelectorAll("#productionBubbles-enseignants .bubble.selected"))
       .map(b => enseignantsProductions[b.dataset.type])
@@ -289,24 +333,37 @@ function generatePromptEnseignants() {
     ? `\nDans chaque réponse, l’assistant doit non seulement s’appuyer sur les programmes officiels et le Code de l’éducation, mais aussi mobiliser explicitement les outils pédagogiques **Eduscol** (tickets de sortie, auto-évaluation, cartes mentales, classe inversée, différenciation, usages numériques validés). Ces outils doivent être intégrés comme leviers pédagogiques transversaux, et signalés comme tels.\n`
     : "";
 
-  // --- Lecture du toggle + détection de la bulle “Ouverture partenariale” côté problématiques
-  const inclurePartenariats = document.getElementById("toggle-partenariats")?.checked || false;
+  // --- Détection "Ouverture partenariale" côté problématiques
   const selectedLabels = Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
     .map(b => b.dataset.label);
 
-  // La directive est activée si le toggle est ON OU si la problématique “Ouverture partenariale…” est cochée
-  const wantsPartners = inclurePartenariats
+  // --- Activation de la directive si la brique Partenariats est cochée (bulle ou toggle) OU si la problématique dédiée est cochée
+  const inclurePartenariatsViaToggle = document.getElementById("toggle-partenariats")?.checked || false;
+  const wantsPartners = isPartnersBubbleSelected()
+    || inclurePartenariatsViaToggle
     || selectedLabels.includes("Ouverture partenariale & sorties (optionnelle)");
 
-  // Directive détaillant quoi livrer quand la brique est demandée
+  // --- Récupération académie / territoire si la brique est active
+  let infoLocalisation = "";
+  if (wantsPartners) {
+    const regionSel = document.getElementById("region-academique");
+    const territoireInp = document.getElementById("region-territoire");
+    const academie = regionSel ? (regionSel.value || "") : "";
+    const territoire = territoireInp ? (territoireInp.value || "") : "";
+    const cible = [academie, territoire].filter(Boolean).join(" – ");
+    infoLocalisation = cible ? `\n📍 Contexte local à privilégier : **Académie ${academie}**${territoire ? `, territoire/ville : **${territoire}**` : ""}.\n` : "";
+  }
+
+  // --- Directive détaillant quoi livrer quand la brique est demandée (avec contexte local)
   const partnersDirective = wantsPartners ? `
 📦 Brique « Partenariats & sorties / voyages » (si pertinent pour le thème/niveau) :
-- Proposer 3 partenaires/dispositifs : 1 local (structure culturelle/atelier/association), 1 académique via DAAC (EAC – rencontre/pratique/connaissances), 1 monde professionnel (Parcours Avenir : visite/séquence d’observation).
+- Proposer 3 partenaires/dispositifs ciblés : 1 local (structure culturelle/atelier/association), 1 académique via DAAC (EAC – rencontre/pratique/connaissances), 1 monde professionnel (Parcours Avenir : visite/séquence d’observation).
+- Rechercher en priorité des opportunités **locales** selon l’académie/territoire indiqué ci-dessous (si renseigné) et expliciter le **lien avec les programmes** et le **public SEGPA**.
 - Proposer 2 idées de sorties/voyages : 1 journée (proche, faible coût) et 1 séjour 2–3 jours (cohérent avec les programmes), avec objectifs pédagogiques, étapes (avant/pendant/après), estimation budgétaire (transport/hébergement/repas/assurances) et calendrier indicatif.
 - Pour CHAQUE proposition : différenciation (élèves en difficulté, allophones, HPI) et intégration explicite des outils Éduscol (tickets de sortie, auto-évaluation, cartes mentales, classe inversée, usages numériques validés).
 - Cadre officiel à rappeler : D.331-1 à D.331-4 (convention/accueil en milieu pro, statut scolaire), R.421-54 (vote CA pour financement des voyages), D.521-6 (calendrier DOM), rappel laïcité hors les murs.
 - Fournir des modèles prêts à l’emploi : courrier familles, convention-type, autorisation parentale, fiche sécurité/soins, check-list laïcité, tickets de sortie & auto-évaluation dédiés.
-` : "";
+${infoLocalisation}` : "";
 
   return `
 Tu es un enseignant de ${discipline} au niveau ${niveau}.
