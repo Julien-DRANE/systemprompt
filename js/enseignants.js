@@ -209,7 +209,6 @@ Object.keys(enseignantsAudiences).forEach(label => {
   audienceBubblesEnseignants.appendChild(bubble);
 });
 
-
 // --- Génération bulles problématiques Enseignants ---
 const bubblesEnseignants = document.getElementById("bubbles-enseignants");
 Object.keys(enseignantsPresets).forEach(label => {
@@ -226,15 +225,33 @@ Object.keys(enseignantsPresets).forEach(label => {
 
 // --- Génération bulles types de production Enseignants ---
 const prodBubblesEnseignants = document.getElementById("productionBubbles-enseignants");
+
+// On mémorise les bulles créées pour pouvoir en cibler une par son label
+const prodBubbleByLabel = {};
+
 Object.keys(enseignantsProductions).forEach(label => {
   const bubble = document.createElement("div");
   bubble.classList.add("bubble");
-  if (label === "Plan d’enseignement (séquence)") bubble.classList.add("selected");
+  if (label === "Plan d’enseignement (séquence)") bubble.classList.add("selected"); // par défaut
   bubble.innerText = label;
   bubble.dataset.type = label;
   bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
   prodBubblesEnseignants.appendChild(bubble);
+  prodBubbleByLabel[label] = bubble;
 });
+
+// --- Synchronisation avec le toggle partenariats ---
+const togglePartenariats = document.getElementById("toggle-partenariats");
+if (togglePartenariats && prodBubbleByLabel["Brique partenariats & sorties"]) {
+  // État initial : si le toggle est coché au chargement, on sélectionne la bulle
+  if (togglePartenariats.checked) {
+    prodBubbleByLabel["Brique partenariats & sorties"].classList.add("selected");
+  }
+  // Quand l’utilisateur coche/décoche, on (dé)sélectionne la bulle
+  togglePartenariats.addEventListener("change", (e) => {
+    prodBubbleByLabel["Brique partenariats & sorties"].classList.toggle("selected", e.target.checked);
+  });
+}
 
 // --- Génération du prompt enseignants ---
 function generatePromptEnseignants() {
@@ -252,8 +269,11 @@ function generatePromptEnseignants() {
   const selectedExamples = Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
     .map(b => enseignantsPresets[b.dataset.label].example);
 
-  const selectedProductions = Array.from(document.querySelectorAll("#productionBubbles-enseignants .bubble.selected"))
-    .map(b => enseignantsProductions[b.dataset.type]);
+  // --- Sélections de productions (version dédupliquée) ---
+  const selectedProductions = [...new Set(
+    Array.from(document.querySelectorAll("#productionBubbles-enseignants .bubble.selected"))
+      .map(b => enseignantsProductions[b.dataset.type])
+  )];
 
   // --- Audiences sélectionnées ---
   const selectedAudiences = Array.from(document.querySelectorAll("#audienceBubbles-enseignants .bubble.selected"))
@@ -268,14 +288,16 @@ function generatePromptEnseignants() {
     ? `\nDans chaque réponse, l’assistant doit non seulement s’appuyer sur les programmes officiels et le Code de l’éducation, mais aussi mobiliser explicitement les outils pédagogiques **Eduscol** (tickets de sortie, auto-évaluation, cartes mentales, classe inversée, différenciation, usages numériques validés). Ces outils doivent être intégrés comme leviers pédagogiques transversaux, et signalés comme tels.\n`
     : "";
 
-  // --- NEW : lecture du toggle et détection de la bulle
+  // --- Lecture du toggle + détection de la bulle “Ouverture partenariale” côté problématiques
   const inclurePartenariats = document.getElementById("toggle-partenariats")?.checked || false;
   const selectedLabels = Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
     .map(b => b.dataset.label);
+
+  // La directive est activée si le toggle est ON OU si la problématique “Ouverture partenariale…” est cochée
   const wantsPartners = inclurePartenariats
     || selectedLabels.includes("Ouverture partenariale & sorties (optionnelle)");
 
-  // --- NEW : directive à insérer si la brique est demandée
+  // Directive détaillant quoi livrer quand la brique est demandée
   const partnersDirective = wantsPartners ? `
 📦 Brique « Partenariats & sorties / voyages » (si pertinent pour le thème/niveau) :
 - Proposer 3 partenaires/dispositifs : 1 local (structure culturelle/atelier/association), 1 académique via DAAC (EAC – rencontre/pratique/connaissances), 1 monde professionnel (Parcours Avenir : visite/séquence d’observation).
@@ -284,11 +306,6 @@ function generatePromptEnseignants() {
 - Cadre officiel à rappeler : D.331-1 à D.331-4 (convention/accueil en milieu pro, statut scolaire), R.421-54 (vote CA pour financement des voyages), D.521-6 (calendrier DOM), rappel laïcité hors les murs.
 - Fournir des modèles prêts à l’emploi : courrier familles, convention-type, fiche sécurité, check-list laïcité, tickets de sortie & auto-évaluation dédiés.
 ` : "";
-
-  // --- NEW : si demandé, ajouter aussi le type de production correspondant
-  if (wantsPartners) {
-    selectedProductions.push(enseignantsProductions["Brique partenariats & sorties"]);
-  }
 
   return `
 Tu es un enseignant de ${discipline} au niveau ${niveau}.
