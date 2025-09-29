@@ -241,7 +241,7 @@ Object.keys(enseignantsProductions).forEach(label => {
   prodBubbleByLabel[label] = bubble;
 });
 
-// --- UI dynamique : sélecteur d'académie + ville quand la brique Partenariats est active ---
+// --- UI dynamique : sélecteur d'académie + ville si Partenariats actif (pédago OU production OU toggle) ---
 // Liste des académies métropole + DROM
 const academies = [
   "Aix-Marseille","Amiens","Besançon","Bordeaux","Clermont-Ferrand","Corse","Créteil","Dijon","Grenoble",
@@ -272,19 +272,34 @@ function ensureRegionSelector() {
   return container;
 }
 
-function isPartnersBubbleSelected() {
+function isPedagoPartnersSelected() {
+  // bulle côté "Problématiques pédagogiques"
+  return Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
+    .some(b => b.dataset.label === "Ouverture partenariale & sorties (optionnelle)");
+}
+
+function isProdPartnersSelected() {
   const bubble = prodBubbleByLabel["Brique partenariats & sorties"];
   return !!(bubble && bubble.classList.contains("selected"));
 }
 
+function isTogglePartnersOn() {
+  return !!document.getElementById("toggle-partenariats")?.checked;
+}
+
+function isPartnersActivated() {
+  return isPedagoPartnersSelected() || isProdPartnersSelected() || isTogglePartnersOn();
+}
+
 function updateRegionVisibility() {
   const container = ensureRegionSelector();
-  container.style.display = isPartnersBubbleSelected() ? "block" : "none";
+  container.style.display = isPartnersActivated() ? "block" : "none";
 }
 
 // Appels initiaux & écoute des clics pour mise à jour
 updateRegionVisibility();
 prodBubblesEnseignants.addEventListener("click", updateRegionVisibility);
+bubblesEnseignants.addEventListener("click", updateRegionVisibility);
 
 // --- Synchronisation avec le toggle partenariats (s’il existe dans le HTML) ---
 const togglePartenariats = document.getElementById("toggle-partenariats");
@@ -333,15 +348,8 @@ function generatePromptEnseignants() {
     ? `\nDans chaque réponse, l’assistant doit non seulement s’appuyer sur les programmes officiels et le Code de l’éducation, mais aussi mobiliser explicitement les outils pédagogiques **Eduscol** (tickets de sortie, auto-évaluation, cartes mentales, classe inversée, différenciation, usages numériques validés). Ces outils doivent être intégrés comme leviers pédagogiques transversaux, et signalés comme tels.\n`
     : "";
 
-  // --- Détection "Ouverture partenariale" côté problématiques
-  const selectedLabels = Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
-    .map(b => b.dataset.label);
-
-  // --- Activation de la directive si la brique Partenariats est cochée (bulle ou toggle) OU si la problématique dédiée est cochée
-  const inclurePartenariatsViaToggle = document.getElementById("toggle-partenariats")?.checked || false;
-  const wantsPartners = isPartnersBubbleSelected()
-    || inclurePartenariatsViaToggle
-    || selectedLabels.includes("Ouverture partenariale & sorties (optionnelle)");
+  // --- Activation de la brique Partenariats via (pédago OU production OU toggle)
+  const wantsPartners = isPartnersActivated();
 
   // --- Récupération académie / territoire si la brique est active
   let infoLocalisation = "";
@@ -350,8 +358,9 @@ function generatePromptEnseignants() {
     const territoireInp = document.getElementById("region-territoire");
     const academie = regionSel ? (regionSel.value || "") : "";
     const territoire = territoireInp ? (territoireInp.value || "") : "";
-    const cible = [academie, territoire].filter(Boolean).join(" – ");
-    infoLocalisation = cible ? `\n📍 Contexte local à privilégier : **Académie ${academie}**${territoire ? `, territoire/ville : **${territoire}**` : ""}.\n` : "";
+    infoLocalisation = (academie || territoire)
+      ? `\n📍 Contexte local à privilégier : **Académie ${academie || "à préciser"}**${territoire ? `, territoire/ville : **${territoire}**` : ""}.\n`
+      : "";
   }
 
   // --- Directive détaillant quoi livrer quand la brique est demandée (avec contexte local)
@@ -375,10 +384,12 @@ ${specialNoteForEleves}
 ⚖️ Contraintes : ${contraintes}
 
 📌 Problématiques retenues :
-${selectedBubbles.join("\n")}
+${Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
+  .map(b => `- ${b.dataset.label} → ${enseignantsPresets[b.dataset.label].desc}`).join("\n")}
 
 🛠️ Tâches attendues (issues des problématiques) :
-${productionTasks.map(task => `- ${task}`).join("\n")}
+${Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
+  .map(b => enseignantsPresets[b.dataset.label].action).map(task => `- ${task}`).join("\n")}
 
 📂 Type(s) de production à fournir :
 ${selectedProductions.map(task => `- ${task}`).join("\n")}
@@ -388,6 +399,7 @@ ${partnersDirective}
 ${detailedAudiences.join("\n") || "[à préciser]"}
 
 📑 Exemples de sortie attendue :
-${selectedExamples.join("\n\n")}
+${Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
+  .map(b => enseignantsPresets[b.dataset.label].example).join("\n\n")}
 `;
 }
