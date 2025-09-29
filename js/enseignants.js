@@ -242,17 +242,23 @@ function generatePromptEnseignants() {
 
   // --- Audiences sélectionnées ---
   const selectedAudiences = Array.from(document.querySelectorAll("#audienceBubbles-enseignants .bubble.selected"))
-    .map(b => b.dataset.audience); // labels simples (ex: "Élèves")
+    .map(b => b.dataset.audience);
 
-  const detailedAudiences = Array.from(document.querySelectorAll("#audienceBubbles-enseignants .bubble.selected"))
-    .map(b => `- ${b.dataset.audience} → ${enseignantsAudiences[b.dataset.audience]}`);
+  const detailedAudiences = selectedAudiences.map(
+    a => `- ${a} → ${enseignantsAudiences[a]}`
+  );
+
+  // --- Texte spécial si audience "Élèves" ---
+  const specialNoteForEleves = selectedAudiences.includes("Élèves")
+    ? `\nDans chaque réponse, l’assistant doit non seulement s’appuyer sur les programmes officiels et le Code de l’éducation, mais aussi mobiliser explicitement les outils pédagogiques **Eduscol** (tickets de sortie, auto-évaluation, cartes mentales, classe inversée, différenciation, usages numériques validés). Ces outils doivent être intégrés comme leviers pédagogiques transversaux, et signalés comme tels.\n`
+    : "";
 
   return `
 Tu es un enseignant de ${discipline} au niveau ${niveau}.
 Ton audience principale est : ${selectedAudiences.join(", ") || "[à préciser]"}.
 Ta mission : produire un contenu directement exploitable en classe, sans reformuler l’analyse du contexte.
 Conformément aux programmes officiels et au Code de l’éducation, propose une production utilisable immédiatement.
-
+${specialNoteForEleves}
 🎯 Objectif : ${objectif}
 ⚖️ Contraintes : ${contraintes}
 
