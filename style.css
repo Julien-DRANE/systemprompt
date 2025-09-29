@@ -1,0 +1,203 @@
+/* === Base === */
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+  background: #f7f9fc;
+  color: #333;
+  line-height: 1.5;
+}
+
+body {
+  flex: 1;
+  padding: 20px;
+}
+
+/* === Conteneur central === */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 30px;
+}
+
+/* === Titres et intro === */
+h1 {
+  text-align: center;
+  color: #004080;
+  margin-bottom: 10px;
+}
+
+p.intro {
+  max-width: 800px;
+  margin: 0 auto 20px auto;
+  text-align: center;
+  font-size: 15px;
+  color: #555;
+}
+
+/* === Formulaires === */
+label {
+  font-weight: bold;
+  display: block;
+  margin-top: 15px;
+}
+
+select,
+textarea,
+input,
+button {
+  width: 100%;
+  margin-top: 5px;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* === Boutons === */
+button {
+  margin-top: 20px;
+  background-color: #004080;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background-color: #0066cc;
+}
+
+/* === Résultats === */
+#result {
+  margin-top: 25px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  background: #ffffff;
+  font-family: monospace;
+  white-space: pre-wrap;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+/* === Bulles === */
+.bubble {
+  display: inline-block;
+  padding: 8px 14px;
+  margin: 5px;
+  border: 1px solid #004080;
+  border-radius: 20px;
+  cursor: pointer;
+  background: #f0f8ff;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.bubble:hover {
+  background: #e6f0ff;
+}
+
+.bubble.selected {
+  background: #004080;
+  color: white;
+}
+
+/* === Onglets === */
+.tabs {
+  margin: 20px 0;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.tab-button {
+  padding: 10px 15px;
+  border: 1px solid #004080;
+  background: #f0f8ff;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.tab-button.active {
+  background: #004080;
+  color: white;
+}
+
+.tab-content {
+  display: none;
+  margin-top: 15px;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* === Footer sticky === */
+footer {
+  margin-top: auto;
+  padding: 10px;
+  text-align: center;
+  font-size: 13px;
+  color: #555;
+  background: #eef6ff;
+  border-top: 1px solid #ccc;
+  border-radius: 5px 5px 0 0;
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+footer strong {
+  color: #004080;
+}
+
+/* === Responsive smartphone === */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .tabs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tab-button {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 5px;
+  }
+
+  .bubble {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin: 6px 0;
+  }
+}
+/* Logo en bas centré dans le flux normal */
+.logo-bottom {
+  text-align: center;   /* centre l’image horizontalement */
+  margin: 20px 0;       /* espace au-dessus et en-dessous */
+}
+
+.logo-bottom img {
+  height: 40px;
+  width: auto;
+}

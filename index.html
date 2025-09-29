@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Générateur de System Prompt - Éducation Nationale</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+    <body>
+
+
+  <div class="container">
+    <h1>Générateur de System Prompt</h1>
+    <p class="intro"><em>
+      Cet outil est conçu pour accompagner les <strong>enseignants</strong>, les 
+      <strong>personnels de direction (PERDIR)</strong> et les <strong>inspecteurs</strong> 
+      dans la création de <strong>prompts optimisés</strong> adaptés à leurs missions.
+    </em></p>
+
+    <p class="intro">
+      👉 Le principe est simple : sélectionnez votre rôle dans les onglets ci-dessous, 
+      remplissez le <strong>contexte</strong>, vos <strong>objectifs</strong> et les 
+      <strong>contraintes</strong>, puis cochez les <strong>problématiques</strong> et 
+      <strong>types de production</strong> correspondants.  
+    </p>
+
+    <p class="intro">
+      🎯 Le générateur produit automatiquement un <strong>prompt exploitable</strong> 
+      à utiliser dans une IA (par exemple ChatGPT) pour obtenir directement 
+      <strong>un plan de séquence, des exercices, un rapport PPCR, un plan d’action, 
+      une synthèse de réunion, etc.</strong>
+    </p>
+
+    <p class="intro">
+      Cet outil est un <strong>assistant à la rédaction</strong> : il vous permet 
+      d’adapter l’IA à vos besoins quotidiens tout en respectant 
+      les <strong>cadres officiels de l’Éducation nationale</strong>.
+    </p>
+
+    <!-- Onglets -->
+    <div class="tabs">
+      <button class="tab-button active" data-target="enseignants">Enseignants</button>
+      <button class="tab-button" data-target="perdir">Personnels de direction</button>
+      <button class="tab-button" data-target="inspection">Corps d’inspection</button>
+    </div>
+
+    <!-- === ONGLET ENSEIGNANTS === -->
+    <div id="enseignants" class="tab-content active">
+      <h2>Enseignants</h2>
+
+      <label>Discipline :</label>
+      <input type="text" id="discipline-enseignants">
+
+      <label>Niveau :</label>
+      <input type="text" id="niveau-enseignants">
+
+      <h3>Problématiques pédagogiques :</h3>
+      <div id="bubbles-enseignants"></div>
+
+      <h3>Types de production attendue :</h3>
+      <div id="productionBubbles-enseignants"></div>
+
+      <label>Objectif pédagogique :</label>
+      <textarea id="objectif-enseignants"></textarea>
+
+      <label>Contraintes spécifiques :</label>
+      <textarea id="contraintes-enseignants"></textarea>
+    </div>
+
+    <!-- === ONGLET PERDIR === -->
+    <div id="perdir" class="tab-content">
+      <h2>Personnels de direction</h2>
+
+      <label>Contexte de l’établissement :</label>
+      <textarea id="contexte-perdir" placeholder="Ex : Collège REP+ de 450 élèves, nombreux élèves allophones..."></textarea>
+
+      <label>Cadre d’action :</label>
+      <input type="text" id="cadre-perdir" placeholder="Ex : projet d’établissement, partenariat local, sécurité...">
+
+      <h3>Problématiques de pilotage :</h3>
+      <div id="bubbles-perdir"></div>
+
+      <h3>Types de production attendue :</h3>
+      <div id="productionBubbles-perdir"></div>
+
+      <label>Objectif :</label>
+      <textarea id="objectif-perdir" placeholder="Ex : améliorer le climat scolaire, renforcer l’inclusion, optimiser la gestion RH..."></textarea>
+
+      <label>Contraintes :</label>
+      <textarea id="contraintes-perdir" placeholder="Ex : moyens humains limités, calendrier académique, réglementation sécurité..."></textarea>
+    </div>
+
+    <!-- === ONGLET INSPECTION === -->
+    <div id="inspection" class="tab-content">
+      <h2>Corps d’inspection</h2>
+
+      <label>Contexte d’inspection :</label>
+      <textarea id="contexte-inspection" placeholder="Ex : Inspection d’un professeur de mathématiques en collège REP+..."></textarea>
+
+      <label>Cadre d’évaluation :</label>
+      <input type="text" id="cadre-inspection" placeholder="Ex : inspection individuelle, accompagnement collectif, pilotage académique...">
+
+      <h3>Problématiques d’évaluation / pilotage :</h3>
+      <div id="bubbles-inspection"></div>
+
+      <h3>Types de production attendue :</h3>
+      <div id="productionBubbles-inspection"></div>
+
+      <label>Objectif :</label>
+      <textarea id="objectif-inspection" placeholder="Ex : évaluer la différenciation pédagogique, mesurer l’impact d’une réforme, accompagner un enseignant..."></textarea>
+
+      <label>Contraintes :</label>
+      <textarea id="contraintes-inspection" placeholder="Ex : cadre réglementaire, temps limité, ressources humaines disponibles..."></textarea>
+    </div>
+
+    <!-- Résultat commun -->
+    <button id="generateBtn">Générer le Prompt</button>
+    <button id="copyBtn">Copier le Prompt</button>
+    <div id="result"></div>
+
+    <!-- Footer -->
+    <footer>
+      ⚖️ Ce générateur respecte le <strong>RGPD</strong> :  
+      ✅ Aucune donnée saisie n’est collectée, enregistrée ou transmise.  
+      ✅ Toutes les informations restent exclusivement sur votre appareil.  
+      <em>Votre utilisation est totalement anonyme et sécurisée.</em>
+    </footer>
+
+
+  <!-- Logo en bas centré -->
+  <div class="logo-bottom">
+    <img src="assets/images/logo.png" alt="Logo Éducation Nationale">
+  </div>
+
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/main.js"></script>
+  <script src="js/enseignants.js"></script>
+  <script src="js/perdir.js"></script>
+  <script src="js/inspection.js"></script>
+</body>
+</html>
