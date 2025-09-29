@@ -201,3 +201,6 @@ footer strong {
   height: 40px;
   width: auto;
 }
+
+.toggle { display:flex; align-items:center; gap:.5rem; margin:.25rem 0 1rem; }
+.toggle input { transform: scale(1.2); }
