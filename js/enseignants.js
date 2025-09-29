@@ -174,10 +174,13 @@ const enseignantsProductions = {
 
 // --- Audiences Enseignants ---
 const enseignantsAudiences = {
-  "Élèves": "Production destinée directement aux élèves.",
-  "Parents": "Production destinée aux parents d’élèves.",
-  "Équipe éducative": "Production destinée aux collègues et personnels de l’établissement.",
-  "Administration": "Production destinée à l’administration scolaire."
+  "Élèves": "Production destinée directement aux élèves (supports pédagogiques, exercices, évaluations).",
+  "Parents": "Communication adaptée aux parents (suivi, progression, conseils).",
+  "Équipe éducative": "Production destinée aux collègues et personnels éducatifs.",
+  "Administration": "Production destinée au chef d’établissement ou à la vie scolaire.",
+  "Inspecteurs": "Production à destination des corps d’inspection (IEN, IA-IPR).",
+  "Partenaires": "Production destinée aux partenaires extérieurs (associations, collectivités, entreprises).",
+  "Communauté éducative": "Production valorisant les actions auprès du grand public (journal scolaire, site web, expo)."
 };
 
 const audienceBubblesEnseignants = document.getElementById("audienceBubbles-enseignants");
@@ -186,10 +189,11 @@ Object.keys(enseignantsAudiences).forEach(label => {
   bubble.classList.add("bubble");
   if (label === "Élèves") bubble.classList.add("selected"); // sélection par défaut
   bubble.innerText = label;
-  bubble.dataset.audience = label; 
+  bubble.dataset.audience = label;
   bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
   audienceBubblesEnseignants.appendChild(bubble);
 });
+
 
 // --- Génération bulles problématiques Enseignants ---
 const bubblesEnseignants = document.getElementById("bubbles-enseignants");
@@ -238,7 +242,7 @@ function generatePromptEnseignants() {
 
   // --- Audiences sélectionnées ---
   const selectedAudiences = Array.from(document.querySelectorAll("#audienceBubbles-enseignants .bubble.selected"))
-    .map(b => b.dataset.audience); // labels simples
+    .map(b => b.dataset.audience); // labels simples (ex: "Élèves")
 
   const detailedAudiences = Array.from(document.querySelectorAll("#audienceBubbles-enseignants .bubble.selected"))
     .map(b => `- ${b.dataset.audience} → ${enseignantsAudiences[b.dataset.audience]}`);
