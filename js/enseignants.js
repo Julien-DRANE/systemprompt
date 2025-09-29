@@ -1,100 +1,196 @@
-// === ENSEIGNANTS ===
-
 // --- Problématiques pédagogiques enrichies ---
 const enseignantsPresets = {
   "Hétérogénéité des niveaux": {
-    desc: "Plan d'enseignement différencié.",
-    action: "Propose un plan différencié avec stratégies concrètes.",
-    example: "Exemple attendu : Groupe faible → activité guidée, Groupe intermédiaire → semi-guidée, Groupe avancé → autonome."
+    desc: "Répondre à la diversité des niveaux dans une même classe.",
+    action: "Propose un plan différencié avec stratégies concrètes adaptées aux différents groupes.",
+    example: "Exemple attendu : Groupe faible → activité guidée, Groupe intermédiaire → semi-guidée, Groupe avancé → tâche complexe en autonomie."
   },
   "Différenciation des exercices": {
-    desc: "Exercices différenciés.",
-    action: "Crée une série d’exercices différenciés (facile, intermédiaire, avancé).",
-    example: "Exemple attendu : facile → exercice simple, intermédiaire → guidé, avancé → problème complexe."
+    desc: "Adapter les exercices selon le niveau des élèves.",
+    action: "Crée une série d’exercices différenciés avec trois niveaux de difficulté et corrigés associés.",
+    example: "Exemple attendu : facile → exercice simple et guidé, intermédiaire → mise en application, avancé → problème complexe."
   },
   "Activités interdisciplinaires": {
-    desc: "Activité combinant plusieurs disciplines.",
-    action: "Conçois une activité interdisciplinaire avec projet final.",
-    example: "Exemple attendu : thème commun, activité matière A, activité matière B, projet final."
+    desc: "Croiser plusieurs disciplines autour d’un même thème.",
+    action: "Conçois une activité interdisciplinaire avec objectifs croisés et projet final.",
+    example: "Exemple attendu : Thème commun, étape matière A, étape matière B, restitution finale collective."
   },
   "Gestion des comportements difficiles": {
-    desc: "Stratégies positives de gestion de classe.",
-    action: "Propose un plan de gestion des comportements difficiles.",
-    example: "Exemple attendu : situation → stratégie, suivi → évaluation."
+    desc: "Réagir efficacement face aux comportements perturbateurs.",
+    action: "Propose un plan de gestion des comportements basé sur la psychologie positive et l’autonomie des élèves.",
+    example: "Exemple attendu : situation observée → stratégie appliquée → suivi et évaluation."
   },
   "Organisation de la classe": {
-    desc: "Organisation spatiale et temporelle.",
-    action: "Propose une organisation favorisant coopération.",
-    example: "Exemple attendu : disposition, transitions, rôles attribués."
+    desc: "Optimiser l’espace et le temps dans la classe.",
+    action: "Propose une organisation spatiale et temporelle favorisant coopération et sérénité.",
+    example: "Exemple attendu : disposition des tables, transitions ritualisées, rôles d’élèves responsables."
   },
   "Inclusion et diversité": {
-    desc: "Adaptations pour EBEP.",
-    action: "Propose des adaptations concrètes.",
-    example: "Exemple attendu : élève DYS → consignes adaptées, allophone → tutorat, HPI → approfondissement."
+    desc: "Adapter les pratiques aux élèves à besoins éducatifs particuliers (EBEP).",
+    action: "Propose des adaptations concrètes pour EBEP, allophones, élèves HPI.",
+    example: "Exemple attendu : élève DYS → consignes simplifiées, élève allophone → tutorat, élève HPI → activité enrichie."
   },
   "Résolution de conflits entre élèves": {
-    desc: "Gestion constructive des conflits.",
-    action: "Propose une démarche de médiation concrète.",
-    example: "Exemple attendu : mise en mots → recherche de solution → accord écrit."
+    desc: "Encadrer la résolution des conflits en classe.",
+    action: "Propose une démarche de médiation constructive et progressive.",
+    example: "Exemple attendu : étape 1 → mise en mots, étape 2 → recherche de solution commune, étape 3 → accord formalisé."
   },
   "Création de leçons": {
-    desc: "Leçon complète avec objectifs et évaluation.",
-    action: "Conçois une leçon complète.",
-    example: "Exemple attendu : objectif, activité, évaluation."
+    desc: "Préparer une leçon complète adaptée aux programmes.",
+    action: "Conçois une leçon détaillée avec objectifs, activités et évaluation.",
+    example: "Exemple attendu : objectif d’apprentissage, activité principale, évaluation formative."
   },
   "Planification hebdomadaire": {
-    desc: "Organisation de la semaine.",
-    action: "Élabore une planification hebdomadaire.",
-    example: "Exemple attendu : lundi → découverte, mardi → approfondissement, vendredi → évaluation."
+    desc: "Structurer une semaine de cours.",
+    action: "Élabore une planification hebdomadaire équilibrée.",
+    example: "Exemple attendu : Lundi → découverte, Mardi → entraînement, Vendredi → évaluation."
   },
   "Motivation et engagement": {
-    desc: "Encourager la participation active.",
-    action: "Propose des stratégies pour motiver les élèves.",
-    example: "Exemple attendu : activité ludique, défi collectif, valorisation."
+    desc: "Encourager la participation active des élèves.",
+    action: "Propose des stratégies concrètes pour motiver les élèves, même les moins impliqués.",
+    example: "Exemple attendu : activité ludique, défi collectif, valorisation individuelle."
   },
   "Gestion du stress et de l’attention": {
-    desc: "Stratégies de concentration.",
-    action: "Propose des techniques pour maintenir l’attention.",
-    example: "Exemple attendu : pause active, activité courte, variation."
+    desc: "Prévenir la fatigue et maintenir l’attention.",
+    action: "Propose des techniques pratiques pour améliorer la concentration.",
+    example: "Exemple attendu : pause active, activité courte et rythmée, variation de supports."
   },
   "Communication avec les parents": {
-    desc: "Dialoguer efficacement.",
-    action: "Propose une stratégie de communication adaptée.",
-    example: "Exemple attendu : introduction, points positifs, difficultés, solutions."
+    desc: "Établir un dialogue constructif avec les familles.",
+    action: "Propose une stratégie de communication claire et bienveillante.",
+    example: "Exemple attendu : introduction positive, points de progrès, solutions envisagées."
   },
   "Apprentissage à distance": {
-    desc: "Enseignement hybride.",
-    action: "Propose un plan pour l’enseignement à distance.",
-    example: "Exemple attendu : outil visio, autonomie, suivi."
+    desc: "Organiser efficacement l’enseignement hybride ou en distanciel.",
+    action: "Propose un plan d’enseignement à distance avec outils adaptés.",
+    example: "Exemple attendu : visioconférence, travail en autonomie, suivi personnalisé."
   },
   "Éducation socio-émotionnelle": {
-    desc: "Développer empathie et coopération.",
-    action: "Propose des activités socio-émotionnelles.",
-    example: "Exemple attendu : cercle de parole, jeu de rôle, résolution collective."
+    desc: "Développer les compétences sociales et émotionnelles.",
+    action: "Propose des activités favorisant empathie, coopération et gestion des émotions.",
+    example: "Exemple attendu : cercle de parole, jeu de rôle, résolution collective de problème."
   },
   "Prévention du harcèlement scolaire": {
-    desc: "Programme de prévention.",
-    action: "Propose un plan anti-harcèlement.",
-    example: "Exemple attendu : sensibilisation, jeu de rôle, charte de classe."
+    desc: "Mettre en place des actions de prévention.",
+    action: "Propose un programme complet de prévention du harcèlement scolaire.",
+    example: "Exemple attendu : sensibilisation par affiches, jeu de rôle, charte de classe co-construite."
   }
 };
 
-// --- Types de production ---
+// --- Types de production Enseignants enrichis ---
 const enseignantsProductions = {
-  "Plan d’enseignement (séquence)": "Conçois une séquence complète avec plusieurs séances.",
-  "Exercices différenciés": "Crée une série d’exercices différenciés avec corrigés.",
-  "Activité interdisciplinaire": "Propose une activité interdisciplinaire avec projet final.",
-  "Activité interactive/numérique": "Propose une activité numérique interactive.",
-  "Plan de gestion de classe": "Propose un plan organisationnel de la classe.",
-  "Stratégie de résolution de conflit": "Propose un protocole de médiation.",
-  "Projet pédagogique": "Conçois un projet complet avec étapes et livrable.",
-  "Fiche de préparation de séance": "Élabore une fiche détaillée minute par minute.",
-  "Évaluation (formative/sommative)": "Propose une évaluation adaptée avec barème.",
-  "Scénario de jeu pédagogique": "Conçois un jeu éducatif (escape game, simulation).",
-  "Plan de remédiation": "Propose une remédiation pour une notion non acquise.",
-  "Programme de formation continue": "Propose une formation pour enseignants.",
-  "Planification annuelle": "Propose une progression annuelle par compétences."
+  "Plan d’enseignement (séquence)": 
+    "Conçois une séquence pédagogique complète comprenant : "
+    + "1) Objectifs d’apprentissage alignés aux programmes officiels. "
+    + "2) Compétences visées. "
+    + "3) Déroulement séance par séance (découverte, entraînement, évaluation). "
+    + "4) Différenciation pour profils variés (élèves en difficulté, allophones, HPI). "
+    + "5) Modalités d’évaluation formative et sommative. "
+    + "Présentation attendue : plan clair et structuré en plusieurs séances.",
+
+  "Exercices différenciés": 
+    "Crée une série d’exercices différenciés avec corrigés, comprenant : "
+    + "1) Niveau initiation (guidé, simple). "
+    + "2) Niveau intermédiaire (semi-guidé, mise en application). "
+    + "3) Niveau avancé (problème complexe, autonomie). "
+    + "Inclure des supports variés : texte simplifié, visuels, schémas. "
+    + "Chaque exercice doit être accompagné de son corrigé détaillé.",
+
+  "Activité interdisciplinaire": 
+    "Propose une activité combinant plusieurs disciplines (ex : français, mathématiques, sciences, histoire). "
+    + "Inclure : 1) Thème central. "
+    + "2) Objectifs et compétences transversales. "
+    + "3) Déroulement des activités par discipline. "
+    + "4) Production finale attendue (exposé, maquette, projet collaboratif). "
+    + "Préciser les modalités d’évaluation interdisciplinaire.",
+
+  "Activité interactive/numérique": 
+    "Propose une activité numérique interactive utilisant des outils adaptés (quiz en ligne, simulations, applications pédagogiques). "
+    + "Inclure : consignes claires, étapes d’utilisation des outils, et objectifs pédagogiques. "
+    + "Prévoir un retour immédiat aux élèves et un suivi des apprentissages.",
+
+  "Plan de gestion de classe": 
+    "Propose un plan organisationnel pour la gestion de classe incluant : "
+    + "1) Organisation spatiale (disposition des tables, zones de travail). "
+    + "2) Gestion temporelle (transitions, rituels). "
+    + "3) Répartition des responsabilités (élèves responsables). "
+    + "4) Stratégies de gestion de comportements difficiles. "
+    + "Le plan doit être concret et directement applicable.",
+
+  "Stratégie de résolution de conflit": 
+    "Propose un protocole de médiation pour résoudre les conflits entre élèves. "
+    + "Inclure : 1) Étape de mise en mots du conflit. "
+    + "2) Recherche collective de solutions. "
+    + "3) Accord formalisé. "
+    + "Mettre en avant les compétences socio-émotionnelles développées (empathie, communication non violente).",
+
+  "Projet pédagogique": 
+    "Conçois un projet pédagogique complet sur un thème choisi. "
+    + "Inclure : 1) Objectifs généraux et spécifiques. "
+    + "2) Compétences travaillées. "
+    + "3) Déroulement par étapes (préparation, réalisation, restitution). "
+    + "4) Ressources nécessaires. "
+    + "5) Modalités de restitution finale (exposé, exposition, produit numérique).",
+
+  "Fiche de préparation de séance": 
+    "Élabore une fiche de préparation détaillée pour une séance unique. "
+    + "Inclure : 1) Objectifs de la séance. "
+    + "2) Compétences travaillées. "
+    + "3) Matériel nécessaire. "
+    + "4) Déroulé minute par minute (accroche, activités, synthèse, évaluation). "
+    + "5) Différenciation possible. "
+    + "Présentation attendue : tableau structuré et opérationnel.",
+
+  "Évaluation (formative/sommative)": 
+    "Propose une évaluation formative et/ou sommative adaptée au sujet. "
+    + "Inclure : barème clair, grille de critères, et auto-évaluation par les élèves. "
+    + "Format possible : quiz, rédaction, projet, oral. "
+    + "Donner aussi des pistes pour la remédiation en cas de difficultés.",
+
+  "Scénario de jeu pédagogique": 
+    "Conçois un jeu éducatif (ex : escape game, simulation, jeu de rôle). "
+    + "Inclure : 1) Objectifs pédagogiques. "
+    + "2) Règles du jeu. "
+    + "3) Déroulé de la partie. "
+    + "4) Production attendue des élèves. "
+    + "5) Débriefing pour relier le jeu aux apprentissages. "
+    + "Matériel et ressources à prévoir.",
+
+  "Plan de remédiation": 
+    "Propose une remédiation pour une notion non acquise. "
+    + "Inclure : diagnostic de la difficulté, activités de reprise, exercices adaptés, suivi personnalisé. "
+    + "Exemples concrets et progressifs (du plus simple au plus complexe).",
+
+  "Programme de formation continue": 
+    "Propose un plan de formation continue pour enseignants. "
+    + "Inclure : objectifs professionnels, modules thématiques, ressources (MOOC, lectures, séminaires), calendrier prévisionnel. "
+    + "Prévoir une évaluation des acquis et un suivi.",
+
+  "Planification annuelle": 
+    "Propose une progression annuelle alignée sur le programme officiel. "
+    + "Inclure : répartition des chapitres ou thèmes par période, compétences ciblées, modalités d’évaluation. "
+    + "Présentation attendue : tableau clair par période (trimestre ou semestre)."
 };
+
+// --- Audiences Enseignants ---
+const enseignantsAudiences = {
+  "Élèves": "Production destinée directement aux élèves.",
+  "Parents": "Production destinée aux parents d’élèves.",
+  "Équipe éducative": "Production destinée aux collègues et personnels de l’établissement.",
+  "Administration": "Production destinée à l’administration scolaire."
+};
+
+const audienceBubblesEnseignants = document.getElementById("audienceBubbles-enseignants");
+Object.keys(enseignantsAudiences).forEach(label => {
+  const bubble = document.createElement("div");
+  bubble.classList.add("bubble");
+  if (label === "Élèves") bubble.classList.add("selected"); // sélection par défaut
+  bubble.innerText = label;
+  bubble.dataset.type = label;
+  bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
+  audienceBubblesEnseignants.appendChild(bubble);
+});
+
 
 // --- Génération bulles ---
 const bubblesEnseignants = document.getElementById("bubbles-enseignants");
@@ -123,10 +219,10 @@ Object.keys(enseignantsProductions).forEach(label => {
 
 // --- Génération du prompt enseignants ---
 function generatePromptEnseignants() {
-  const discipline = document.getElementById("discipline-enseignants").value;
-  const niveau = document.getElementById("niveau-enseignants").value;
-  const objectif = document.getElementById("objectif-enseignants").value;
-  const contraintes = document.getElementById("contraintes-enseignants").value;
+  const discipline = document.getElementById("discipline-enseignants").value || "[à préciser]";
+  const niveau = document.getElementById("niveau-enseignants").value || "[à préciser]";
+  const objectif = document.getElementById("objectif-enseignants").value || "[à préciser]";
+  const contraintes = document.getElementById("contraintes-enseignants").value || "[à préciser]";
 
   const selectedBubbles = Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
     .map(b => `- ${b.dataset.label} → ${enseignantsPresets[b.dataset.label].desc}`);
@@ -140,22 +236,31 @@ function generatePromptEnseignants() {
   const selectedProductions = Array.from(document.querySelectorAll("#productionBubbles-enseignants .bubble.selected"))
     .map(b => enseignantsProductions[b.dataset.type]);
 
+  const selectedAudiences = Array.from(document.querySelectorAll("#audienceBubbles-enseignants .bubble.selected"))
+    .map(b => b.dataset.label);
+
   return `
-Tu es un enseignant de ${discipline || "pédagogie"} au niveau ${niveau || "[à préciser]"}.
-Ta mission : répondre à la problématique suivante de manière concrète et exploitable en classe.
-Conformément aux programmes officiels et au Code de l’éducation, propose une production directement utilisable.
+Tu es un enseignant de ${discipline} au niveau ${niveau}.
+Ton audience principale est : ${selectedAudiences.join(", ") || "[à préciser]"}.
+Ta mission : produire un contenu directement exploitable en classe, sans reformuler l’analyse du contexte.
+Conformément aux programmes officiels et au Code de l’éducation, propose une production utilisable immédiatement.
 
-Objectif : ${objectif}
-Contraintes : ${contraintes}
+🎯 Objectif : ${objectif}
+⚖️ Contraintes : ${contraintes}
 
-Problématiques retenues :
+📌 Problématiques retenues :
 ${selectedBubbles.join("\n")}
 
-Maintenant, PRODUIS directement :
+🛠️ Tâches attendues (issues des problématiques) :
 ${productionTasks.map(task => `- ${task}`).join("\n")}
+
+📂 Type(s) de production à fournir :
 ${selectedProductions.map(task => `- ${task}`).join("\n")}
 
-Exemples de sortie attendue :
+👥 Audience ciblée :
+- ${selectedAudiences.join("\n- ") || "[à préciser]"}
+
+📑 Exemples de sortie attendue :
 ${selectedExamples.join("\n\n")}
 `;
 }
