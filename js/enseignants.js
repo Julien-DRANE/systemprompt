@@ -507,10 +507,12 @@ Conformément aux programmes officiels et au Code de l’éducation, propose une
 ${specialNoteForEleves}
 🎯 Objectif : ${objectif}
 ⚖️ Contraintes : ${contraintes}
+${socleDirective}
 
 📌 Problématiques retenues :
 ${Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
   .map(b => `- ${b.dataset.label} → ${enseignantsPresets[b.dataset.label].desc}`).join("\n")}
+
 
 🛠️ Tâches attendues (issues des problématiques) :
 ${Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
@@ -528,6 +530,7 @@ ${Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
   .map(b => enseignantsPresets[b.dataset.label].example).join("\n\n")}
 `;
 }
+
 
 
 
