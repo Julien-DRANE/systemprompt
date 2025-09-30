@@ -286,3 +286,43 @@ footer strong {
 @media (max-width: 480px) {
   .gpt-cta, .gpt-note, .gpt-card { max-width: 100%; }
 }
+
+/* Zone socle commun */
+#socleBubbles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  background: #fdfdfd;
+}
+
+#socleBubbles .bubble {
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+  color: #222;
+}
+
+#socleBubbles .bubble:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+#socleBubbles .bubble.selected {
+  border: 2px solid #333;
+  font-weight: 600;
+}
+
+/* Couleurs spécifiques */
+.bubble-socle-langages   { background: #a8d0e6; } /* Domaine 1 */
+.bubble-socle-methodes   { background: #b8e994; } /* Domaine 2 */
+.bubble-socle-citoyen    { background: #f6b26b; } /* Domaine 3 */
+.bubble-socle-techniques { background: #cbb2fe; } /* Domaine 4 */
+.bubble-socle-monde      { background: #f8a5c2; } /* Domaine 5 */
+
