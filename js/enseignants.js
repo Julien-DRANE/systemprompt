@@ -506,6 +506,7 @@ function generatePromptEnseignants() {
       : "";
   }
 
+  // ✅ Bloc complet "Partenariats & sorties"
   const partnersDirective = wantsPartners ? `
 📦 Brique « Partenariats & sorties / voyages » (si pertinent pour le thème/niveau) :
 - Proposer 3 partenaires/dispositifs ciblés : 1 local (structure culturelle/atelier/association), 1 académique via DAAC (EAC – rencontre/pratique/connaissances), 1 monde professionnel (Parcours Avenir : visite/séquence d’observation).
@@ -544,6 +545,3 @@ ${detailedAudiences.join("\n") || "[à préciser]"}
 ${selectedExamples.join("\n\n")}
 `;
 }
-
-
-
