@@ -320,11 +320,12 @@ footer strong {
 }
 
 /* Couleurs spécifiques */
-.bubble-socle-langages   { background: #a8d0e6; } /* Domaine 1 */
-.bubble-socle-methodes   { background: #b8e994; } /* Domaine 2 */
-.bubble-socle-citoyen    { background: #f6b26b; } /* Domaine 3 */
-.bubble-socle-techniques { background: #cbb2fe; } /* Domaine 4 */
-.bubble-socle-monde      { background: #f8a5c2; } /* Domaine 5 */
+.bubble-socle-langages   { background: #b6d87a; } /* Domaine 1 */
+.bubble-socle-methodes   { background: #7bd0f1; } /* Domaine 2 */
+.bubble-socle-citoyen    { background: #f08a6b; } /* Domaine 3 */
+.bubble-socle-techniques { background: #4ba6a8; } /* Domaine 4 */
+.bubble-socle-monde      { background: #f7c934; } /* Domaine 5 */
+
 
 
 
