@@ -438,14 +438,22 @@ function generatePromptEnseignants() {
   const objectif = document.getElementById("objectif-enseignants").value || "[à préciser]";
   const contraintes = document.getElementById("contraintes-enseignants").value || "[à préciser]";
 
-  const selectedBubbles = Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
-    .map(b => `- ${b.dataset.label} → ${enseignantsPresets[b.dataset.label].desc}`);
+  // ✅ On filtre uniquement les bulles avec dataset.label (problématiques)
+  const selectedProblemBubbles = Array.from(
+    document.querySelectorAll("#bubbles-enseignants .bubble.selected")
+  ).filter(b => b.dataset.label);
 
-  const productionTasks = Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
-    .map(b => enseignantsPresets[b.dataset.label].action);
+  const selectedBubbles = selectedProblemBubbles.map(
+    b => `- ${b.dataset.label} → ${enseignantsPresets[b.dataset.label].desc}`
+  );
 
-  const selectedExamples = Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
-    .map(b => enseignantsPresets[b.dataset.label].example);
+  const productionTasks = selectedProblemBubbles.map(
+    b => enseignantsPresets[b.dataset.label].action
+  );
+
+  const selectedExamples = selectedProblemBubbles.map(
+    b => enseignantsPresets[b.dataset.label].example
+  );
 
   // --- Productions sélectionnées (dédupliquées) ---
   const selectedProductions = [...new Set(
@@ -462,20 +470,19 @@ function generatePromptEnseignants() {
   );
 
   // --- Socle commun sélectionné (sécurisé) ---
-const selectedSocle = Array.from(document.querySelectorAll("#socleBubbles .bubble.selected"))
-  .map(b => {
-    const domain = b?.dataset?.domain || null;
-    if (!domain) return null; // ignore si pas de domaine
-    const desc = socleCommunDomains[domain] || "";
-    return `- ${domain}${desc ? " → " + desc : ""}`;
-  })
-  .filter(Boolean) // enlève les null
-  .join("\n");
+  const selectedSocle = Array.from(document.querySelectorAll("#socleBubbles .bubble.selected"))
+    .map(b => {
+      const domain = b?.dataset?.domain || null;
+      if (!domain) return null;
+      const desc = socleCommunDomains[domain] || "";
+      return `- ${domain}${desc ? " → " + desc : ""}`;
+    })
+    .filter(Boolean)
+    .join("\n");
 
-const socleDirective = selectedSocle 
-  ? `\n📘 Références explicites au Socle commun :\n${selectedSocle}\n`
-  : "";
-
+  const socleDirective = selectedSocle 
+    ? `\n📘 Références explicites au Socle commun :\n${selectedSocle}\n`
+    : "";
 
   // --- Texte spécial si audience "Élèves" ---
   const specialNoteForEleves = selectedAudiences.includes("Élèves")
@@ -485,7 +492,7 @@ const socleDirective = selectedSocle
   // --- Activation de la brique Partenariats via (pédago OU production OU toggle)
   const wantsPartners = isPartnersActivated();
 
-  // --- Récupération académie / territoire si la brique est active
+  // --- Récupération académie / territoire si la brique est active ---
   let infoLocalisation = "";
   if (wantsPartners) {
     const regionSel = document.getElementById("region-academique");
@@ -497,7 +504,7 @@ const socleDirective = selectedSocle
       : "";
   }
 
-  // --- Directive détaillant quoi livrer quand la brique est demandée (avec contexte local)
+  // --- Directive détaillant quoi livrer quand la brique est demandée ---
   const partnersDirective = wantsPartners ? `
 📦 Brique « Partenariats & sorties / voyages » (si pertinent pour le thème/niveau) :
 - Proposer 3 partenaires/dispositifs ciblés : 1 local (structure culturelle/atelier/association), 1 académique via DAAC (EAC – rencontre/pratique/connaissances), 1 monde professionnel (Parcours Avenir : visite/séquence d’observation).
@@ -520,12 +527,10 @@ ${specialNoteForEleves}
 ${socleDirective}
 
 📌 Problématiques retenues :
-${Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
-  .map(b => `- ${b.dataset.label} → ${enseignantsPresets[b.dataset.label].desc}`).join("\n")}
+${selectedBubbles.join("\n")}
 
 🛠️ Tâches attendues (issues des problématiques) :
-${Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
-  .map(b => enseignantsPresets[b.dataset.label].action).map(task => `- ${task}`).join("\n")}
+${productionTasks.map(task => `- ${task}`).join("\n")}
 
 📂 Type(s) de production à fournir :
 ${selectedProductions.map(task => `- ${task}`).join("\n")}
@@ -535,8 +540,8 @@ ${partnersDirective}
 ${detailedAudiences.join("\n") || "[à préciser]"}
 
 📑 Exemples de sortie attendue :
-${Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
-  .map(b => enseignantsPresets[b.dataset.label].example).join("\n\n")}
+${selectedExamples.join("\n\n")}
 `;
 }
+
 
