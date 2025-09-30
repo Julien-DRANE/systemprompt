@@ -287,6 +287,8 @@ const socleCommunDomains = {
 };
 
 const socleBubbles = document.getElementById("socleBubbles");
+socleBubbles.innerHTML = ""; // 🔑 supprime les anciennes bulles avant de regénérer
+
 Object.keys(socleCommunDomains).forEach(label => {
   const bubble = document.createElement("div");
   bubble.classList.add("bubble", "bubble-soft-grey");
@@ -295,6 +297,7 @@ Object.keys(socleCommunDomains).forEach(label => {
   bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
   socleBubbles.appendChild(bubble);
 });
+
 
 
   // Conception pédagogique / planification / interdisciplinarité
@@ -525,5 +528,6 @@ ${Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
   .map(b => enseignantsPresets[b.dataset.label].example).join("\n\n")}
 `;
 }
+
 
 
