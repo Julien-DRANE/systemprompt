@@ -293,10 +293,10 @@ footer strong {
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-bottom: 1rem;
-  padding: 0.5rem;
-  border: 2px dashed #ccc;
-  border-radius: 8px;
-  background: #fdfdfd;
+  padding: 0;              /* plus de padding de zone */
+  border: none;            /* supprime le cadre */
+  border-radius: 0;        /* supprime les coins arrondis */
+  background: transparent; /* supprime le fond */
 }
 
 #socleBubbles .bubble {
@@ -325,4 +325,6 @@ footer strong {
 .bubble-socle-citoyen    { background: #f6b26b; } /* Domaine 3 */
 .bubble-socle-techniques { background: #cbb2fe; } /* Domaine 4 */
 .bubble-socle-monde      { background: #f8a5c2; } /* Domaine 5 */
+
+
 
