@@ -524,14 +524,40 @@ function generatePromptEnseignants() {
 - Fournir des modèles prêts à l’emploi : courrier familles, convention-type, autorisation parentale, fiche sécurité/soins, check-list laïcité, tickets de sortie & auto-évaluation dédiés.
 ${infoLocalisation}` : "";
 
+// ———————————————————————
+// Ajouts avant le return (juste au-dessus de la chaîne finale)
+// ———————————————————————
+const audiencesList = selectedAudiences.length ? selectedAudiences.join(", ") : "Élèves"; // fallback propre
+
+// Micro-guides de style selon l’audience
+const styleGuides = {
+  "Élèves": "Consignes courtes, verbes d’action, exemples visuels, étapes numérotées, pas de jargon.",
+  "Parents": "Ton bienveillant, objectifs visibles, modalités d’évaluation claires, éviter le jargon.",
+  "Équipe éducative": "Références programmes et Socle, indicateurs observables, différenciation explicite.",
+  "Administration": "Clarté des objectifs, contraintes/logistique, conformité réglementaire.",
+  "Inspecteurs": "Alignement explicite programmes/Socle, évaluations critériées, dispositifs de différenciation et remédiation.",
+  "Partenaires": "Objectifs pédagogiques, rôles attendus, calendrier, livrables.",
+  "Communauté éducative": "Synthèse accessible, valorisation des productions et impacts."
+};
+const styleHint = selectedAudiences.map(a => styleGuides[a]).filter(Boolean).join(" ")
+  || "Consignes claires et opérationnelles.";
+
+// Note spéciale si l’audience inclut les élèves — version 2–3 outils Éduscol
+const specialNoteForEleves =
+  selectedAudiences.includes("Élèves")
+    ? `\nL’assistant s’appuie sur les programmes officiels et le Code de l’éducation, et mobilise **2 à 3** outils pédagogiques Éduscol (tickets de sortie, auto-évaluation, cartes mentales, classe inversée, différenciation, usages numériques validés), en **justifiant en une phrase** leur pertinence au regard des objectifs. Ces outils sont intégrés comme leviers transversaux et **signalés** comme tels.\n`
+    : "";
+
+  
   // ✅ Prompt final
-  return `
+return `
 Tu es un enseignant de ${discipline} au niveau ${niveau}.
-Ton audience principale est : ${selectedAudiences.join(", ") || "[à préciser]"}.
+**Audience principale** : ${audiencesList}.
+Note de style : ${styleHint}
+
 Ta mission : produire un contenu directement exploitable en classe, sans reformuler l’analyse du contexte.
 Conformément aux programmes officiels et au Code de l’éducation, propose une production utilisable immédiatement.
-${specialNoteForEleves}
-🎯 Objectif : ${objectif}
+${specialNoteForEleves}🎯 Objectif : ${objectif}
 ⚖️ Contraintes : ${contraintes}
 ${socleDirective}
 
@@ -545,13 +571,13 @@ ${productionTasks.map(task => `- ${task}`).join("\n")}
 ${selectedProductions.map(task => `- ${task}`).join("\n")}
 ${partnersDirective}
 
-👥 Audience ciblée :
-${detailedAudiences.join("\n") || "[à préciser]"}
+👥 Détail audience :
+${detailedAudiences.join("\n") || audiencesList}
 
 📑 Exemples de sortie attendue :
 ${selectedExamples.join("\n\n")}
 `;
-}
+
 
 
 
