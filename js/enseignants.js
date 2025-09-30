@@ -544,6 +544,12 @@ const specialNoteForEleves =
     ? `\nL’assistant s’appuie sur les programmes officiels et le Code de l’éducation, et mobilise **2 à 3** outils pédagogiques Éduscol (tickets de sortie, auto-évaluation, cartes mentales, classe inversée, différenciation, usages numériques validés), en **justifiant en une phrase** leur pertinence au regard des objectifs. Ces outils sont intégrés comme leviers transversaux et **signalés** comme tels.\n`
     : "";
 
+// Bloc "mission" affiché uniquement si l'audience inclut "Élèves"
+const missionBlock = selectedAudiences.includes("Élèves")
+  ? `Ta mission : produire un contenu directement exploitable en classe, sans reformuler l’analyse du contexte.
+Conformément aux programmes officiels et au Code de l’éducation, propose une production utilisable immédiatement.`
+  : "";
+
   
   // ✅ Prompt final
 return `
@@ -551,8 +557,7 @@ Tu es un enseignant de ${discipline} au niveau ${niveau}.
 **Audience principale** : ${audiencesList}.
 Note de style : ${styleHint}
 
-Ta mission : produire un contenu directement exploitable en classe, sans reformuler l’analyse du contexte.
-Conformément aux programmes officiels et au Code de l’éducation, propose une production utilisable immédiatement.
+${missionBlock}
 ${specialNoteForEleves}🎯 Objectif : ${objectif}
 ⚖️ Contraintes : ${contraintes}
 ${socleDirective}
@@ -573,7 +578,9 @@ ${detailedAudiences.join("\n") || audiencesList}
 📑 Exemples de sortie attendue :
 ${selectedExamples.join("\n\n")}
 `;
+
 }
+
 
 
 
