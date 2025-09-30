@@ -460,18 +460,20 @@ function generatePromptEnseignants() {
   const detailedAudiences = selectedAudiences.map(
     a => `- ${a} → ${enseignantsAudiences[a]}`
   );
-// Socle commun sélectionné
-const selectedSocle = Array.from(document.querySelectorAll("#socleBubbles .bubble.selected"))
-  .map(b => {
-    const domain = b.dataset.domain;
-    const desc = socleCommunDomains[domain] || "";
-    return `- ${domain}${desc ? " → " + desc : ""}`;
-  })
-  .join("\n");
+
+  // --- Socle commun sélectionné (sécurisé) ---
+  const selectedSocle = Array.from(document.querySelectorAll("#socleBubbles .bubble.selected"))
+    .map(b => {
+      const domain = b.dataset.domain;
+      const desc = socleCommunDomains[domain] || "";
+      return `- ${domain}${desc ? " → " + desc : ""}`;
+    })
+    .join("\n");
 
   const socleDirective = selectedSocle 
     ? `\n📘 Références explicites au Socle commun :\n${selectedSocle}\n` 
     : "";
+
   // --- Texte spécial si audience "Élèves" ---
   const specialNoteForEleves = selectedAudiences.includes("Élèves")
     ? `\nDans chaque réponse, l’assistant doit non seulement s’appuyer sur les programmes officiels et le Code de l’éducation, mais aussi mobiliser explicitement les outils pédagogiques **Eduscol** (tickets de sortie, auto-évaluation, cartes mentales, classe inversée, différenciation, usages numériques validés). Ces outils doivent être intégrés comme leviers pédagogiques transversaux, et signalés comme tels.\n`
@@ -503,6 +505,7 @@ const selectedSocle = Array.from(document.querySelectorAll("#socleBubbles .bubbl
 - Fournir des modèles prêts à l’emploi : courrier familles, convention-type, autorisation parentale, fiche sécurité/soins, check-list laïcité, tickets de sortie & auto-évaluation dédiés.
 ${infoLocalisation}` : "";
 
+  // --- Prompt final ---
   return `
 Tu es un enseignant de ${discipline} au niveau ${niveau}.
 Ton audience principale est : ${selectedAudiences.join(", ") || "[à préciser]"}.
@@ -516,7 +519,6 @@ ${socleDirective}
 📌 Problématiques retenues :
 ${Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
   .map(b => `- ${b.dataset.label} → ${enseignantsPresets[b.dataset.label].desc}`).join("\n")}
-
 
 🛠️ Tâches attendues (issues des problématiques) :
 ${Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
@@ -534,8 +536,3 @@ ${Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
   .map(b => enseignantsPresets[b.dataset.label].example).join("\n\n")}
 `;
 }
-
-
-
-
-
