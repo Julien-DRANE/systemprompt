@@ -326,6 +326,64 @@ footer strong {
 .bubble-socle-techniques { background: #4ba6a8; } /* Domaine 4 */
 .bubble-socle-monde      { background: #f7c934; } /* Domaine 5 */
 
+/* Bouton secondaire (même look&feel que tes autres boutons si tu en as) */
+.btn-secondary {
+  margin-left: .5rem;
+}
+
+/* Styles utilisés pour l’aperçu PDF */
+.print-container {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  line-height: 1.4;
+  color: #111;
+  padding: 20mm;
+}
+
+.print-header {
+  margin-bottom: 12mm;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 4mm;
+}
+
+.print-header h1 {
+  margin: 0 0 4mm 0;
+  font-size: 20px;
+}
+
+.print-meta {
+  font-size: 12px;
+  color: #666;
+}
+
+.print-content {
+  white-space: pre-wrap; /* préserve les retours à la ligne du prompt */
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 13px;
+}
+
+/* Mise en page A4 */
+@page {
+  size: A4;
+  margin: 12mm;
+}
+
+/* Si jamais on imprimait la page entière, on masque ce qui n'est pas utile */
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  #__printRoot, #__printRoot * {
+    visibility: visible !important;
+  }
+  #__printRoot {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+
 
 
 
