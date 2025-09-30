@@ -222,7 +222,7 @@ function getBubbleColorClass(label) {
     "Hétérogénéité des niveaux", "Différenciation des exercices", "Inclusion et diversité"
   ];
   const vert = [
-    "Création de leçons", "Planification hebdomadaire", "Activités interdisciplinaires"
+    "Création de leçon", "Planification hebdomadaire", "Activités interdisciplinaires"
   ];
   const jaune = [
     "Gestion des comportements difficiles", "Éducation socio-émotionnelle", "Résolution de conflits entre élèves", "Prévention du harcèlement scolaire"
@@ -552,6 +552,7 @@ ${detailedAudiences.join("\n") || "[à préciser]"}
 ${selectedExamples.join("\n\n")}
 `;
 }
+
 
 
 
