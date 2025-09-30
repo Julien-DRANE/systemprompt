@@ -97,27 +97,148 @@ const perdirProductions = {
     + "4) Analyse automatique, 5) Recommandations de pilotage."
 };
 
+
+// --- Fonction couleur bulles problématiques PERDIR (alignée aux libellés perdirPresets) ---
+function getBubbleColorClassPerdir(label) {
+  // Pilotage / stratégie
+  const bleu = [
+    "Pilotage pédagogique",
+    "Pilotage des projets d’établissement"
+  ];
+
+  // Ressources humaines / développement pro / inclusion
+  const vert = [
+    "Gestion des ressources humaines",
+    "Inclusion et diversité"
+  ];
+
+  // Climat / prévention / sécurité / crise / décrochage
+  const jaune = [
+    "Climat scolaire",
+    "Prévention du harcèlement et sécurité",
+    "Gestion de crise",
+    "Prévention du décrochage scolaire"
+  ];
+
+  // Communication (interne/externe) & relations familles
+  const orange = [
+    "Communication interne",
+    "Communication externe",
+    "Relations avec les parents"
+  ];
+
+  // Données / évaluations nationales
+  const violet = [
+    "Suivi des évaluations nationales"
+  ];
+
+  // Partenariats & ouverture
+  const turquoise = [
+    "Partenariats et ouverture"
+  ];
+
+  // Gestion matérielle / budget / examens (opérationnel)
+  const brun = [
+    "Gestion budgétaire et matérielle",
+    "Organisation des examens"
+  ];
+
+  if (bleu.includes(label)) return "bubble-soft-blue";
+  if (vert.includes(label)) return "bubble-soft-green";
+  if (jaune.includes(label)) return "bubble-soft-yellow";
+  if (orange.includes(label)) return "bubble-soft-orange";
+  if (violet.includes(label)) return "bubble-soft-purple";
+  if (turquoise.includes(label)) return "bubble-soft-teal";
+  if (brun.includes(label)) return "bubble-soft-brown";
+  return "bubble-soft-grey"; // secours si libellé inattendu
+}
+
+
 // --- Génération bulles problématiques PERDIR ---
 const bubblesPerdir = document.getElementById("bubbles-perdir");
+
 Object.keys(perdirPresets).forEach(label => {
   const bubble = document.createElement("div");
-  bubble.classList.add("bubble");
-  // Problématiques sélectionnées par défaut
+  bubble.classList.add("bubble", getBubbleColorClassPerdir(label));
+
   if (["Pilotage pédagogique", "Climat scolaire", "Gestion des ressources humaines"].includes(label)) {
     bubble.classList.add("selected");
   }
+
   bubble.innerText = label;
   bubble.dataset.label = label;
   bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
+
   bubblesPerdir.appendChild(bubble);
 });
 
+// --- Fonction couleur bulles types de production PERDIR (alignée) ---
+function getProdColorClassPerdir(label) {
+  // Pilotage / stratégie
+  const bleu = [
+    "Plan de pilotage pédagogique",
+    "Tableau de bord de pilotage"
+  ];
+
+  // Inclusion / diversité
+  const vert = [
+    "Plan d’inclusion et diversité"
+  ];
+
+  // Climat / prévention / sécurité / crise / décrochage
+  const jaune = [
+    "Plan d’action climat scolaire",
+    "Programme de prévention",
+    "Plan de gestion de crise",
+    "Plan de prévention du décrochage"
+  ];
+
+  // Communication (interne/externe) & outils de réunion
+  const orange = [
+    "Stratégie de communication interne",
+    "Stratégie de communication externe",
+    "Note de communication institutionnelle",
+    "Kit de réunion pédagogique"
+  ];
+
+  // Données / évaluations
+  const violet = [
+    "Analyse des évaluations nationales"
+  ];
+
+  // Partenariats & ouverture
+  const turquoise = [
+    "Projet partenarial"
+  ];
+
+  // Opérationnel logistique / examens
+  const brun = [
+    "Plan budgétaire et logistique",
+    "Planification des examens"
+  ];
+
+  if (bleu.includes(label)) return "bubble-soft-blue";
+  if (vert.includes(label)) return "bubble-soft-green";
+  if (jaune.includes(label)) return "bubble-soft-yellow";
+  if (orange.includes(label)) return "bubble-soft-orange";
+  if (violet.includes(label)) return "bubble-soft-purple";
+  if (turquoise.includes(label)) return "bubble-soft-teal";
+  if (brun.includes(label)) return "bubble-soft-brown";
+  return "bubble-soft-grey"; // secours si libellé inattendu
+}
+
+
 // --- Génération bulles types de production PERDIR ---
 const prodBubblesPerdir = document.getElementById("productionBubbles-perdir");
+
 Object.keys(perdirProductions).forEach(label => {
   const bubble = document.createElement("div");
-  bubble.classList.add("bubble");
-  if (label === "Plan de pilotage pédagogique") bubble.classList.add("selected");
+  bubble.classList.add("bubble", getProdColorClassPerdir(label));
+
+  if (label === "Plan de pilotage pédagogique") {
+    bubble.classList.add("selected"); // sélection par défaut
+  }
+
   bubble.innerText = label;
   bubble.dataset.type = label;
   bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
@@ -197,3 +318,4 @@ ${detailedAudiences.join("\n") || "[à préciser]"}
 ${selectedExamples.join("\n\n")}
 `;
 }
+

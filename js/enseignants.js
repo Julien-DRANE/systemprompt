@@ -199,30 +199,116 @@ const enseignantsAudiences = {
   "Communauté éducative": "Production valorisant les actions auprès du grand public (journal scolaire, site web, expo)."
 };
 
-const audienceBubblesEnseignants = document.getElementById("audienceBubbles-enseignants");
-Object.keys(enseignantsAudiences).forEach(label => {
-  const bubble = document.createElement("div");
-  bubble.classList.add("bubble");
-  if (label === "Élèves") bubble.classList.add("selected"); // sélection par défaut
-  bubble.innerText = label;
-  bubble.dataset.audience = label;
-  bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
-  audienceBubblesEnseignants.appendChild(bubble);
-});
+
+
+
+
+
 
 // --- Génération bulles problématiques Enseignants ---
 const bubblesEnseignants = document.getElementById("bubbles-enseignants");
+
+// Fonction pour appliquer une couleur douce à chaque bulle selon le thème
+function getBubbleColorClass(label) {
+  const bleu = [
+    "Hétérogénéité des niveaux", "Différenciation des exercices", "Inclusion et diversité"
+  ];
+  const vert = [
+    "Création de leçons", "Planification hebdomadaire", "Activités interdisciplinaires"
+  ];
+  const jaune = [
+    "Gestion des comportements difficiles", "Éducation socio-émotionnelle", "Résolution de conflits entre élèves", "Prévention du harcèlement scolaire"
+  ];
+  const orange = [
+    "Organisation de la classe", "Gestion du stress et de l’attention"
+  ];
+  const violet = [
+    "Communication avec les parents", "Ouverture partenariale & sorties (optionnelle)"
+  ];
+  const rose = [
+    "Apprentissage à distance"
+  ];
+  const turquoise = [
+    "Motivation et engagement"
+  ];
+
+  if (bleu.includes(label)) return "bubble-soft-blue";
+  if (vert.includes(label)) return "bubble-soft-green";
+  if (jaune.includes(label)) return "bubble-soft-yellow";
+  if (orange.includes(label)) return "bubble-soft-orange";
+  if (violet.includes(label)) return "bubble-soft-purple";
+  if (rose.includes(label)) return "bubble-soft-pink";
+  if (turquoise.includes(label)) return "bubble-soft-teal";
+  return "bubble-soft-grey"; // fallback si aucun groupe ne correspond
+}
+
+// Création des bulles
 Object.keys(enseignantsPresets).forEach(label => {
   const bubble = document.createElement("div");
-  bubble.classList.add("bubble");
+  bubble.classList.add("bubble", getBubbleColorClass(label));
+
+  // Bulles sélectionnées par défaut
   if (["Hétérogénéité des niveaux", "Différenciation des exercices", "Activités interdisciplinaires"].includes(label)) {
     bubble.classList.add("selected");
   }
+
   bubble.innerText = label;
   bubble.dataset.label = label;
+
   bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
+
   bubblesEnseignants.appendChild(bubble);
 });
+
+// --- Fonction couleur bulles "Types de production" ENSEIGNANTS (alignée aux thématiques) ---
+function getProdColorClassEnseignants(label) {
+  // Différenciation / évaluation / remédiation
+  const bleu = [
+    "Exercices différenciés",
+    "Plan de remédiation",
+    "Évaluation (formative/sommative)"
+  ];
+
+  // Conception pédagogique / planification / interdisciplinarité
+  const vert = [
+    "Plan d’enseignement (séquence)",
+    "Fiche de préparation de séance",
+    "Planification annuelle",
+    "Projet pédagogique",
+    "Activité interdisciplinaire"
+  ];
+
+  // Climat / gestion de classe / conflits
+  const jaune = [
+    "Plan de gestion de classe",
+    "Stratégie de résolution de conflit"
+  ];
+
+  // Outils / numérique / développement pro
+  const orange = [
+    "Activité interactive/numérique",
+    "Programme de formation continue"
+  ];
+
+  // Partenariats & sorties
+  const violet = [
+    "Brique partenariats & sorties"
+  ];
+
+  // Engagement ludo-pédagogique
+  const turquoise = [
+    "Scénario de jeu pédagogique"
+  ];
+
+  if (bleu.includes(label)) return "bubble-soft-blue";
+  if (vert.includes(label)) return "bubble-soft-green";
+  if (jaune.includes(label)) return "bubble-soft-yellow";
+  if (orange.includes(label)) return "bubble-soft-orange";
+  if (violet.includes(label)) return "bubble-soft-purple";
+  if (turquoise.includes(label)) return "bubble-soft-teal";
+  return "bubble-soft-grey"; // secours si libellé inattendu
+}
+
 
 // --- Génération bulles types de production Enseignants ---
 const prodBubblesEnseignants = document.getElementById("productionBubbles-enseignants");
@@ -232,14 +318,15 @@ const prodBubbleByLabel = {};
 
 Object.keys(enseignantsProductions).forEach(label => {
   const bubble = document.createElement("div");
-  bubble.classList.add("bubble");
-  if (label === "Plan d’enseignement (séquence)") bubble.classList.add("selected"); // par défaut
+  bubble.classList.add("bubble", getProdColorClassEnseignants(label));
+  if (label === "Plan d’enseignement (séquence)") bubble.classList.add("selected"); // sélection par défaut
   bubble.innerText = label;
   bubble.dataset.type = label;
   bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
   prodBubblesEnseignants.appendChild(bubble);
   prodBubbleByLabel[label] = bubble;
 });
+
 
 // --- UI dynamique : sélecteur d'académie + ville si Partenariats actif (pédago OU production OU toggle) ---
 // Liste des académies métropole + DROM
