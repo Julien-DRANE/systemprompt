@@ -20,7 +20,7 @@
       👉 Le principe est simple : sélectionnez votre rôle dans les onglets ci-dessous, 
       remplissez le <strong>contexte</strong>, vos <strong>objectifs</strong> et les 
       <strong>contraintes</strong>, puis cochez les <strong>problématiques</strong>, 
-      <strong>audiences</strong> et <strong>types de production</strong> correspondants.  
+      <strong>audiences</strong>, <strong>socle commun</strong> et <strong>types de production</strong> correspondants.  
     </p>
 
     <p class="intro">
@@ -43,115 +43,105 @@
       <button class="tab-button" data-target="inspection">Corps d’inspection</button>
     </div>
     
-<!-- === ONGLET ENSEIGNANTS === -->
-<div id="enseignants" class="tab-content active">
-  <h2>Enseignants</h2>
+    <!-- === ONGLET ENSEIGNANTS === -->
+    <div id="enseignants" class="tab-content active">
+      <h2>Enseignants</h2>
 
-  <label>Discipline :</label>
-  <input type="text" id="discipline-enseignants">
+      <label>Discipline :</label>
+      <input type="text" id="discipline-enseignants">
 
-  <label>Niveau :</label>
-  <input type="text" id="niveau-enseignants">
+      <label>Niveau :</label>
+      <input type="text" id="niveau-enseignants">
 
-  <h3>Audience ciblée :</h3>
-  <div id="audienceBubbles-enseignants"></div>
+      <h3>Audience ciblée :</h3>
+      <div id="audienceBubbles-enseignants" class="bubbles-container"></div>
 
-  <label>Objectif pédagogique :</label>
-  <textarea id="objectif-enseignants"></textarea>
+      <label>Objectif pédagogique :</label>
+      <textarea id="objectif-enseignants"></textarea>
 
-<div id="socleBubbles" class="bubbles-container">
-  <h3>Références au Socle commun</h3>
-</div>
+      <h3>Références au Socle commun :</h3>
+      <div id="socleBubbles" class="bubbles-container"></div>
 
-  
-  <h3>Problématiques pédagogiques :</h3>
-  <div id="bubbles-enseignants"></div>
+      <h3>Problématiques pédagogiques :</h3>
+      <div id="bubbles-enseignants" class="bubbles-container"></div>
 
-  <h3>Types de production attendue :</h3>
-  <div id="productionBubbles-enseignants"></div>
+      <h3>Types de production attendue :</h3>
+      <div id="productionBubbles-enseignants" class="bubbles-container"></div>
 
-
-  <label>Contraintes spécifiques (Thème, durée, nombre de séquences, groupe...) :</label>
-  <textarea id="contraintes-enseignants"></textarea>
-</div>
+      <label>Contraintes spécifiques (Thème, durée, nombre de séquences, groupe...) :</label>
+      <textarea id="contraintes-enseignants"></textarea>
+    </div>
 
 
- <!-- === ONGLET PERDIR === -->
-<div id="perdir" class="tab-content">
-  <h2>Personnels de direction</h2>
+    <!-- === ONGLET PERDIR === -->
+    <div id="perdir" class="tab-content">
+      <h2>Personnels de direction</h2>
 
-  <label>Contexte de l’établissement :</label>
-  <textarea id="contexte-perdir" placeholder="Ex : Collège REP+ de 450 élèves, nombreux élèves allophones..."></textarea>
+      <label>Contexte de l’établissement :</label>
+      <textarea id="contexte-perdir" placeholder="Ex : Collège REP+ de 450 élèves, nombreux élèves allophones..."></textarea>
 
-  <label>Cadre d’action :</label>
-  <input type="text" id="cadre-perdir" placeholder="Ex : projet d’établissement, partenariat local, sécurité...">
+      <label>Cadre d’action :</label>
+      <input type="text" id="cadre-perdir" placeholder="Ex : projet d’établissement, partenariat local, sécurité...">
 
-  <h3>Audience ciblée :</h3>
-  <div id="audienceBubbles-perdir"></div>
+      <h3>Audience ciblée :</h3>
+      <div id="audienceBubbles-perdir" class="bubbles-container"></div>
 
-  <label>Objectif :</label>
-  <textarea id="objectif-perdir" placeholder="Ex : améliorer le climat scolaire, renforcer l’inclusion, optimiser la gestion RH..."></textarea>
+      <label>Objectif :</label>
+      <textarea id="objectif-perdir" placeholder="Ex : améliorer le climat scolaire, renforcer l’inclusion, optimiser la gestion RH..."></textarea>
 
-  <h3>Problématiques de pilotage :</h3>
-  <div id="bubbles-perdir"></div>
+      <h3>Problématiques de pilotage :</h3>
+      <div id="bubbles-perdir" class="bubbles-container"></div>
 
-  <h3>Types de production attendue :</h3>
-  <div id="productionBubbles-perdir"></div>
+      <h3>Types de production attendue :</h3>
+      <div id="productionBubbles-perdir" class="bubbles-container"></div>
 
-
-  <label>Contraintes :</label>
-  <textarea id="contraintes-perdir" placeholder="Ex : moyens humains limités, calendrier académique, réglementation sécurité..."></textarea>
-</div>
+      <label>Contraintes :</label>
+      <textarea id="contraintes-perdir" placeholder="Ex : moyens humains limités, calendrier académique, réglementation sécurité..."></textarea>
+    </div>
 
 
     <!-- === ONGLET INSPECTION === -->
-<div id="inspection" class="tab-content">
-  <h2>Corps d’inspection</h2>
+    <div id="inspection" class="tab-content">
+      <h2>Corps d’inspection</h2>
 
-  <label>Contexte d’inspection :</label>
-  <textarea id="contexte-inspection" placeholder="Ex : Inspection d’un professeur de mathématiques en collège REP+..."></textarea>
+      <label>Contexte d’inspection :</label>
+      <textarea id="contexte-inspection" placeholder="Ex : Inspection d’un professeur de mathématiques en collège REP+..."></textarea>
 
-  <label>Cadre d’évaluation :</label>
-  <input type="text" id="cadre-inspection" placeholder="Ex : inspection individuelle, accompagnement collectif, pilotage académique...">
+      <label>Cadre d’évaluation :</label>
+      <input type="text" id="cadre-inspection" placeholder="Ex : inspection individuelle, accompagnement collectif, pilotage académique...">
 
-  <h3>Audience ciblée :</h3>
-  <div id="audienceBubbles-inspection"></div>
+      <h3>Audience ciblée :</h3>
+      <div id="audienceBubbles-inspection" class="bubbles-container"></div>
 
-  <label>Objectif :</label>
-  <textarea id="objectif-inspection" placeholder="Ex : évaluer la différenciation pédagogique, mesurer l’impact d’une réforme, accompagner un enseignant..."></textarea>
+      <label>Objectif :</label>
+      <textarea id="objectif-inspection" placeholder="Ex : évaluer la différenciation pédagogique, mesurer l’impact d’une réforme, accompagner un enseignant..."></textarea>
 
-  <h3>Problématiques d’évaluation / pilotage :</h3>
-  <div id="bubbles-inspection"></div>
+      <h3>Problématiques d’évaluation / pilotage :</h3>
+      <div id="bubbles-inspection" class="bubbles-container"></div>
 
-  <h3>Types de production attendue :</h3>
-  <div id="productionBubbles-inspection"></div>
+      <h3>Types de production attendue :</h3>
+      <div id="productionBubbles-inspection" class="bubbles-container"></div>
 
+      <label>Contraintes :</label>
+      <textarea id="contraintes-inspection" placeholder="Ex : cadre réglementaire, temps limité, ressources humaines disponibles..."></textarea>
+    </div>
 
+    <!-- Résultat commun -->
+    <button id="generateBtn">Générer le Prompt</button>
 
-  <label>Contraintes :</label>
-  <textarea id="contraintes-inspection" placeholder="Ex : cadre réglementaire, temps limité, ressources humaines disponibles..."></textarea>
-</div>
+    <div id="result"></div>
 
-<!-- Résultat commun -->
-<button id="generateBtn">Générer le Prompt</button>
+    <button id="copyBtn">Copier le Prompt</button>
 
-
-
-
-<div id="result"></div>
-
-<button id="copyBtn">Copier le Prompt</button>
-
-<!-- CTA vers ton GPT (sans le bouton doublon) -->
-<div class="gpt-cta">
-  <button id="openGptBtn" class="btn-secondary">
-    Ouvrir le GPT RAG Expert
-  </button>
-  <p class="gpt-note">
-    Ouvre <em>RAG Expert – Éducation Nationale</em> dans un nouvel onglet.
-  </p>
-</div>
-
+    <!-- CTA vers ton GPT -->
+    <div class="gpt-cta">
+      <button id="openGptBtn" class="btn-secondary">
+        Ouvrir le GPT RAG Expert
+      </button>
+      <p class="gpt-note">
+        Ouvre <em>RAG Expert – Éducation Nationale</em> dans un nouvel onglet.
+      </p>
+    </div>
 
     <!-- Footer -->
     <footer>
@@ -174,7 +164,3 @@
   <script src="js/inspection.js"></script>
 </body>
 </html>
-
-
-
-
