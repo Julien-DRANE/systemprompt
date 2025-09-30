@@ -494,10 +494,6 @@ function generatePromptEnseignants() {
     ? `\n📘 Références explicites au Socle commun :\n${selectedSocle}\n`
     : "";
 
-  // ✅ Note spéciale si audience "Élèves"
-  const specialNoteForEleves = selectedAudiences.includes("Élèves")
-    ? `\nDans chaque réponse, l’assistant s’appuie sur les programmes officiels et le Code de l’éducation, et mobilise explicitement 2 à 3 outils pédagogiques Éduscol (tickets de sortie, auto-évaluation, cartes mentales, classe inversée, différenciation, usages numériques validés), en justifiant en une phrase leur pertinence au regard des objectifs. Ces outils sont intégrés comme leviers pédagogiques transversaux et signalés comme tels.\n`
-    : "";
 
   // ✅ Gestion partenariats (pédago OU production OU toggle)
   const wantsPartners = isPartnersActivated();
@@ -577,6 +573,7 @@ ${detailedAudiences.join("\n") || audiencesList}
 📑 Exemples de sortie attendue :
 ${selectedExamples.join("\n\n")}
 `;
+
 
 
 
