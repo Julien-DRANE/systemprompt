@@ -496,7 +496,7 @@ function generatePromptEnseignants() {
 
   // ✅ Note spéciale si audience "Élèves"
   const specialNoteForEleves = selectedAudiences.includes("Élèves")
-    ? `\nDans chaque réponse, l’assistant doit non seulement s’appuyer sur les programmes officiels et le Code de l’éducation, mais aussi mobiliser explicitement les outils pédagogiques **Eduscol** (tickets de sortie, auto-évaluation, cartes mentales, classe inversée, différenciation, usages numériques validés). Ces outils doivent être intégrés comme leviers pédagogiques transversaux, et signalés comme tels.\n`
+    ? `\nDans chaque réponse, l’assistant s’appuie sur les programmes officiels et le Code de l’éducation, et mobilise explicitement 2 à 3 outils pédagogiques Éduscol (tickets de sortie, auto-évaluation, cartes mentales, classe inversée, différenciation, usages numériques validés), en justifiant en une phrase leur pertinence au regard des objectifs. Ces outils sont intégrés comme leviers pédagogiques transversaux et signalés comme tels.\n`
     : "";
 
   // ✅ Gestion partenariats (pédago OU production OU toggle)
@@ -552,6 +552,7 @@ ${detailedAudiences.join("\n") || "[à préciser]"}
 ${selectedExamples.join("\n\n")}
 `;
 }
+
 
 
 
