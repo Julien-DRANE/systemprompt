@@ -461,9 +461,13 @@ function generatePromptEnseignants() {
     a => `- ${a} → ${enseignantsAudiences[a]}`
   );
 // Socle commun sélectionné
-  const selectedSocle = Array.from(document.querySelectorAll("#socleBubbles .bubble.selected"))
-    .map(b => `- ${b.dataset.domain} → ${socleCommunDomains[b.dataset.domain]}`)
-    .join("\n");
+const selectedSocle = Array.from(document.querySelectorAll("#socleBubbles .bubble.selected"))
+  .map(b => {
+    const domain = b.dataset.domain;
+    const desc = socleCommunDomains[domain] || "";
+    return `- ${domain}${desc ? " → " + desc : ""}`;
+  })
+  .join("\n");
 
   const socleDirective = selectedSocle 
     ? `\n📘 Références explicites au Socle commun :\n${selectedSocle}\n` 
@@ -530,6 +534,7 @@ ${Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
   .map(b => enseignantsPresets[b.dataset.label].example).join("\n\n")}
 `;
 }
+
 
 
 
