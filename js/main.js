@@ -39,8 +39,8 @@ if (copyBtn) {
   });
 }
 
-//* =========================
-   🆕 Bouton Exporter en PDF (avec fallbacks)
+/* =========================
+   🆕 Bouton Exporter en PDF
    ========================= */
 (function () {
   const pdfBtn = document.getElementById("pdfBtn");
@@ -53,114 +53,27 @@ if (copyBtn) {
       alert("Aucun prompt à exporter. Générez le prompt d’abord.");
       return;
     }
+
+    // récupère discipline/niveau si présents (onglet enseignants)
     const discipline = document.getElementById("discipline-enseignants")?.value || "—";
     const niveau = document.getElementById("niveau-enseignants")?.value || "—";
     const now = formatDateFR(new Date());
-    const title = `Prompt — ${discipline} — ${niveau}`;
 
-    const htmlDoc = buildPrintableHtml({
-      title,
-      discipline,
-      niveau,
-      now,
-      // on exporte le texte tel qu’affiché (monospace + retours à la ligne)
-      contentHtml: `<pre>${escapeHtml(text)}</pre>`
-    });
-
-    // 1) Tentative nouvelle fenêtre (meilleur isolement CSS)
+    // nouvelle fenêtre "print-friendly"
     const printWin = window.open("", "_blank", "noopener,noreferrer");
-    if (printWin) {
-      writeAndPrintNewWindow(printWin, htmlDoc);
+    if (!printWin) {
+      alert("Le bloqueur de fenêtres empêche l’export PDF. Autorisez l’ouverture de popups.");
       return;
     }
 
-    // 2) Fallback iframe caché (contourne la plupart des bloqueurs)
-    const iframe = createHiddenIframe();
-    if (iframe?.contentWindow) {
-      writeAndPrintIframe(iframe, htmlDoc);
-      return;
-    }
-
-    // 3) Dernier recours : impression dans le même onglet (on clone et on restaure)
-    printSameTab(htmlDoc);
-  });
-
-  /* -------- Utils impression ---------- */
-
-  function writeAndPrintNewWindow(win, html) {
-    const doc = win.document;
+    // contenu HTML autonome (CSS d’impression inline pour fiabilité)
+    const doc = printWin.document;
     doc.open();
-    doc.write(html);
-    doc.close();
-    win.focus();
-    setTimeout(() => {
-      win.print();
-      // setTimeout(() => win.close(), 250); // optionnel : fermer après impression
-    }, 150);
-  }
-
-  function createHiddenIframe() {
-    const iframe = document.createElement("iframe");
-    iframe.style.position = "fixed";
-    iframe.style.right = "0";
-    iframe.style.bottom = "0";
-    iframe.style.width = "0";
-    iframe.style.height = "0";
-    iframe.style.border = "0";
-    document.body.appendChild(iframe);
-    return iframe;
-  }
-
-  function writeAndPrintIframe(iframe, html) {
-    const doc = iframe.contentDocument || iframe.contentWindow.document;
-    doc.open();
-    doc.write(html);
-    doc.close();
-    iframe.onload = () => {
-      try {
-        iframe.contentWindow.focus();
-        iframe.contentWindow.print();
-      } finally {
-        // Nettoyage léger après un petit délai
-        setTimeout(() => iframe.remove(), 500);
-      }
-    };
-    // certains navigateurs n’appellent pas onload après write() → on force
-    setTimeout(() => {
-      try {
-        iframe.contentWindow.focus();
-        iframe.contentWindow.print();
-      } finally {
-        setTimeout(() => iframe.remove(), 500);
-      }
-    }, 200);
-  }
-
-  function printSameTab(html) {
-    // Sauvegarde DOM visible
-    const saved = document.body.innerHTML;
-    // On imprime uniquement la racine prévue
-    document.body.innerHTML = `
-      <div id="__printRoot">
-        ${html}
-      </div>
-    `;
-    window.focus();
-    setTimeout(() => {
-      window.print();
-      // Restauration
-      document.body.innerHTML = saved;
-      // Rebrancher les scripts si besoin (pas nécessaire si SPA légère)
-      // location.reload(); // en cas de page complexes, décommentez
-    }, 150);
-  }
-
-  function buildPrintableHtml({ title, discipline, niveau, now, contentHtml }) {
-    return `<!DOCTYPE html>
+    doc.write(`<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="utf-8" />
-<title>${escapeHtml(title)}</title>
+<title>Prompt — ${escapeHtml(discipline)} — ${escapeHtml(niveau)}</title>
 <style>${getPrintCss()}</style>
 </head>
 <body>
@@ -174,77 +87,22 @@ if (copyBtn) {
         </div>
       </div>
       <div class="print-content">
-        ${contentHtml}
+        <pre>${escapeHtml(text)}</pre>
       </div>
     </div>
   </div>
 </body>
-</html>`;
-  }
+</html>`);
+    doc.close();
 
-  function formatDateFR(d) {
-    try {
-      return new Intl.DateTimeFormat("fr-FR", {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
-      }).format(d);
-    } catch {
-      return d.toLocaleString("fr-FR");
-    }
-  }
-
-  function escapeHtml(str) {
-    return String(str)
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-  }
-
-  function getPrintCss() {
-    return `
-      @page { size: A4; margin: 12mm; }
-      body { margin: 0; }
-      .print-container {
-        font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans",
-                     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-        line-height: 1.4;
-        color: #111;
-        padding: 0;
-      }
-      .print-header {
-        margin: 0 0 12mm 0;
-        border-bottom: 1px solid #ddd;
-        padding: 0 0 4mm 0;
-      }
-      .print-header h1 {
-        margin: 0 0 4mm 0;
-        font-size: 20px;
-      }
-      .print-meta {
-        font-size: 12px;
-        color: #666;
-      }
-      .print-content { font-size: 13px; }
-      .print-content pre {
-        margin: 0;
-        white-space: pre-wrap;
-        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-      }
-      @media print {
-        body * { visibility: hidden !important; }
-        #__printRoot, #__printRoot * { visibility: visible !important; }
-        #__printRoot { position: absolute; inset: 0; }
-      }
-    `;
-  }
-})();
-
+    // laisse le temps au rendu, puis imprime
+    printWin.focus();
+    setTimeout(() => {
+      printWin.print();
+      // Optionnel : fermer après impression
+      // setTimeout(() => printWin.close(), 250);
+    }, 150);
+  });
 
   // utils
   function formatDateFR(d) {
@@ -390,4 +248,3 @@ if (resultNode && copyOpenGptBtn) {
   const mo = new MutationObserver(toggleState);
   mo.observe(resultNode, { childList: true, characterData: true, subtree: true });
 }
-
