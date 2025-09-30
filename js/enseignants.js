@@ -277,29 +277,6 @@ function getProdColorClassEnseignants(label) {
   ];
 
 
-// --- Références Socle commun ---
-const socleCommunDomains = {
-  "Domaine 1 - Langages": "Maîtriser la langue française, langues vivantes, langages mathématiques, scientifiques, informatiques, artistiques et corporels.",
-  "Domaine 2 - Méthodes et outils": "Organisation du travail, coopération, projets, médias, information et numérique.",
-  "Domaine 3 - Personne et citoyen": "Sensibilité, expression, règles de droit, engagement, réflexion éthique.",
-  "Domaine 4 - Systèmes naturels et techniques": "Sciences, environnement, santé, développement durable, objets techniques.",
-  "Domaine 5 - Représentations du monde": "Espaces, temps, sociétés, organisations, diversité culturelle."
-};
-
-const socleBubbles = document.getElementById("socleBubbles");
-socleBubbles.innerHTML = ""; // 🔑 supprime les anciennes bulles avant de regénérer
-
-Object.keys(socleCommunDomains).forEach(label => {
-  const bubble = document.createElement("div");
-  bubble.classList.add("bubble", "bubble-soft-grey");
-  bubble.innerText = label;
-  bubble.dataset.domain = label;
-  bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
-  socleBubbles.appendChild(bubble);
-});
-
-
-
   // Conception pédagogique / planification / interdisciplinarité
   const vert = [
     "Plan d’enseignement (séquence)",
@@ -358,6 +335,26 @@ Object.keys(enseignantsProductions).forEach(label => {
   prodBubbleByLabel[label] = bubble;
 });
 
+// --- Références Socle commun ---
+const socleCommunDomains = {
+  "Domaine 1 - Langages": "Maîtriser la langue française, langues vivantes, langages mathématiques, scientifiques, informatiques, artistiques et corporels.",
+  "Domaine 2 - Méthodes et outils": "Organisation du travail, coopération, projets, médias, information et numérique.",
+  "Domaine 3 - Personne et citoyen": "Sensibilité, expression, règles de droit, engagement, réflexion éthique.",
+  "Domaine 4 - Systèmes naturels et techniques": "Sciences, environnement, santé, développement durable, objets techniques.",
+  "Domaine 5 - Représentations du monde": "Espaces, temps, sociétés, organisations, diversité culturelle."
+};
+
+const socleBubbles = document.getElementById("socleBubbles");
+socleBubbles.innerHTML = ""; // 🔑 supprime les anciennes bulles avant de regénérer
+
+Object.keys(socleCommunDomains).forEach(label => {
+  const bubble = document.createElement("div");
+  bubble.classList.add("bubble", "bubble-soft-grey");
+  bubble.innerText = label;
+  bubble.dataset.domain = label;
+  bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
+  socleBubbles.appendChild(bubble);
+});
 
 // --- UI dynamique : sélecteur d'académie + ville si Partenariats actif (pédago OU production OU toggle) ---
 // Liste des académies métropole + DROM
@@ -545,3 +542,4 @@ ${detailedAudiences.join("\n") || "[à préciser]"}
 ${selectedExamples.join("\n\n")}
 `;
 }
+
