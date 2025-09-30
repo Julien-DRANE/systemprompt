@@ -278,6 +278,38 @@ function getProdColorClassEnseignants(label) {
     "Plan de remédiation",
     "Évaluation (formative/sommative)"
   ];
+const audienceBubblesEnseignants = document.getElementById("audienceBubbles-enseignants");
+Object.keys(enseignantsAudiences).forEach(label => {
+  const bubble = document.createElement("div");
+  bubble.classList.add("bubble");
+  if (label === "Élèves") bubble.classList.add("selected"); // sélection par défaut
+  bubble.innerText = label;
+  bubble.dataset.audience = label;
+  bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
+  audienceBubblesEnseignants.appendChild(bubble);
+});
+
+
+// --- Références Socle commun ---
+const socleCommunDomains = {
+  "Domaine 1 - Langages": "Maîtriser la langue française, langues vivantes, langages mathématiques, scientifiques, informatiques, artistiques et corporels.",
+  "Domaine 2 - Méthodes et outils": "Organisation du travail, coopération, projets, médias, information et numérique.",
+  "Domaine 3 - Personne et citoyen": "Sensibilité, expression, règles de droit, engagement, réflexion éthique.",
+  "Domaine 4 - Systèmes naturels et techniques": "Sciences, environnement, santé, développement durable, objets techniques.",
+  "Domaine 5 - Représentations du monde": "Espaces, temps, sociétés, organisations, diversité culturelle."
+};
+
+// Génération des bulles Socle commun
+const socleBubbles = document.getElementById("socleBubbles");
+Object.keys(socleCommunDomains).forEach(label => {
+  const bubble = document.createElement("div");
+  bubble.classList.add("bubble", "bubble-soft-grey");
+  bubble.innerText = label;
+  bubble.dataset.domain = label;
+  bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
+  socleBubbles.appendChild(bubble);
+});
+
 
   // Conception pédagogique / planification / interdisciplinarité
   const vert = [
@@ -439,7 +471,14 @@ function generatePromptEnseignants() {
   const detailedAudiences = selectedAudiences.map(
     a => `- ${a} → ${enseignantsAudiences[a]}`
   );
+// Socle commun sélectionné
+  const selectedSocle = Array.from(document.querySelectorAll("#socleBubbles .bubble.selected"))
+    .map(b => `- ${b.dataset.domain} → ${socleCommunDomains[b.dataset.domain]}`)
+    .join("\n");
 
+  const socleDirective = selectedSocle 
+    ? `\n📘 Références explicites au Socle commun :\n${selectedSocle}\n` 
+    : "";
   // --- Texte spécial si audience "Élèves" ---
   const specialNoteForEleves = selectedAudiences.includes("Élèves")
     ? `\nDans chaque réponse, l’assistant doit non seulement s’appuyer sur les programmes officiels et le Code de l’éducation, mais aussi mobiliser explicitement les outils pédagogiques **Eduscol** (tickets de sortie, auto-évaluation, cartes mentales, classe inversée, différenciation, usages numériques validés). Ces outils doivent être intégrés comme leviers pédagogiques transversaux, et signalés comme tels.\n`
@@ -500,3 +539,4 @@ ${Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
   .map(b => enseignantsPresets[b.dataset.label].example).join("\n\n")}
 `;
 }
+
