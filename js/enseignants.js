@@ -199,6 +199,16 @@ const enseignantsAudiences = {
   "Communauté éducative": "Production valorisant les actions auprès du grand public (journal scolaire, site web, expo)."
 };
 
+const audienceBubblesEnseignants = document.getElementById("audienceBubbles-enseignants");
+Object.keys(enseignantsAudiences).forEach(label => {
+  const bubble = document.createElement("div");
+  bubble.classList.add("bubble");
+  if (label === "Élèves") bubble.classList.add("selected"); // sélection par défaut
+  bubble.innerText = label;
+  bubble.dataset.audience = label;
+  bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
+  audienceBubblesEnseignants.appendChild(bubble);
+});
 
 
 
