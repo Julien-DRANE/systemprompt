@@ -217,3 +217,72 @@ footer strong {
 .bubble.selected {
   border: 2px solid #000;
 }
+/* === CTA vers le GPT (centré) === */
+.gpt-cta {
+  display: flex;
+  flex-direction: column;   /* empile bouton + note */
+  align-items: center;      /* centre horizontalement */
+  justify-content: center;  /* centre verticalement si hauteur dispo */
+  gap: .75rem;
+  margin: .75rem auto 0;    /* auto pour centrer le conteneur si largeur définie */
+  text-align: center;       /* centre le texte interne */
+  max-width: 48rem;         /* confort de lecture sur grands écrans */
+}
+
+/* Boutons CTA */
+.gpt-cta .btn-secondary,
+.gpt-card .btn-link {
+  padding: .6rem 1rem;
+  border-radius: .6rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* On a retiré .btn-primary (plus utilisé) */
+
+.gpt-cta .btn-secondary {
+  background: #eef2ff;
+  color: #1e3a8a;
+  border-color: #c7d2fe;
+}
+.gpt-cta .btn-secondary:hover { background: #e0e7ff; }
+
+/* Accessibilité focus */
+.gpt-cta .btn-secondary:focus-visible,
+.gpt-card .btn-link:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Note sous le bouton */
+.gpt-note {
+  text-align: center;
+  max-width: 48rem;
+  color: #475569;
+  margin: 0;               /* harmonise les espacements */
+}
+
+/* === Encadré de présentation du GPT === */
+.gpt-card {
+  border: 1px solid #e5e7eb;
+  background: #f8fafc;
+  border-radius: .8rem;
+  padding: 1rem;
+  margin: 1rem auto 1.25rem;
+  max-width: 60rem;
+}
+.gpt-card h2 { margin: 0 0 .25rem; }
+.gpt-card p { margin: 0 0 .75rem; color: #334155; }
+.gpt-card .btn-link {
+  display: inline-block;
+  text-decoration: none;
+  background: #0ea5e9;
+  color: #fff;
+}
+.gpt-card .btn-link:hover { filter: brightness(1.05); }
+
+/* Petite amélioration mobile */
+@media (max-width: 480px) {
+  .gpt-cta, .gpt-note, .gpt-card { max-width: 100%; }
+}

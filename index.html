@@ -42,6 +42,7 @@
       <button class="tab-button" data-target="perdir">Personnels de direction</button>
       <button class="tab-button" data-target="inspection">Corps d’inspection</button>
     </div>
+    
 <!-- === ONGLET ENSEIGNANTS === -->
 <div id="enseignants" class="tab-content active">
   <h2>Enseignants</h2>
@@ -126,10 +127,26 @@
   <textarea id="contraintes-inspection" placeholder="Ex : cadre réglementaire, temps limité, ressources humaines disponibles..."></textarea>
 </div>
 
-    <!-- Résultat commun -->
-    <button id="generateBtn">Générer le Prompt</button>
-    <button id="copyBtn">Copier le Prompt</button>
-    <div id="result"></div>
+<!-- Résultat commun -->
+<button id="generateBtn">Générer le Prompt</button>
+
+
+
+
+<div id="result"></div>
+
+<button id="copyBtn">Copier le Prompt</button>
+
+<!-- CTA vers ton GPT (sans le bouton doublon) -->
+<div class="gpt-cta">
+  <button id="openGptBtn" class="btn-secondary">
+    Ouvrir le GPT RAG Expert
+  </button>
+  <p class="gpt-note">
+    Ouvre <em>RAG Expert – Éducation Nationale</em> dans un nouvel onglet.
+  </p>
+</div>
+
 
     <!-- Footer -->
     <footer>
