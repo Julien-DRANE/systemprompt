@@ -438,10 +438,10 @@ function generatePromptEnseignants() {
   const objectif = document.getElementById("objectif-enseignants").value || "[à préciser]";
   const contraintes = document.getElementById("contraintes-enseignants").value || "[à préciser]";
 
-  // ✅ On filtre uniquement les bulles avec dataset.label (problématiques)
+  // ✅ Problématiques (enseignantsPresets uniquement)
   const selectedProblemBubbles = Array.from(
     document.querySelectorAll("#bubbles-enseignants .bubble.selected")
-  ).filter(b => b.dataset.label);
+  ).filter(b => b.dataset.label && enseignantsPresets[b.dataset.label]);
 
   const selectedBubbles = selectedProblemBubbles.map(
     b => `- ${b.dataset.label} → ${enseignantsPresets[b.dataset.label].desc}`
@@ -455,44 +455,46 @@ function generatePromptEnseignants() {
     b => enseignantsPresets[b.dataset.label].example
   );
 
-  // --- Productions sélectionnées (dédupliquées) ---
+  // ✅ Productions sélectionnées
   const selectedProductions = [...new Set(
     Array.from(document.querySelectorAll("#productionBubbles-enseignants .bubble.selected"))
       .map(b => enseignantsProductions[b.dataset.type])
+      .filter(Boolean) // sécurité
   )];
 
-  // --- Audiences sélectionnées ---
-  const selectedAudiences = Array.from(document.querySelectorAll("#audienceBubbles-enseignants .bubble.selected"))
-    .map(b => b.dataset.audience);
+  // ✅ Audiences sélectionnées
+  const selectedAudiences = Array.from(
+    document.querySelectorAll("#audienceBubbles-enseignants .bubble.selected")
+  ).map(b => b.dataset.audience);
 
   const detailedAudiences = selectedAudiences.map(
     a => `- ${a} → ${enseignantsAudiences[a]}`
   );
 
-  // --- Socle commun sélectionné (sécurisé) ---
-  const selectedSocle = Array.from(document.querySelectorAll("#socleBubbles .bubble.selected"))
-    .map(b => {
-      const domain = b?.dataset?.domain || null;
-      if (!domain) return null;
-      const desc = socleCommunDomains[domain] || "";
-      return `- ${domain}${desc ? " → " + desc : ""}`;
-    })
-    .filter(Boolean)
-    .join("\n");
+  // ✅ Socle commun sélectionné
+  const selectedSocle = Array.from(
+    document.querySelectorAll("#socleBubbles .bubble.selected")
+  ).map(b => {
+    const domain = b?.dataset?.domain || null;
+    if (!domain) return null;
+    const desc = socleCommunDomains[domain] || "";
+    return `- ${domain}${desc ? " → " + desc : ""}`;
+  })
+  .filter(Boolean)
+  .join("\n");
 
   const socleDirective = selectedSocle 
     ? `\n📘 Références explicites au Socle commun :\n${selectedSocle}\n`
     : "";
 
-  // --- Texte spécial si audience "Élèves" ---
+  // ✅ Note spéciale si audience "Élèves"
   const specialNoteForEleves = selectedAudiences.includes("Élèves")
     ? `\nDans chaque réponse, l’assistant doit non seulement s’appuyer sur les programmes officiels et le Code de l’éducation, mais aussi mobiliser explicitement les outils pédagogiques **Eduscol** (tickets de sortie, auto-évaluation, cartes mentales, classe inversée, différenciation, usages numériques validés). Ces outils doivent être intégrés comme leviers pédagogiques transversaux, et signalés comme tels.\n`
     : "";
 
-  // --- Activation de la brique Partenariats via (pédago OU production OU toggle)
+  // ✅ Gestion partenariats (pédago OU production OU toggle)
   const wantsPartners = isPartnersActivated();
 
-  // --- Récupération académie / territoire si la brique est active ---
   let infoLocalisation = "";
   if (wantsPartners) {
     const regionSel = document.getElementById("region-academique");
@@ -504,7 +506,6 @@ function generatePromptEnseignants() {
       : "";
   }
 
-  // --- Directive détaillant quoi livrer quand la brique est demandée ---
   const partnersDirective = wantsPartners ? `
 📦 Brique « Partenariats & sorties / voyages » (si pertinent pour le thème/niveau) :
 - Proposer 3 partenaires/dispositifs ciblés : 1 local (structure culturelle/atelier/association), 1 académique via DAAC (EAC – rencontre/pratique/connaissances), 1 monde professionnel (Parcours Avenir : visite/séquence d’observation).
@@ -515,7 +516,7 @@ function generatePromptEnseignants() {
 - Fournir des modèles prêts à l’emploi : courrier familles, convention-type, autorisation parentale, fiche sécurité/soins, check-list laïcité, tickets de sortie & auto-évaluation dédiés.
 ${infoLocalisation}` : "";
 
-  // --- Prompt final ---
+  // ✅ Prompt final
   return `
 Tu es un enseignant de ${discipline} au niveau ${niveau}.
 Ton audience principale est : ${selectedAudiences.join(", ") || "[à préciser]"}.
@@ -543,5 +544,6 @@ ${detailedAudiences.join("\n") || "[à préciser]"}
 ${selectedExamples.join("\n\n")}
 `;
 }
+
 
 
