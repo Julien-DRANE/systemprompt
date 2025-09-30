@@ -573,6 +573,8 @@ ${detailedAudiences.join("\n") || audiencesList}
 📑 Exemples de sortie attendue :
 ${selectedExamples.join("\n\n")}
 `;
+}
+
 
 
 
