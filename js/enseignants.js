@@ -462,17 +462,20 @@ function generatePromptEnseignants() {
   );
 
   // --- Socle commun sélectionné (sécurisé) ---
-  const selectedSocle = Array.from(document.querySelectorAll("#socleBubbles .bubble.selected"))
-    .map(b => {
-      const domain = b.dataset.domain;
-      const desc = socleCommunDomains[domain] || "";
-      return `- ${domain}${desc ? " → " + desc : ""}`;
-    })
-    .join("\n");
+const selectedSocle = Array.from(document.querySelectorAll("#socleBubbles .bubble.selected"))
+  .map(b => {
+    const domain = b?.dataset?.domain || null;
+    if (!domain) return null; // ignore si pas de domaine
+    const desc = socleCommunDomains[domain] || "";
+    return `- ${domain}${desc ? " → " + desc : ""}`;
+  })
+  .filter(Boolean) // enlève les null
+  .join("\n");
 
-  const socleDirective = selectedSocle 
-    ? `\n📘 Références explicites au Socle commun :\n${selectedSocle}\n` 
-    : "";
+const socleDirective = selectedSocle 
+  ? `\n📘 Références explicites au Socle commun :\n${selectedSocle}\n`
+  : "";
+
 
   // --- Texte spécial si audience "Élèves" ---
   const specialNoteForEleves = selectedAudiences.includes("Élèves")
@@ -536,3 +539,4 @@ ${Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
   .map(b => enseignantsPresets[b.dataset.label].example).join("\n\n")}
 `;
 }
+
