@@ -212,9 +212,6 @@ Object.keys(enseignantsAudiences).forEach(label => {
 
 
 
-
-
-
 // --- Génération bulles problématiques Enseignants ---
 const bubblesEnseignants = document.getElementById("bubbles-enseignants");
 
@@ -278,16 +275,6 @@ function getProdColorClassEnseignants(label) {
     "Plan de remédiation",
     "Évaluation (formative/sommative)"
   ];
-const audienceBubblesEnseignants = document.getElementById("audienceBubbles-enseignants");
-Object.keys(enseignantsAudiences).forEach(label => {
-  const bubble = document.createElement("div");
-  bubble.classList.add("bubble");
-  if (label === "Élèves") bubble.classList.add("selected"); // sélection par défaut
-  bubble.innerText = label;
-  bubble.dataset.audience = label;
-  bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
-  audienceBubblesEnseignants.appendChild(bubble);
-});
 
 
 // --- Références Socle commun ---
@@ -299,7 +286,6 @@ const socleCommunDomains = {
   "Domaine 5 - Représentations du monde": "Espaces, temps, sociétés, organisations, diversité culturelle."
 };
 
-// Génération des bulles Socle commun
 const socleBubbles = document.getElementById("socleBubbles");
 Object.keys(socleCommunDomains).forEach(label => {
   const bubble = document.createElement("div");
@@ -539,4 +525,5 @@ ${Array.from(document.querySelectorAll("#bubbles-enseignants .bubble.selected"))
   .map(b => enseignantsPresets[b.dataset.label].example).join("\n\n")}
 `;
 }
+
 
