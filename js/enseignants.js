@@ -349,12 +349,21 @@ socleBubbles.innerHTML = ""; // 🔑 supprime les anciennes bulles avant de reg�
 
 Object.keys(socleCommunDomains).forEach(label => {
   const bubble = document.createElement("div");
-  bubble.classList.add("bubble", "bubble-soft-grey");
+  bubble.classList.add("bubble");
+
+  // Ajout de la bonne couleur selon le domaine
+  if (label.startsWith("Domaine 1")) bubble.classList.add("bubble-socle-langages");
+  if (label.startsWith("Domaine 2")) bubble.classList.add("bubble-socle-methodes");
+  if (label.startsWith("Domaine 3")) bubble.classList.add("bubble-socle-citoyen");
+  if (label.startsWith("Domaine 4")) bubble.classList.add("bubble-socle-techniques");
+  if (label.startsWith("Domaine 5")) bubble.classList.add("bubble-socle-monde");
+
   bubble.innerText = label;
   bubble.dataset.domain = label;
   bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
   socleBubbles.appendChild(bubble);
 });
+
 
 // --- UI dynamique : sélecteur d'académie + ville si Partenariats actif (pédago OU production OU toggle) ---
 // Liste des académies métropole + DROM
@@ -542,4 +551,5 @@ ${detailedAudiences.join("\n") || "[à préciser]"}
 ${selectedExamples.join("\n\n")}
 `;
 }
+
 
