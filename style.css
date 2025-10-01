@@ -869,3 +869,38 @@ body.theme-dark [id^="audienceBubbles-"] .bubble[class*="bubble-soft-"].selected
   #openGptBtn { width: 100%; }
   .ai-links { margin: 8px 0 0; }
 }
+
+/* --- Onglets inactifs : lisibilité renforcée --- */
+
+/* Mode clair : texte plus foncé + fond un poil moins pâle */
+.tabs .tab-button:not(.active) {
+  background: #e7f0ff;        /* + contrasté que #f0f8ff */
+  color: #0b2540;              /* bleu très foncé (lisible) */
+  border-color: #0054b3;       /* bord plus net */
+  font-weight: 600;            /* léger renfort */
+}
+
+.tabs .tab-button:hover:not(.active) {
+  background: #dbe8ff;
+  border-color: #00408a;
+}
+
+/* Actif (inchangé, juste pour cohérence si besoin) */
+.tabs .tab-button.active {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #60a5fa;
+}
+
+/* Mode sombre : texte un peu moins “blanc cramé” + bouton décollé du fond */
+body.theme-dark .tabs .tab-button:not(.active) {
+  background: #141c2b;         /* plus clair que le fond #0b1220 */
+  color: #cbd5e1;              /* un cran plus sombre que #e5e7eb */
+  border-color: #475569;       /* bord visible */
+  box-shadow: 0 0 0 1px rgba(255,255,255,.06) inset;
+}
+
+body.theme-dark .tabs .tab-button:hover:not(.active) {
+  background: #1f2937;
+  border-color: #5b6b7d;
+}
