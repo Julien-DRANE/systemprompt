@@ -783,3 +783,45 @@ body.theme-dark #result::-webkit-scrollbar-track { background: #0b1220; }
 @media print {
   #result { background: #fff !important; color: #111 !important; border-color: #ddd !important; box-shadow: none !important; }
 }
+
+/* ===== Audience ciblée — mode sombre lisible ===== */
+/* Conteneurs : audienceBubbles-enseignants / -perdir / -inspection */
+body.theme-dark [id^="audienceBubbles-"] .bubble {
+  background: #111827;          /* fond neutre sombre */
+  color: #e5e7eb;               /* texte clair */
+  border-color: #374151;        /* gris foncé */
+  box-shadow: 0 0 0 1px rgba(255,255,255,.10);
+}
+
+body.theme-dark [id^="audienceBubbles-"] .bubble:hover {
+  background: #1f2937;          /* léger éclaircissement au survol */
+}
+
+/* ÉTAT SÉLECTIONNÉ — contraste fort, cohérent avec le reste */
+body.theme-dark [id^="audienceBubbles-"] .bubble.selected {
+  background: #2563eb;          /* blue-600 */
+  color: #ffffff;
+  border-color: #93c5fd;        /* blue-300 */
+  box-shadow: 0 0 0 2px rgba(37,99,235,.35);
+  transform: translateY(-1px) scale(1.02);
+}
+
+/* Focus clavier visible (RGAA) */
+body.theme-dark [id^="audienceBubbles-"] .bubble:focus-visible {
+  outline: 3px solid #f59e0b;   /* amber-500 */
+  outline-offset: 3px;
+  border-radius: 22px;
+}
+
+/* Si tu utilises des classes pastel .bubble-soft-* pour Audience,
+   on neutralise en sombre pour éviter le manque de contraste */
+body.theme-dark [id^="audienceBubbles-"] .bubble[class*="bubble-soft-"] {
+  background: #111827;
+  color: #e5e7eb;
+  border-color: #374151;
+}
+body.theme-dark [id^="audienceBubbles-"] .bubble[class*="bubble-soft-"].selected {
+  background: #2563eb;
+  color: #fff;
+  border-color: #93c5fd;
+}
