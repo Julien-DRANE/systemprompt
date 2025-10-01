@@ -825,3 +825,47 @@ body.theme-dark [id^="audienceBubbles-"] .bubble[class*="bubble-soft-"].selected
   color: #fff;
   border-color: #93c5fd;
 }
+
+/* Mise en ligne des boutons */
+.gpt-cta .btn-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap; /* passe à la ligne si l’espace manque */
+}
+
+/* Optionnel : style d’un bouton "outline" assorti à .btn-secondary */
+.btn-outline {
+  background: transparent;
+  border: 1px solid currentColor;
+}
+
+/* (facultatif) responsif: empile sous 420px de large */
+@media (max-width: 420px) {
+  .gpt-cta .btn-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* rangée de boutons */
+.gpt-cta .btn-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* groupe des 3 liens centré */
+.ai-links {
+  display: flex;
+  gap: 12px;
+  margin: 0 auto;        /* <-- centre le groupe dans la ligne */
+}
+
+/* optionnel: empiler proprement sur petit écran */
+@media (max-width: 540px) {
+  .gpt-cta .btn-row { justify-content: center; }
+  #openGptBtn { width: 100%; }
+  .ai-links { margin: 8px 0 0; }
+}
