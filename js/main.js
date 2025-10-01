@@ -1,3 +1,6 @@
+/*! © 2025 Académie de La Réunion – DRANE | MIT */
+/*! SPDX-License-Identifier: MIT */
+
 // --- Gestion des onglets ---
 document.querySelectorAll(".tab-button").forEach(btn => {
   btn.addEventListener("click", () => {

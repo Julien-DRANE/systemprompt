@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Licence MIT</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="legal.css">
+  <style>
+    .container { max-width: 900px; margin: 2rem auto; padding: 1rem; }
+    pre { white-space: pre-wrap; word-wrap: break-word; background: #f7f7f8; padding: 1rem; border-radius: .75rem; border: 1px solid #e5e7eb; }
+    .actions { display:flex; gap:.5rem; margin:.75rem 0 1.25rem; flex-wrap: wrap; }
+    .btn { border:1px solid #e5e7eb; padding:.5rem .75rem; border-radius:.5rem; background:#fff; cursor:pointer; text-decoration:none; }
+    nav a { margin-right:.75rem; }
+    footer { margin-top:1.5rem; }
+  </style>
+</head>
+<body class="legal-theme">
+  <div class="container">
+    <nav><a href="index.html">← Retour</a></nav>
+    <h1>Licence MIT</h1>
+
+    <div class="actions">
+      <a class="btn" href="LICENSE.txt" download>Télécharger le fichier</a>
+      <button id="copyBtn" class="btn" type="button">Copier le texte</button>
+    </div>
+
+    <pre id="licenseText" aria-live="polite">Chargement…</pre>
+
+    <footer>
+      <a href="mentions.html">Mentions légales</a> ·
+      <a href="accessibilite.html">Accessibilité</a>
+    </footer>
+  </div>
+
+  <script>
+    // Charge le texte brut depuis LICENSE.txt (à la racine)
+    fetch('LICENSE.txt', { cache: 'no-store' })
+      .then(r => r.ok ? r.text() : Promise.reject(r.status))
+      .then(txt => { document.getElementById('licenseText').textContent = txt; })
+      .catch(() => {
+        document.getElementById('licenseText').textContent =
+          "Impossible d’afficher le fichier LICENSE.txt. Vous pouvez le télécharger avec le bouton ci-dessus.";
+      });
+
+    // Copie dans le presse-papiers
+    document.getElementById('copyBtn').addEventListener('click', async () => {
+      try {
+        const txt = document.getElementById('licenseText').textContent;
+        await navigator.clipboard.writeText(txt);
+        alert('Licence copiée dans le presse-papiers.');
+      } catch { alert('Échec de la copie.'); }
+    });
+  </script>
+</body>
+</html>

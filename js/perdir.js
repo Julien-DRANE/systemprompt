@@ -1,3 +1,6 @@
+/*! © 2025 Académie de La Réunion – DRANE | MIT */
+/*! SPDX-License-Identifier: MIT */
+
 // === PERDIR enrichi ===
 
 // --- Problématiques de pilotage étoffées ---

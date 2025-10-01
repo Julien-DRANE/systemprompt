@@ -1,3 +1,6 @@
+/*! © 2025 Académie de La Réunion – DRANE | MIT */
+/*! SPDX-License-Identifier: MIT */
+
 // --- Problématiques pédagogiques enrichies ---
 const enseignantsPresets = {
   "Hétérogénéité des niveaux": {
@@ -348,22 +351,101 @@ const socleCommunDomains = {
 const socleBubbles = document.getElementById("socleBubbles");
 socleBubbles.innerHTML = ""; // 🔑 supprime les anciennes bulles avant de regénérer
 
+// Palette base (clair)
+const baseColors = {
+  langages:   "#b6d87a",
+  methodes:   "#7bd0f1",
+  citoyen:    "#f08a6b",
+  techniques: "#4ba6a8",
+  monde:      "#f7c934"
+};
+
+// Palette ajustée pour mode sombre (pré-calculée pour un bon contraste)
+const darkColors = {
+  langages:   "#cbe79c",
+  methodes:   "#b3e9fb",
+  citoyen:    "#f5a586",
+  techniques: "#3a8f91", // un peu plus sombre + texte clair
+  monde:      "#f9d861"
+};
+
 Object.keys(socleCommunDomains).forEach(label => {
   const bubble = document.createElement("div");
   bubble.classList.add("bubble");
+  bubble.setAttribute("role", "button");
+  bubble.setAttribute("tabindex", "0");
+  bubble.setAttribute("aria-pressed", "false");
+  bubble.title = socleCommunDomains[label]; // infobulle
 
-  // Ajout de la bonne couleur selon le domaine
-  if (label.startsWith("Domaine 1")) bubble.classList.add("bubble-socle-langages");
-  if (label.startsWith("Domaine 2")) bubble.classList.add("bubble-socle-methodes");
-  if (label.startsWith("Domaine 3")) bubble.classList.add("bubble-socle-citoyen");
-  if (label.startsWith("Domaine 4")) bubble.classList.add("bubble-socle-techniques");
-  if (label.startsWith("Domaine 5")) bubble.classList.add("bubble-socle-monde");
+  // Ajout de la bonne couleur selon le domaine + dataset clé
+  if (label.startsWith("Domaine 1")) { bubble.classList.add("bubble-socle-langages");   bubble.dataset.key = "langages"; }
+  if (label.startsWith("Domaine 2")) { bubble.classList.add("bubble-socle-methodes");   bubble.dataset.key = "methodes"; }
+  if (label.startsWith("Domaine 3")) { bubble.classList.add("bubble-socle-citoyen");    bubble.dataset.key = "citoyen"; }
+  if (label.startsWith("Domaine 4")) { bubble.classList.add("bubble-socle-techniques"); bubble.dataset.key = "techniques"; }
+  if (label.startsWith("Domaine 5")) { bubble.classList.add("bubble-socle-monde");      bubble.dataset.key = "monde"; }
 
   bubble.innerText = label;
   bubble.dataset.domain = label;
-  bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
+
+  // interactions souris/clavier
+  const toggle = () => {
+    bubble.classList.toggle("selected");
+    bubble.setAttribute("aria-pressed", bubble.classList.contains("selected") ? "true" : "false");
+  };
+  bubble.addEventListener("click", toggle);
+  bubble.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      toggle();
+    }
+  });
+
   socleBubbles.appendChild(bubble);
 });
+
+// === Ajuste la lisibilité selon thème (sans CSS color-mix) ===
+function refreshSocleBubblesForTheme() {
+  const dark = document.body.classList.contains("theme-dark");
+  socleBubbles.querySelectorAll(".bubble").forEach(b => {
+    const key = b.dataset.key;
+    if (!key) return;
+    const bg = dark ? darkColors[key] : baseColors[key];
+    b.style.backgroundColor = bg;
+
+    // Texte : clair uniquement pour la bulle "techniques" en sombre, sinon foncé
+    if (dark && key === "techniques") {
+      b.style.color = "#f8fafc";
+      b.style.borderColor = "rgba(255,255,255,.2)";
+      b.style.boxShadow = "0 0 0 1px rgba(255,255,255,.14), 0 3px 10px rgba(0,0,0,.25)";
+    } else {
+      b.style.color = "#0b1324"; // texte foncé lisible sur les pastels
+      if (dark) {
+        b.style.borderColor = "rgba(255,255,255,.16)";
+        b.style.boxShadow = "0 0 0 1px rgba(255,255,255,.14), 0 3px 10px rgba(0,0,0,.25)";
+      } else {
+        b.style.borderColor = "";
+        b.style.boxShadow = "";
+      }
+    }
+  });
+}
+
+// 1) au chargement
+refreshSocleBubblesForTheme();
+
+// 2) quand tu changes de thème (super mini widget ajoute/retire 'theme-dark')
+//    -> on écoute les mutations de className du body
+(new MutationObserver(refreshSocleBubblesForTheme))
+  .observe(document.body, { attributes: true, attributeFilter: ["class"] });
+
+// 3) si tu changes le thème par stockage cross-tab, re-appliquer
+window.addEventListener("storage", (e) => {
+  if (e.key === "app_theme") {
+    // applique-toi ton switch ici si besoin, puis rafraîchis :
+    refreshSocleBubblesForTheme();
+  }
+});
+
 
 
 // --- UI dynamique : sélecteur d'académie + ville si Partenariats actif (pédago OU production OU toggle) ---

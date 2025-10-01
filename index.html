@@ -5,7 +5,18 @@
   <title>Générateur de System Prompt - Éducation Nationale</title>
   <link rel="stylesheet" href="style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Infos licence (open-source MIT) -->
+  <link rel="license" href="LICENSE">
+  <meta name="license" content="MIT">
+  <meta name="copyright" content="© 2025 Académie de La Réunion – DRANE">
 </head>
+
+
+
+<script src="js/access-mini.js"></script>
+
+
 
 <body>
   <div class="container">
@@ -72,7 +83,6 @@
       <textarea id="contraintes-enseignants"></textarea>
     </div>
 
-
     <!-- === ONGLET PERDIR === -->
     <div id="perdir" class="tab-content">
       <h2>Personnels de direction</h2>
@@ -98,7 +108,6 @@
       <label>Contraintes :</label>
       <textarea id="contraintes-perdir" placeholder="Ex : moyens humains limités, calendrier académique, réglementation sécurité..."></textarea>
     </div>
-
 
     <!-- === ONGLET INSPECTION === -->
     <div id="inspection" class="tab-content">
@@ -151,6 +160,13 @@
       ✅ Aucune donnée saisie n’est collectée, enregistrée ou transmise.  
       ✅ Toutes les informations restent exclusivement sur votre appareil.  
       <em>Votre utilisation est totalement anonyme et sécurisée.</em>
+      <hr>
+      <small>
+        © 2025 Académie de La Réunion – DRANE · Code sous licence <a href="license.html">MIT</a> ·
+        <a href="mentions.html#propriete-intellectuelle">Propriété intellectuelle</a> ·
+        <a href="accessibilite.html">Accessibilité</a> ·
+        <a href="mentions.html">Mentions légales</a>
+      </small>
     </footer>
 
     <!-- Logo en bas centré -->
@@ -159,6 +175,11 @@
     </div>
   </div>
 
+  <!-- Badge IP (à l'intérieur du body) -->
+  <a class="ip-badge" href="mentions.html#propriete-intellectuelle" aria-label="Propriété intellectuelle">
+    <img src="assets/images/ip-badge.svg" alt="Protection – Propriété intellectuelle">
+  </a>
+
   <!-- Scripts -->
   <script src="js/main.js"></script>
   <script src="js/enseignants.js"></script>
@@ -166,4 +187,3 @@
   <script src="js/inspection.js"></script>
 </body>
 </html>
-

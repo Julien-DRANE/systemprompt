@@ -1,0 +1,209 @@
+/* ===============  legal.css — thème doux pour pages "légales"  =============== */
+
+/* Palette (WCAG-friendly, sans blanc pur qui éblouit) */
+:root {
+  --bg: #0f172a;            /* slate-900 */
+  --panel: #111827;         /* gray-900 profond */
+  --text: #e5e7eb;          /* gray-200 */
+  --muted: #cbd5e1;         /* slate-300 */
+  --border: #243040;        /* bleu-gris discret */
+  --accent: #7dd3fc;        /* sky-300 pour liens */
+  --accent-hover: #38bdf8;  /* sky-400 */
+  --focus: #f59e0b;         /* amber-500 focus ring */
+  --kbd-bg: #1f2937;        /* gray-800 */
+  --code-bg: #0b1220;       /* panel +1 */
+}
+
+/* Mode clair : couleurs plus douces mais sans blanc pur */
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #eef2f7;          /* gris bleuté clair (pas blanc) */
+    --panel: #ffffff;       /* cartes sur fond clair */
+    --text: #0b1324;        /* bleu nuit très foncé */
+    --muted: #334155;       /* slate-700 */
+    --border: #dce3ee;      /* bord clair */
+    --accent: #0ea5e9;      /* sky-500 */
+    --accent-hover: #0284c7;/* sky-600 */
+    --focus: #ca8a04;       /* amber-600 */
+    --kbd-bg: #e2e8f0;
+    --code-bg: #f7f7f8;
+  }
+}
+
+/* Scope optionnel : .legal-theme  (sinon, remplace .legal-theme par body) */
+.legal-theme, body.legal-theme {
+  background: radial-gradient(1200px 700px at 20% -10%, #1a2540 0%, var(--bg) 55%) fixed, var(--bg);
+  color: var(--text);
+  font: 16px/1.65 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Noto Sans", "Helvetica Neue", Arial;
+  text-rendering: optimizeLegibility;
+}
+
+/* Conteneur central */
+.legal-theme .container {
+  max-width: 900px;
+  margin: clamp(16px, 4vw, 40px) auto;
+  padding: clamp(16px, 3vw, 28px);
+  background: color-mix(in srgb, var(--panel) 92%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255,255,255,0.02);
+}
+
+/* Titres */
+.legal-theme h1 { font-weight: 800; letter-spacing: .2px; font-size: clamp(1.6rem, 2.4vw, 2.1rem); margin: 0 0 .75rem; }
+.legal-theme h2 { font-weight: 700; font-size: clamp(1.2rem, 1.8vw, 1.4rem); margin: 1.25rem 0 .5rem; }
+.legal-theme h3 { font-weight: 650; font-size: clamp(1.05rem, 1.5vw, 1.15rem); margin: 1rem 0 .5rem; }
+.legal-theme p, .legal-theme li { color: var(--text); }
+.legal-theme .muted { color: var(--muted); }
+
+/* Liens */
+.legal-theme a {
+  color: var(--accent);
+  text-underline-offset: 2px;
+  text-decoration-thickness: .09em;
+}
+.legal-theme a:hover { color: var(--accent-hover); }
+
+/* Focus visibles (accessibles) */
+.legal-theme a:focus-visible,
+.legal-theme button:focus-visible,
+.legal-theme summary:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Listes de définitions (mentions) */
+.legal-theme dl { margin: 0; }
+.legal-theme dt {
+  font-weight: 700;
+  margin-top: .9rem;
+  color: var(--text);
+}
+.legal-theme dd {
+  margin: .15rem 0 .9rem 0;
+  color: var(--text);
+}
+
+/* Détails / accordéons (checklist, etc.) */
+.legal-theme details {
+  margin: 1rem 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel);
+  padding: .75rem 1rem;
+}
+.legal-theme details > summary {
+  cursor: pointer;
+  font-weight: 650;
+  list-style: none;
+}
+.legal-theme details > summary::-webkit-details-marker { display: none; }
+
+/* Blocs code et pre (license) */
+.legal-theme pre, .legal-theme code, .legal-theme kbd {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+.legal-theme pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+  overflow-x: auto;
+}
+.legal-theme code { background: color-mix(in srgb, var(--code-bg) 85%, transparent); padding: .12rem .3rem; border-radius: .35rem; }
+.legal-theme kbd  { background: var(--kbd-bg); padding: .1rem .35rem; border-radius: .35rem; border: 1px solid var(--border); }
+
+/* Nav / Footer */
+.legal-theme nav a { margin-right: .75rem; }
+.legal-theme footer {
+  margin-top: 1.5rem;
+  color: var(--muted);
+  text-align: center;
+}
+.legal-theme footer a { color: var(--accent); }
+
+/* Boutons utilitaires (license.html) */
+.legal-theme .btn {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  border-radius: 10px;
+  padding: .5rem .75rem;
+  text-decoration: none;
+  display: inline-flex; gap: .4rem; align-items: center;
+}
+.legal-theme .btn:hover { filter: brightness(1.05); }
+
+/* Badge IP : éviter chevauchement footer */
+.legal-theme .ip-badge { bottom: 88px; }
+
+/* RWD + confort de lecture */
+@media (max-width: 640px) {
+  .legal-theme .container { padding: 14px; border-radius: 14px; }
+}
+
+/* Réduction d’animations pour accessibilité */
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
+}
+
+/* Impression (fond blanc cassé + texte foncé, sans décor) */
+@media print {
+  .legal-theme, body.legal-theme { background: #fff; color: #111 !important; }
+  .legal-theme .container { box-shadow: none; border: none; }
+  .legal-theme .ip-badge { display: none !important; }
+}
+
+/* ===== Footer lisible (contraste OK) ===== */
+:root {
+  --footer-bg: #111827;       /* sombre (dark mode) */
+  --footer-text: #e5e7eb;
+  --footer-border: #243040;
+  --footer-link: #7dd3fc;
+  --footer-link-hover: #38bdf8;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --footer-bg: #f1f5f9;     /* clair sans blanc pur */
+    --footer-text: #0b1324;   /* texte foncé lisible */
+    --footer-border: #cbd5e1;
+    --footer-link: #0ea5e9;
+    --footer-link-hover: #0284c7;
+  }
+}
+
+.legal-theme footer {
+  margin-top: 1.5rem;
+  background: var(--footer-bg);
+  color: var(--footer-text);
+  border: 1px solid var(--footer-border);
+  border-radius: 12px;
+  padding: .9rem 1rem;
+  text-align: center;
+}
+
+.legal-theme footer hr {
+  border: 0;
+  border-top: 1px solid var(--footer-border);
+  margin: .75rem 0 .9rem;
+  opacity: 1;
+}
+
+.legal-theme footer small { 
+  color: inherit; 
+  opacity: 1;                  /* pas de gris clair délavé */
+}
+
+.legal-theme footer a {
+  color: var(--footer-link);
+  text-underline-offset: 2px;
+  text-decoration-thickness: .09em;
+}
+.legal-theme footer a:hover { color: var(--footer-link-hover); }
+
+/* Évite que le badge recouvre le footer */
+.legal-theme .ip-badge { bottom: 110px; }

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Accessibilité – Déclaration d’accessibilité (RGAA)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="legal.css">
+
+  <style>
+    .container { max-width: 900px; margin: 2rem auto; padding: 1rem; }
+    .muted { opacity:.85; font-size:.95rem; }
+    dl dt { font-weight:600; margin-top:.5rem }
+    dl dd { margin:0 0 .75rem 0 }
+    nav a { margin-right:.75rem }
+    footer { margin-top:2rem; text-align:center }
+    .tag { display:inline-block; padding:.15rem .5rem; border:1px solid #e5e7eb; border-radius:.5rem; font-size:.85rem; }
+    details { border:1px solid #e5e7eb; border-radius:.75rem; padding:.75rem 1rem; margin:1rem 0; }
+    details > summary { cursor:pointer; font-weight:600; }
+  </style>
+</head>
+
+<a class="ip-badge" href="mentions.html#propriete-intellectuelle" aria-label="Propriété intellectuelle">
+  <img src="assets/images/ip-badge.svg" alt="Protection – Propriété intellectuelle">
+</a>
+
+
+<body class="legal-theme">
+  <div class="container">
+    <nav aria-label="Fil d’Ariane">
+      <a href="index.html">← Retour à l’accueil</a>
+      <a href="#engagement">Engagement</a>
+      <a href="#declaration">Déclaration d’accessibilité</a>
+    </nav>
+
+    <h1>Accessibilité – RGAA</h1>
+    <p class="muted">
+      Cette page présente l’engagement d’accessibilité et la déclaration au sens du RGAA (v4.x).  
+      Références : <a href="https://accessibilite.numerique.gouv.fr/" target="_blank" rel="noopener">accessibilite.numerique.gouv.fr</a>.
+    </p>
+
+    <!-- 1) Engagement public -->
+    <section id="engagement">
+      <h2>Engagement d’accessibilité</h2>
+      <p>
+        La <strong>DRANE – Académie de La Réunion</strong> s’engage à rendre son générateur de prompts accessible
+        conformément au <abbr title="Référentiel Général d’Amélioration de l’Accessibilité">RGAA</abbr>.
+        Nous visons notamment : contrastes suffisants, alternative texte, navigation au clavier, focus visible,
+        intitulés de liens clairs et structure sémantique correcte.
+      </p>
+      <p class="muted">
+        Le RGAA est le cadre national d’accessibilité, basé sur les WCAG, applicable aux sites publics en France.
+      </p>
+    </section>
+
+    <!-- 2) Déclaration d’accessibilité -->
+    <section id="declaration">
+      <h2>Déclaration d’accessibilité</h2>
+
+      <dl>
+        <dt>État de conformité</dt>
+        <dd>
+          <span class="tag">Partiellement conforme</span>
+          au RGAA 4.x (auto-évaluation du <time datetime="[YYYY-MM-DD]">[01/10/2025]</time>).
+        </dd>
+
+        <dt>Méthodologie d’évaluation</dt>
+        <dd>
+          Auto-évaluation fondée sur le RGAA v4.x : contrôle d’échantillons représentatifs et tests manuels (clavier, lecteur d’écran),
+          vérification des contrastes, des alternatives texte, des intitulés et de l’ordre de tabulation.
+        </dd>
+
+        <dt>Résultats d’audit</dt>
+        <dd>
+          X critères conformes / Y non conformes. Voir les écarts listés ci-dessous.
+        </dd>
+
+        <dt>Contenus non accessibles identifiés</dt>
+        <dd>
+          <ul>
+            <li>Contraste insuffisant sur le bouton <code>[nom_du_bouton]</code>.</li>
+            <li>Ordre de tabulation à corriger dans <code>[zone/élément]</code>.</li>
+            <li>Libellé/attribut <code>aria-label</code> manquant sur le champ <code>[id_du_champ]</code>.</li>
+          </ul>
+          <p><strong>Correctifs prévus :</strong> lot T1 <time datetime="[YYYY]">[2026]</time>.</p>
+        </dd>
+
+        <dt>Technologies utilisées sur le site</dt>
+        <dd>HTML5, CSS3, JavaScript (sans frameworks tiers), aucune analytics ni cookies tiers.</dd>
+
+        <dt>Environnement de test</dt>
+        <dd>Tests réalisés sur desktop et mobile (navigations clavier, lecteurs d’écran usuels).</dd>
+
+        <dt>Retour d’information et contact</dt>
+        <dd>
+          Si vous ne parvenez pas à accéder à un contenu, merci d’écrire à :
+          <a href="mailto:[contact_accessibilite]">[julien.majorel@ac-reunion.fr]</a>.
+        </dd>
+
+        <dt>Voies de recours</dt>
+        <dd>
+          Si vous constatez un défaut d’accessibilité vous empêchant d’accéder à un contenu et que vous ne parvenez pas à obtenir de réponse,
+          vous pouvez :
+          <ul>
+            <li>Écrire au <a href="https://www.defenseurdesdroits.fr/" target="_blank" rel="noopener">Défenseur des droits</a> ;</li>
+            <li>Utiliser le <a href="https://www.service-public.fr/particuliers/vosdroits" target="_blank" rel="noopener">service de médiation</a> compétent.</li>
+          </ul>
+        </dd>
+
+        <dt>Date de mise à jour</dt>
+        <dd>Dernière mise à jour le <time datetime="[YYYY-MM-DD]">[01/10/2025]</time>.</dd>
+      </dl>
+
+      <!-- Checklist express (facultatif, pour votre suivi interne) -->
+      <details>
+        <summary>Checklist RGAA express (interne)</summary>
+        <ul>
+          <li>Images : alternatives texte pertinentes (crit. 1.1).</li>
+          <li>Contrastes texte/fond conformes (crit. 3.2).</li>
+          <li>Navigation clavier complète, focus visible (crit. 7.1, 7.3).</li>
+          <li>Intitulés de liens explicites, pas de “Cliquez ici” (crit. 6.1).</li>
+          <li>Structure sémantique : h1→h2→h3, listes, boutons vs liens (crit. 9.x).</li>
+          <li>Champs formulaires : libellés, indications, messages d’erreur (crit. 11.x).</li>
+          <li>Éléments dynamiques : rôles ARIA, états/attributs, ordre de tabulation.</li>
+        </ul>
+        <p class="muted">
+          Référence : <a href="https://accessibilite.numerique.gouv.fr/" target="_blank" rel="noopener">RGAA 4.x</a>.
+        </p>
+      </details>
+    </section>
+
+    <footer>
+  ⚖️ Ce générateur respecte le <strong>RGPD</strong> :  
+  ✅ Aucune donnée saisie n’est collectée, enregistrée ou transmise.  
+  ✅ Toutes les informations restent exclusivement sur votre appareil.  
+  <em>Votre utilisation est totalement anonyme et sécurisée.</em>
+  <hr>
+  <small>
+    © 2025 Académie de La Réunion – DRANE. Tous droits réservés.
+    · <a href="mentions.html#propriete-intellectuelle">Propriété intellectuelle</a>
+    · <a href="accessibilite.html">Accessibilité</a>
+    · <a href="mentions.html">Mentions légales</a>
+  </small>
+</footer>
+  </div>
+</body>
+</html>
