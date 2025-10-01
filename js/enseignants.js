@@ -39,9 +39,9 @@ const enseignantsPresets = {
     example: "Exemple attendu : étape 1 → mise en mots, étape 2 → recherche de solution commune, étape 3 → accord formalisé."
   },
   "Création de leçon": {
-  "desc": "Préparer une leçon complète conforme aux programmes, avec objectifs mesurables, activités structurées et évaluations (diagnostique, formative, sommative).",
-  "action": "Produis une leçon prête à l’emploi comprenant : 1) Contexte (cycle/niveau, thème du programme) ; 2) Objectifs d’apprentissage et compétences ; 3) Évaluation diagnostique d’entrée ; 4) Déroulé détaillé (durées, supports, consignes, activité principale, trace écrite) ; 5) Évaluation formative intégrée (indicateurs/feedback) ; 6) Évaluation sommative avec critères ; 7) Différenciation en trois paliers (facile, intermédiaire, avancé) avec critères de réussite.",
-  "example": "Exemple attendu : Objectif d’apprentissage + Activité principale (étapes, supports) + Évaluation formative (indicateurs) + Évaluation sommative (tâche finale + critères) + Différenciation F/I/A."
+  desc: "Préparer une leçon complète conforme aux programmes, avec objectifs mesurables, activités structurées et évaluations (diagnostique, formative, sommative).",
+  action: "Produis une leçon prête à l’emploi comprenant : 1) Contexte (cycle/niveau, thème du programme) ; 2) Objectifs d’apprentissage et compétences ; 3) Évaluation diagnostique d’entrée ; 4) Déroulé détaillé (durées, supports, consignes, activité principale, trace écrite) ; 5) Évaluation formative intégrée (indicateurs/feedback) ; 6) Évaluation sommative avec critères ; 7) Différenciation en trois paliers (facile, intermédiaire, avancé) avec critères de réussite.",
+  example: "Exemple attendu : Objectif d’apprentissage + Activité principale (étapes, supports) + Évaluation formative (indicateurs) + Évaluation sommative (tâche finale + critères) + Différenciation F/I/A."
 },
 
   "Planification hebdomadaire": {
