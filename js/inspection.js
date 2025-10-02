@@ -419,9 +419,6 @@ const bubblesInspection = document.getElementById("bubbles-inspection");
 Object.keys(inspectionPresets).forEach(label => {
   const bubble = document.createElement("div");
   bubble.classList.add("bubble", getBubbleColorClassInspection(label));
-  if (["Évaluation pédagogique", "Différenciation pédagogique", "Accompagnement des enseignants"].includes(label)) {
-    bubble.classList.add("selected");
-  }
   bubble.innerText = label;
   bubble.dataset.label = label;
   bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
@@ -486,7 +483,6 @@ function getProdColorClassInspection(label) {
 Object.keys(inspectionProductions).forEach(label => {
   const bubble = document.createElement("div");
   bubble.classList.add("bubble", getProdColorClassInspection(label));
-  if (label === "Rapport d’inspection") bubble.classList.add("selected");
   bubble.innerText = label;
   bubble.dataset.type = label;
   bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
@@ -513,6 +509,55 @@ Object.keys(inspectionAudiences).forEach(label => {
   bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
   audienceBubblesInspection.appendChild(bubble);
 });
+
+// === Filtrage Inspection : si "Parents" est sélectionné, ne laisser visibles que :
+// - PROBLÉMATIQUES : "Climat scolaire et gestion de classe"
+// - PRODUCTIONS : "Compte rendu de réunion"
+
+function isParentsSelectedInspection() {
+  return Array.from(document.querySelectorAll("#audienceBubbles-inspection .bubble.selected"))
+    .some(b => (b.dataset.audience || "").toLowerCase() === "parents");
+}
+
+const INSPECTION_PARENTS_KEEP_PRESETS = new Set([
+  "Climat scolaire et gestion de classe"
+]);
+
+const INSPECTION_PARENTS_KEEP_PRODUCTIONS = new Set([
+  "Compte rendu de réunion"
+]);
+
+function hideBubble(b){ b.style.display = "none"; b.classList.remove("selected"); }
+function showBubble(b){ b.style.display = ""; }
+
+function applyInspectionParentsFilter() {
+  const parentsOn = isParentsSelectedInspection();
+
+  // Problématiques : tout cacher sauf la/les whitelists si Parents est sélectionné
+  document.querySelectorAll("#bubbles-inspection .bubble").forEach(b => {
+    const label = b.dataset.label || "";
+    if (parentsOn) {
+      INSPECTION_PARENTS_KEEP_PRESETS.has(label) ? showBubble(b) : hideBubble(b);
+    } else {
+      showBubble(b);
+    }
+  });
+
+  // Types de production : idem
+  document.querySelectorAll("#productionBubbles-inspection .bubble").forEach(b => {
+    const label = b.dataset.type || "";
+    if (parentsOn) {
+      INSPECTION_PARENTS_KEEP_PRODUCTIONS.has(label) ? showBubble(b) : hideBubble(b);
+    } else {
+      showBubble(b);
+    }
+  });
+}
+
+// Refiltrer quand on clique sur les audiences + appel initial
+const audienceBubblesInspectionEl = document.getElementById("audienceBubbles-inspection");
+audienceBubblesInspectionEl.addEventListener("click", applyInspectionParentsFilter);
+applyInspectionParentsFilter();
 
 
 

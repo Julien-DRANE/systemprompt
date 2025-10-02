@@ -164,9 +164,6 @@ Object.keys(perdirPresets).forEach(label => {
   const bubble = document.createElement("div");
   bubble.classList.add("bubble", getBubbleColorClassPerdir(label));
 
-  if (["Pilotage pédagogique", "Climat scolaire", "Gestion des ressources humaines"].includes(label)) {
-    bubble.classList.add("selected");
-  }
 
   bubble.innerText = label;
   bubble.dataset.label = label;
@@ -174,6 +171,8 @@ Object.keys(perdirPresets).forEach(label => {
 
   bubblesPerdir.appendChild(bubble);
 });
+
+
 
 // --- Fonction couleur bulles types de production PERDIR (alignée) ---
 function getProdColorClassPerdir(label) {
@@ -238,15 +237,13 @@ Object.keys(perdirProductions).forEach(label => {
   const bubble = document.createElement("div");
   bubble.classList.add("bubble", getProdColorClassPerdir(label));
 
-  if (label === "Plan de pilotage pédagogique") {
-    bubble.classList.add("selected"); // sélection par défaut
-  }
-
   bubble.innerText = label;
   bubble.dataset.type = label;
   bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
   prodBubblesPerdir.appendChild(bubble);
 });
+
+
 
 // --- Audiences PERDIR ---
 const perdirAudiences = {
@@ -262,12 +259,87 @@ const audienceBubblesPerdir = document.getElementById("audienceBubbles-perdir");
 Object.keys(perdirAudiences).forEach(label => {
   const bubble = document.createElement("div");
   bubble.classList.add("bubble");
-  if (label === "Enseignants") bubble.classList.add("selected"); // par défaut
   bubble.innerText = label;
   bubble.dataset.audience = label;
   bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
   audienceBubblesPerdir.appendChild(bubble);
 });
+
+// === Filtrage PERDIR : masquer/afficher selon audiences sélectionnées (Parents / Élèves) ===
+
+// Helpers
+function isAudienceSelectedPerdir(name) {
+  const wanted = name.toLowerCase();
+  return Array.from(document.querySelectorAll("#audienceBubbles-perdir .bubble.selected"))
+    .some(b => (b.dataset.audience || "").toLowerCase() === wanted);
+}
+function hideBubble(b){ b.style.display = "none"; b.classList.remove("selected"); }
+function showBubble(b){ b.style.display = ""; }
+
+// Règles de masquage par audience
+const PERDIR_HIDE_RULES = {
+  "Parents": {
+    presets: new Set([
+      "Gestion des ressources humaines",
+      "Suivi des évaluations nationales",
+      "Communication interne", 'Pilotage pédagogique', 'Organisation des examens', 'Gestion budgétaire et matérielle'
+    ]),
+    productions: new Set([
+      "Stratégie de communication interne",
+      "Analyse des évaluations nationales",
+      "Plan budgétaire et logistique",
+      "Tableau de bord de pilotage",
+      "Plan de pilotage pédagogique", 'Planification des examens'
+    ])
+  },
+  "Élèves": {
+    presets: new Set([
+      "Gestion des ressources humaines",
+      "Suivi des évaluations nationales",
+      "Communication interne",
+      "Pilotage pédagogique",
+      "Pilotage des projets d’établissement",
+      "Gestion budgétaire et matérielle", 'Relations avec les parents', 'Communication externe'
+    ]),
+    productions: new Set([
+      "Stratégie de communication interne",
+      "Analyse des évaluations nationales",
+      "Plan budgétaire et logistique",
+      "Tableau de bord de pilotage",
+      "Plan de pilotage pédagogique", 'Stratégie de communication externe', 'Note de communication institutionnelle', 'Kit de réunion pédagogique'
+    ])
+  }
+};
+
+// Applique le filtre (union des règles si plusieurs audiences sont sélectionnées)
+function applyPerdirAudienceFilters() {
+  // Calcule les ensembles à masquer selon les audiences sélectionnées
+  const selected = Object.keys(PERDIR_HIDE_RULES).filter(isAudienceSelectedPerdir);
+  const hidePresets = new Set();
+  const hideProductions = new Set();
+  selected.forEach(aud => {
+    PERDIR_HIDE_RULES[aud].presets.forEach(x => hidePresets.add(x));
+    PERDIR_HIDE_RULES[aud].productions.forEach(x => hideProductions.add(x));
+  });
+
+  // Problématiques
+  document.querySelectorAll("#bubbles-perdir .bubble").forEach(b => {
+    const label = b.dataset.label || "";
+    if (hidePresets.size && hidePresets.has(label)) hideBubble(b); else showBubble(b);
+  });
+
+  // Types de production
+  document.querySelectorAll("#productionBubbles-perdir .bubble").forEach(b => {
+    const label = b.dataset.type || "";
+    if (hideProductions.size && hideProductions.has(label)) hideBubble(b); else showBubble(b);
+  });
+}
+
+// Refiltrer sur clic audience + appel initial
+audienceBubblesPerdir.addEventListener("click", applyPerdirAudienceFilters);
+applyPerdirAudienceFilters();
+
+
 
 // --- Génération du prompt PERDIR ---
 function generatePromptPerdir() {

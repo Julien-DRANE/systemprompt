@@ -258,10 +258,7 @@ Object.keys(enseignantsPresets).forEach(label => {
   const bubble = document.createElement("div");
   bubble.classList.add("bubble", getBubbleColorClass(label));
 
-  // Bulles sélectionnées par défaut
-  if (["Hétérogénéité des niveaux", "Différenciation des exercices", "Activités interdisciplinaires"].includes(label)) {
-    bubble.classList.add("selected");
-  }
+
 
   bubble.innerText = label;
   bubble.dataset.label = label;
@@ -280,6 +277,140 @@ function getProdColorClassEnseignants(label) {
     "Évaluation (formative/sommative)"
   ];
 
+// === Filtrage auto des bulles selon l'audience sélectionnée (mode Parents-only) ===
+
+// 1) Helper : audiences sélectionnées
+function getSelectedAudiencesEnseignants() {
+  return Array.from(
+    document.querySelectorAll("#audienceBubbles-enseignants .bubble.selected")
+  ).map(b => b.dataset.audience);
+}
+
+// 2) Détection du mode Parents-only (on filtre seulement si "Parents" est L'UNIQUE audience)
+function isParentsOnlyMode() {
+  const audiences = getSelectedAudiencesEnseignants();
+  return audiences.length === 1 && audiences[0] === "Parents";
+}
+
+// 3) Whitelist PROBLÉMATIQUES pour Parents
+const parentsPresetWhitelist = new Set([
+  "Communication avec les parents",
+  "Gestion du stress et de l’attention",
+  "Motivation et engagement",
+  "Apprentissage à distance",
+  "Éducation socio-émotionnelle",
+  "Prévention du harcèlement scolaire",
+  "Résolution de conflits entre élèves",
+  "Inclusion et diversité",
+  "Ouverture partenariale & sorties (optionnelle)"
+  // NB : on exclut volontairement "Création de leçon", "Différenciation des exercices", etc.
+]);
+
+// 4) Whitelist de quelques PRODUCTIONS existantes pertinentes pour Parents
+const parentsProdWhitelistExisting = new Set([
+  // On garde très peu d'items d'enseignants qui peuvent être reformatés vers les familles :
+  "Évaluation (formative/sommative)",   // pour générer un "bilan clair aux familles"
+  "Plan de remédiation",                // traduit en "pistes d'accompagnement à la maison"
+  "Brique partenariats & sorties"       // infos pratiques + autorisations
+]);
+
+// 5) PRODUCTIONS dédiées aux Parents qu'on injecte dynamiquement en mode Parents-only
+const parentsExtraProductions = {
+  "Note d’information aux familles": 
+    "Rédige une note d’information claire et bienveillante à destination des familles : objectifs, étapes clés, calendrier, comment aider à la maison, contact utile.",
+  "Conseils d’accompagnement à la maison":
+    "Propose une fiche de conseils concrets et gradués pour accompagner l’élève à la maison (durées, exemples, outils gratuits, points de vigilance).",
+  "FAQ familles (questions fréquentes)":
+    "Produit une FAQ synthétique pour les familles : attentes, évaluations, gestion des devoirs, ressources fiables, qui contacter et quand.",
+  "Bilan de période / progression lisible":
+    "Génère un bilan de période lisible pour les familles : acquis en mots simples, points à renforcer, prochaines étapes, comment aider.",
+  "Infos sorties & autorisations":
+    "Prépare un document familles pour une sortie/voyage : objectifs, programme, budget indicatif, sécurité, trousseau, autorisations."
+};
+
+// On mémorise les bulles extra insérées pour pouvoir les retirer proprement
+const parentExtraBubbles = new Map(); // label -> HTMLElement
+
+// 6) Utils d’affichage + cohérence sélection
+function hideBubble(b) {
+  b.style.display = "none";
+  b.classList.remove("selected");
+}
+function showBubble(b) {
+  b.style.display = "";
+}
+
+// 7) Application du filtre en fonction du mode
+function applyAudienceFiltering() {
+  const parentsOnly = isParentsOnlyMode();
+
+  // --- Problématiques ---
+  bubblesEnseignants.querySelectorAll(".bubble").forEach(b => {
+    const label = b.dataset.label;
+    if (!label) return;
+    if (parentsOnly) {
+      parentsPresetWhitelist.has(label) ? showBubble(b) : hideBubble(b);
+    } else {
+      showBubble(b);
+    }
+  });
+
+  // --- Productions existantes ---
+  prodBubblesEnseignants.querySelectorAll(".bubble").forEach(b => {
+    const label = b.dataset.type;
+    if (!label) return;
+    if (parentsOnly) {
+      // visible uniquement si whitelist existante OU si c'est une bulle extra parents
+      const isExtraParent = parentExtraBubbles.has(label);
+      (parentsProdWhitelistExisting.has(label) || isExtraParent) ? showBubble(b) : hideBubble(b);
+    } else {
+      showBubble(b);
+    }
+  });
+
+  // --- Injections / nettoyage des productions EXTRA parents ---
+  if (parentsOnly) {
+    // insérer celles qui manquent
+    Object.keys(parentsExtraProductions).forEach(label => {
+      if (prodBubbleByLabel[label]) {
+        // déjà connue dans la map globale (au cas où tu les ajoutes statiquement plus tard)
+        parentExtraBubbles.set(label, prodBubbleByLabel[label]);
+        showBubble(prodBubbleByLabel[label]);
+        return;
+      }
+      if (parentExtraBubbles.has(label)) {
+        showBubble(parentExtraBubbles.get(label));
+        return;
+      }
+      // créer la bulle
+      const bubble = document.createElement("div");
+      bubble.classList.add("bubble", "bubble-soft-purple"); // couleur douce
+      bubble.innerText = label;
+      bubble.dataset.type = label;
+      bubble.addEventListener("click", () => bubble.classList.toggle("selected"));
+      prodBubblesEnseignants.appendChild(bubble);
+
+      // brancher dans les structures déjà en place
+      enseignantsProductions[label] = parentsExtraProductions[label];
+      prodBubbleByLabel[label] = bubble;
+      parentExtraBubbles.set(label, bubble);
+    });
+  } else {
+    // sortir du mode parents : retirer les extras et réafficher tout le stock natif
+    parentExtraBubbles.forEach((bubble, label) => {
+      bubble.remove();
+      delete enseignantsProductions[label];
+      delete prodBubbleByLabel[label];
+    });
+    parentExtraBubbles.clear();
+  }
+}
+
+// 8) Hook : chaque clic sur les bulles d’audience relance le filtrage
+audienceBubblesEnseignants.addEventListener("click", applyAudienceFiltering);
+
+// 9) Appel initial
+applyAudienceFiltering();
 
   // Conception pédagogique / planification / interdisciplinarité
   const vert = [
@@ -331,7 +462,6 @@ const prodBubbleByLabel = {};
 Object.keys(enseignantsProductions).forEach(label => {
   const bubble = document.createElement("div");
   bubble.classList.add("bubble", getProdColorClassEnseignants(label));
-  if (label === "Plan d’enseignement (séquence)") bubble.classList.add("selected"); // sélection par défaut
   bubble.innerText = label;
   bubble.dataset.type = label;
   bubble.addEventListener("click", () => bubble.classList.toggle("selected"));

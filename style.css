@@ -1,907 +1,198 @@
-/*! © 2025 Académie de La Réunion – DRANE | MIT */
-/*! SPDX-License-Identifier: MIT */
-
-/* === Base === */
-html, body {
-  min-height: 100%;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  font-family: Arial, sans-serif;
-  background: #f7f9fc;
-  color: #333;
-  line-height: 1.5;
-}
-
-body {
-  flex: 1;
-  padding: 20px;
-}
-
-/* === Conteneur central === */
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 30px;
-}
-
-/* === Titres et intro === */
-h1 {
-  text-align: center;
-  color: #004080;
-  margin-bottom: 10px;
-}
-
-p.intro {
-  max-width: 800px;
-  margin: 0 auto 20px auto;
-  text-align: center;
-  font-size: 15px;
-  color: #555;
-}
-
-/* === Formulaires === */
-label {
-  font-weight: bold;
-  display: block;
-  margin-top: 15px;
-}
-
-select,
-textarea,
-input,
-button {
-  width: 100%;
-  margin-top: 5px;
-  padding: 10px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-textarea {
-  min-height: 100px;
-  resize: vertical;
-}
-
-/* === Boutons === */
-button {
-  margin-top: 20px;
-  background-color: #004080;
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-  border-radius: 4px;
-  transition: background 0.2s;
-}
-
-button:hover {
-  background-color: #0066cc;
-}
-
-/* === Résultats === */
-#result {
-  margin-top: 25px;
-  padding: 15px;
-  border: 1px solid #ccc;
-  background: #ffffff;
-  font-family: monospace;
-  white-space: pre-wrap;
-  border-radius: 4px;
-  overflow-x: auto;
-}
-
-/* === Bulles === */
-.bubble {
-  display: inline-block;
-  padding: 8px 14px;
-  margin: 5px;
-  border: 1px solid #004080;
-  border-radius: 20px;
-  cursor: pointer;
-  background: #f0f8ff;
-  font-size: 14px;
-  transition: all 0.2s ease;
-}
-
-.bubble:hover {
-  background: #e6f0ff;
-}
-
-.bubble.selected {
-  background: #004080;
-  color: white;
-}
-
-/* === Onglets === */
-.tabs {
-  margin: 20px 0;
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.tab-button {
-  padding: 10px 15px;
-  border: 1px solid #004080;
-  background: #f0f8ff;
-  cursor: pointer;
-  border-radius: 5px;
-  font-size: 14px;
-}
-
-.tab-button.active {
-  background: #004080;
-  color: white;
-}
-
-.tab-content {
-  display: none;
-  margin-top: 15px;
-}
-
-.tab-content.active {
-  display: block;
-}
-
-/* === Footer sticky === */
-footer {
-  margin-top: auto;
-  padding: 10px;
-  text-align: center;
-  font-size: 13px;
-  color: #555;
-  background: #eef6ff;
-  border-top: 1px solid #ccc;
-  border-radius: 5px 5px 0 0;
-  max-width: 1500px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-footer strong {
-  color: #004080;
-}
-
-/* === Responsive smartphone === */
-@media (max-width: 768px) {
-  body {
-    padding: 10px;
-  }
-
-  h1 {
-    font-size: 1.5rem;
-  }
-
-  .tabs {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .tab-button {
-    width: 100%;
-    text-align: center;
-    margin-bottom: 5px;
-  }
-
-  .bubble {
-    display: block;
-    width: 100%;
-    text-align: center;
-    margin: 6px 0;
-  }
-}
-/* Logo en bas centré dans le flux normal */
-.logo-bottom {
-  text-align: center;   /* centre l’image horizontalement */
-  margin: 20px 0;       /* espace au-dessus et en-dessous */
-}
-
-.logo-bottom img {
-  height: 40px;
-  width: auto;
-}
-
-.toggle { display:flex; align-items:center; gap:.5rem; margin:.25rem 0 1rem; }
-.toggle input { transform: scale(1.2); }
-
-.bubble-soft-blue    { background-color: #dceeff; color: #004c6d; }
-.bubble-soft-green   { background-color: #d9f2e6; color: #14532d; }
-.bubble-soft-yellow  { background-color: #fff8dc; color: #665c00; }
-.bubble-soft-orange  { background-color: #fff0e0; color: #8b4000; }
-.bubble-soft-purple  { background-color: #f0e6ff; color: #4b0082; }
-.bubble-soft-pink    { background-color: #ffe6f0; color: #8c2c5a; }
-.bubble-soft-teal    { background-color: #e0f7f7; color: #006666; }
-.bubble-soft-grey    { background-color: #f2f2f2; color: #333333; }
-
-.bubble.selected {
-  border: 2px solid #000;
-}
-/* === CTA vers le GPT (centré) === */
-.gpt-cta {
-  display: flex;
-  flex-direction: column;   /* empile bouton + note */
-  align-items: center;      /* centre horizontalement */
-  justify-content: center;  /* centre verticalement si hauteur dispo */
-  gap: .75rem;
-  margin: .75rem auto 0;    /* auto pour centrer le conteneur si largeur définie */
-  text-align: center;       /* centre le texte interne */
-  max-width: 48rem;         /* confort de lecture sur grands écrans */
-}
-
-/* Boutons CTA */
-.gpt-cta .btn-secondary,
-.gpt-card .btn-link {
-  padding: .6rem 1rem;
-  border-radius: .6rem;
-  border: 1px solid transparent;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-/* On a retiré .btn-primary (plus utilisé) */
-
-.gpt-cta .btn-secondary {
-  background: #eef2ff;
-  color: #1e3a8a;
-  border-color: #c7d2fe;
-}
-.gpt-cta .btn-secondary:hover { background: #e0e7ff; }
-
-/* Accessibilité focus */
-.gpt-cta .btn-secondary:focus-visible,
-.gpt-card .btn-link:focus-visible {
-  outline: 2px solid #3b82f6;
-  outline-offset: 2px;
-}
-
-/* Note sous le bouton */
-.gpt-note {
-  text-align: center;
-  max-width: 48rem;
-  color: #475569;
-  margin: 0;               /* harmonise les espacements */
-}
-
-/* === Encadré de présentation du GPT === */
-.gpt-card {
-  border: 1px solid #e5e7eb;
-  background: #f8fafc;
-  border-radius: .8rem;
-  padding: 1rem;
-  margin: 1rem auto 1.25rem;
-  max-width: 60rem;
-}
-.gpt-card h2 { margin: 0 0 .25rem; }
-.gpt-card p { margin: 0 0 .75rem; color: #334155; }
-.gpt-card .btn-link {
-  display: inline-block;
-  text-decoration: none;
-  background: #0ea5e9;
-  color: #fff;
-}
-.gpt-card .btn-link:hover { filter: brightness(1.05); }
-
-/* Petite amélioration mobile */
-@media (max-width: 480px) {
-  .gpt-cta, .gpt-note, .gpt-card { max-width: 100%; }
-}
-
-/* Zone socle commun */
-#socleBubbles {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-  padding: 0;              /* plus de padding de zone */
-  border: none;            /* supprime le cadre */
-  border-radius: 0;        /* supprime les coins arrondis */
-  background: transparent; /* supprime le fond */
-}
-
-#socleBubbles .bubble {
-  padding: 0.4rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: transform 0.2s, opacity 0.2s;
-  color: #222;
-}
-
-#socleBubbles .bubble:hover {
-  transform: scale(1.05);
-  opacity: 0.9;
-}
-
-#socleBubbles .bubble.selected {
-  border: 2px solid #333;
-  font-weight: 600;
-}
-
-/* Couleurs spécifiques */
-.bubble-socle-langages   { background: #b6d87a; } /* Domaine 1 */
-.bubble-socle-methodes   { background: #7bd0f1; } /* Domaine 2 */
-.bubble-socle-citoyen    { background: #f08a6b; } /* Domaine 3 */
-.bubble-socle-techniques { background: #4ba6a8; } /* Domaine 4 */
-.bubble-socle-monde      { background: #f7c934; } /* Domaine 5 */
-
-/* Bouton secondaire (même look&feel que tes autres boutons si tu en as) */
-.btn-secondary {
-  margin-left: .5rem;
-}
-
-/* Styles utilisés pour l’aperçu PDF */
-.print-container {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  line-height: 1.4;
-  color: #111;
-  padding: 20mm;
-}
-
-.print-header {
-  margin-bottom: 12mm;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 4mm;
-}
-
-.print-header h1 {
-  margin: 0 0 4mm 0;
-  font-size: 20px;
-}
-
-.print-meta {
-  font-size: 12px;
-  color: #666;
-}
-
-.print-content {
-  white-space: pre-wrap; /* préserve les retours à la ligne du prompt */
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-  font-size: 13px;
-}
-
-/* Mise en page A4 */
-@page {
-  size: A4;
-  margin: 12mm;
-}
-
-/* Si jamais on imprimait la page entière, on masque ce qui n'est pas utile */
-@media print {
-  body * {
-    visibility: hidden !important;
-  }
-  #__printRoot, #__printRoot * {
-    visibility: visible !important;
-  }
-  #__printRoot {
-    position: absolute;
-    inset: 0;
-    margin: 0;
-    padding: 0;
-  }
-}
-
-
-/* Badge IP fixe en bas à droite */
-.ip-badge {
-  position: fixed;
-  right: 14px;
-  bottom: 14px;
-  width: 56px;
-  height: 56px;
-  opacity: .6;
-  transition: opacity .2s ease, transform .2s ease;
-  z-index: 9999;
-}
-.ip-badge:hover,
-.ip-badge:focus-visible {
-  opacity: .95;
-  transform: scale(1.03);
-  outline: none;
-}
-.ip-badge img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  filter: drop-shadow(0 2px 6px rgba(0,0,0,.25));
-}
-@media (prefers-reduced-motion: reduce) {
-  .ip-badge { transition: none; }
-}
-@media print {
-  .ip-badge { display: none !important; }
-}
-
-/* ===== Widget accessibilité (index) ===== */
-:root { --app-font-size: 16px; }
-body { font-size: var(--app-font-size); }
-
-.access-widget {
-  position: fixed; right: 16px; bottom: 120px; z-index: 10000;
-  background: #111827; color: #e5e7eb; border: 1px solid #243040;
-  border-radius: 14px; box-shadow: 0 10px 24px rgba(0,0,0,.35);
-  padding: .6rem .7rem; width: max-content; max-width: calc(100vw - 32px);
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Noto Sans", Arial;
-}
-.aw-row { display: flex; align-items: center; gap: .4rem; }
-.aw-btn {
-  border: 1px solid #334155; background: #1f2937; color: #e5e7eb;
-  border-radius: 10px; padding: .35rem .55rem; min-width: 2.2rem;
-  text-align: center; font-weight: 650; cursor: pointer;
-}
-.aw-btn:hover { filter: brightness(1.06); }
-.aw-btn:focus-visible { outline: 3px solid #f59e0b; outline-offset: 2px; }
-.aw-font .aw-btn:nth-child(2) { font-weight: 800; }
-.aw-sep { width: 1px; height: 1.6rem; background: #334155; margin: 0 .15rem; }
-.aw-caption { margin-top: .35rem; font-size: .85rem; color: #cbd5e1; text-align: center; }
-
-/* Évite chevauchement avec ton badge IP / footer */
-.ip-badge { bottom: 180px; }
-
-/* ===== Mode sombre (index) — minimal, non intrusif ===== */
-body.theme-dark { background: #0f172a; color: #e5e7eb; }
-body.theme-dark .container { background: #0b1220; color: #e5e7eb; border-radius: 16px; }
-body.theme-dark h1, body.theme-dark h2, body.theme-dark h3 { color: #e5e7eb; }
-body.theme-dark .intro { color: #e5e7eb; }
-
-/* onglets & boutons */
-body.theme-dark .tabs { background: #0b1220; }
-body.theme-dark .tab-button { background: #111827; color: #e5e7eb; border: 1px solid #243040; }
-body.theme-dark .tab-button.active { background: #1f2937; }
-body.theme-dark button, 
-body.theme-dark .btn-secondary { background: #111827; color: #e5e7eb; border: 1px solid #243040; }
-
-/* inputs & textarea */
-body.theme-dark input[type="text"],
-body.theme-dark textarea {
-  background: #0b1220; color: #e5e7eb; border: 1px solid #243040;
-}
-
-/* cartes/bulles génériques si utilisées */
-body.theme-dark .bubbles-container > * {
-  background: #111827; color: #e5e7eb; border-color: #243040;
-}
-
-/* footer */
-body.theme-dark footer { background: #111827; color: #e5e7eb; border: 1px solid #243040; border-radius: 12px; padding: .9rem 1rem; }
-body.theme-dark footer a { color: #7dd3fc; }
-body.theme-dark footer a:hover { color: #38bdf8; }
-
-@media (max-width: 520px) {
-  .access-widget { right: 12px; bottom: 130px; padding: .5rem; }
-}
-
-
-/* ===== Widget accessibilité — variante mini ===== */
-.access-widget--mini {
-  right: 12px;
-  bottom: 100px;
-  padding: .38rem .45rem;
-  border-radius: 10px;
-  box-shadow: 0 6px 14px rgba(0,0,0,.28);
-}
-
-.access-widget--mini .aw-row { gap: .25rem; }
-.access-widget--mini .aw-btn {
-  padding: .25rem .35rem;
-  min-width: 1.9rem;
-  font-size: .85rem;       /* plus petit */
-  border-radius: 8px;
-}
-.access-widget--mini .aw-sep { height: 1.2rem; }
-
-.access-widget--mini .aw-caption { display: none; } /* pas de ligne de statut visible */
-
-/* IP badge un peu plus haut pour éviter le chevauchement */
-.ip-badge { bottom: 160px; }
-
-/* Visually hidden utilitaire (si on garde des annonces lecteur d’écran) */
-.sr-only {
-  position: absolute !important;
-  width: 1px; height: 1px;
-  padding: 0; margin: -1px; overflow: hidden;
-  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
-}
-
-/* ===== Super mini access widget ===== */
-:root { --app-font-size: 16px; }
-body { font-size: var(--app-font-size); }
-
-/* Bouton flottant */
-#aw-fab {
-  position: fixed; right: 14px; bottom: 110px; z-index: 10000;
-  width: 44px; height: 44px; border-radius: 999px; cursor: pointer;
-  border: 1px solid #334155; background: #111827; color: #e5e7eb;
-  display: grid; place-items: center;
-  box-shadow: 0 8px 18px rgba(0,0,0,.35);
-}
-#aw-fab:hover { filter: brightness(1.06); }
-#aw-fab:focus-visible { outline: 3px solid #f59e0b; outline-offset: 3px; }
-
-/* Menu popover */
-#aw-menu {
-  position: fixed; right: 14px; bottom: 164px; z-index: 10001;
-  min-width: 180px; border: 1px solid #243040; border-radius: 12px;
-  background: #111827; color: #e5e7eb; box-shadow: 0 12px 28px rgba(0,0,0,.4);
-  padding: .4rem; display: none;
-}
-#aw-menu[data-open="true"] { display: block; }
-
-.aw-sec { padding: .25rem .25rem .4rem; }
-.aw-sec h4 { font: 700 0.9rem/1.1 system-ui,Segoe UI,Roboto; margin: .15rem .25rem .35rem; color: #cbd5e1; }
-.aw-row { display: flex; gap: .35rem; padding: 0 .25rem; }
-
-.aw-btn {
-  border: 1px solid #334155; background: #1f2937; color: #e5e7eb;
-  border-radius: 9px; padding: .32rem .5rem; min-width: 2.1rem; cursor: pointer;
-  font: 600 .9rem/1 system-ui,Segoe UI,Roboto; text-align: center;
-}
-.aw-btn:hover { filter: brightness(1.06); }
-.aw-btn[aria-pressed="true"] { outline: 2px solid #38bdf8; }
-.aw-btn:focus-visible { outline: 3px solid #f59e0b; outline-offset: 2px; }
-
-/* Séparateur */
-.aw-sep { height: 1px; background: #243040; margin: .35rem .25rem; }
-
-/* Sombre global optionnel (si tu avais déjà les styles .theme-dark) */
-body.theme-dark { background: #0f172a; color: #e5e7eb; }
-body.theme-dark footer { background:#111827; color:#e5e7eb; border:1px solid #243040; border-radius:12px; padding:.9rem 1rem; }
-body.theme-dark footer a { color:#7dd3fc; }
-body.theme-dark .container { background:#0b1220; border-radius:16px; }
-
-/* Évite chevauchement badge IP */
-.ip-badge { bottom: 170px; }
-
-@media (max-width: 520px) {
-  #aw-fab { right: 12px; bottom: 115px; }
-  #aw-menu { right: 12px; bottom: 168px; min-width: 170px; }
-}
-
-/* ===== Positionner le widget en HAUT ===== */
-:root{
-  --aw-x: 14px;           /* marge horizontale */
-  --aw-y: 14px;           /* marge verticale (descend si header fixe) */
-  --aw-menu-offset: 54px; /* distance entre le bouton et le menu */
-}
-
-/* Top-right (par défaut) */
-#aw-fab{
-  top: var(--aw-y);
-  right: var(--aw-x);
-  bottom: auto;
-  left: auto;
-}
-#aw-menu{
-  top: calc(var(--aw-y) + var(--aw-menu-offset));
-  right: var(--aw-x);
-  bottom: auto;
-  left: auto;
-}
-
-/* --- Variante Top-left ---
-#aw-fab{ top: var(--aw-y); left: var(--aw-x); bottom:auto; right:auto; }
-#aw-menu{ top: calc(var(--aw-y) + var(--aw-menu-offset)); left: var(--aw-x); bottom:auto; right:auto; }
-*/
-
-/* Ajuste les marges sur mobile */
-@media (max-width: 520px){
-  :root{ --aw-x: 10px; --aw-y: 10px; }
-}
-
-/* ===== Améliorations lisibilité bulles "Socle commun" en mode sombre ===== */
-body.theme-dark #socleBubbles .bubble {
-  /* garder les pastels mais mieux "décoller" du fond sombre */
-  box-shadow: 0 0 0 1px rgba(255,255,255,.14), 0 3px 10px rgba(0,0,0,.25);
-  border: 1px solid rgba(255,255,255,.16);
-  /* texte plus lisible par défaut sur fonds clairs */
-  color: #0b1324; /* bleu nuit très foncé */
-}
-
-/* survol : pas d'opacité plus basse (ça baisse le contraste) */
-body.theme-dark #socleBubbles .bubble:hover {
-  transform: translateY(-1px) scale(1.03);
-  opacity: 1;
-}
-
-/* état sélectionné : bord et lueur accessibles */
-body.theme-dark #socleBubbles .bubble.selected {
-  border: 2px solid #38bdf8;                /* sky-400 */
-  box-shadow: 0 0 0 2px rgba(56,189,248,.35);/* halo bleu */
-}
-
-/* focus clavier visible */
-body.theme-dark #socleBubbles .bubble:focus-visible {
-  outline: 3px solid #f59e0b;  /* amber-500 */
-  outline-offset: 3px;
-  border-radius: 22px;
-}
-
-/* Ajustements de contraste par couleur (si nécessaire) */
-/* Teal (un peu foncé) => texte clair pour un meilleur ratio */
-body.theme-dark #socleBubbles .bubble.bubble-socle-techniques {
-  color: #f8fafc; /* quasi blanc */
-}
-
-/* Jaune: garder texte sombre (déjà bon) */
-body.theme-dark #socleBubbles .bubble.bubble-socle-monde {
-  color: #0b1324;
-}
-
-/* Option : légèrement éclaircir toutes les bulles en sombre (si tu veux encore plus de contraste) */
-/*
-body.theme-dark #socleBubbles .bubble {
-  background: color-mix(in srgb, currentColor 0%, white 12%) !important;
-}
-*/
-/* ===== Socle commun — améliorations globales en mode sombre ===== */
-body.theme-dark #socleBubbles .bubble {
-  /* relief + séparation du fond sombre */
-  box-shadow: 0 0 0 1px rgba(255,255,255,.14), 0 3px 10px rgba(0,0,0,.25);
-  border: 1px solid rgba(255,255,255,.16);
-  /* par défaut : texte foncé sur bulles éclaircies */
-  color: #0b1324;
-}
-
-/* éclaircir légèrement TOUTES les bulles en sombre (sans toucher tes couleurs) */
-body.theme-dark #socleBubbles .bubble {
-  /* On passe par une variable pour recalculer la couleur, sinon on garde le bg existant */
-  --bub-bg: initial;
-  background: color-mix(in srgb, currentColor 0%, white 14%);
-}
-
-/* On fixe la vraie couleur de fond de chaque bulle via variable, 
-   puis on la "remixe" plus haut (ça s’applique à toutes) */
-#socleBubbles .bubble { --bub-bg: initial; }
-#socleBubbles .bubble.bubble-socle-langages   { --bub-bg: #b6d87a; }
-#socleBubbles .bubble.bubble-socle-methodes   { --bub-bg: #7bd0f1; }
-#socleBubbles .bubble.bubble-socle-citoyen    { --bub-bg: #f08a6b; }
-#socleBubbles .bubble.bubble-socle-techniques { --bub-bg: #4ba6a8; }
-#socleBubbles .bubble.bubble-socle-monde      { --bub-bg: #f7c934; }
-
-/* Remplace le background par la variable avant le remix */
-#socleBubbles .bubble { background: var(--bub-bg); }
-body.theme-dark #socleBubbles .bubble { background: color-mix(in srgb, var(--bub-bg) 86%, white 14%); }
-
-/* Cas spécial Domaine 4 (teal plus sombre) : texte clair pour un meilleur ratio */
-body.theme-dark #socleBubbles .bubble.bubble-socle-techniques {
-  /* on le fonce un poil + texte blanc */
-  background: color-mix(in srgb, var(--bub-bg) 92%, black 8%);
-  color: #f8fafc;
-}
-
-/* Hover/focus accessibles (pas de perte de contraste) */
-body.theme-dark #socleBubbles .bubble:hover {
-  transform: translateY(-1px) scale(1.03);
-  opacity: 1;
-}
-body.theme-dark #socleBubbles .bubble.selected {
-  border: 2px solid #38bdf8;
-  box-shadow: 0 0 0 2px rgba(56,189,248,.35);
-}
-body.theme-dark #socleBubbles .bubble:focus-visible {
-  outline: 3px solid #f59e0b;
-  outline-offset: 3px;
-  border-radius: 22px;
-}
-
-/* Focus visible pour les bulles (accessibilité) */
-#socleBubbles .bubble:focus-visible {
-  outline: 3px solid #f59e0b;  /* amber-500 */
-  outline-offset: 3px;
-  border-radius: 22px;
-}
-
-/* État sélectionné en clair (tu as déjà border:2px; on renforce) */
-#socleBubbles .bubble.selected {
-  border: 2px solid #333;
-}
-
-/* État sélectionné en sombre (halo bleu) */
-body.theme-dark #socleBubbles .bubble.selected {
-  border: 2px solid #38bdf8;
-  box-shadow: 0 0 0 2px rgba(56,189,248,.35);
-}
-
-/* ===== Bulles (Problématiques / Production) — mode sombre lisible ===== */
-/* Containers visés : #bubbles-enseignants / -perdir / -inspection, et productionBubbles-*  */
-body.theme-dark #bubbles-enseignants .bubble,
-body.theme-dark #bubbles-perdir .bubble,
-body.theme-dark #bubbles-inspection .bubble,
-body.theme-dark [id^="productionBubbles-"] .bubble {
-  background: #111827;          /* fond neutre sombre */
-  color: #e5e7eb;               /* texte clair */
-  border-color: #374151;        /* gris foncé */
-  box-shadow: 0 0 0 1px rgba(255,255,255,.10);
-}
-
-body.theme-dark #bubbles-enseignants .bubble:hover,
-body.theme-dark #bubbles-perdir .bubble:hover,
-body.theme-dark #bubbles-inspection .bubble:hover,
-body.theme-dark [id^="productionBubbles-"] .bubble:hover {
-  background: #1f2937;          /* léger éclaircissement au survol */
-}
-
-/* ÉTAT SÉLECTIONNÉ — contraste fort (bleu access) */
-body.theme-dark #bubbles-enseignants .bubble.selected,
-body.theme-dark #bubbles-perdir .bubble.selected,
-body.theme-dark #bubbles-inspection .bubble.selected,
-body.theme-dark [id^="productionBubbles-"] .bubble.selected {
-  background: #2563eb;          /* blue-600 */
-  color: #ffffff;
-  border-color: #93c5fd;        /* blue-300 */
-  box-shadow: 0 0 0 2px rgba(37,99,235,.35); /* halo visible */
-  transform: translateY(-1px) scale(1.02);
-}
-
-/* Focus clavier visible (RGAA) */
-body.theme-dark #bubbles-enseignants .bubble:focus-visible,
-body.theme-dark #bubbles-perdir .bubble:focus-visible,
-body.theme-dark #bubbles-inspection .bubble:focus-visible,
-body.theme-dark [id^="productionBubbles-"] .bubble:focus-visible {
-  outline: 3px solid #f59e0b;   /* amber-500 */
-  outline-offset: 3px;
-  border-radius: 22px;
-}
-
-/* ===== Zone résultat (prompt) — thème sombre ===== */
-body.theme-dark #result {
-  background: #0b1220;          /* fond carte sombre */
-  color: #e5e7eb;               /* texte clair */
-  border: 1px solid #243040;    /* bord discret */
-  box-shadow: 0 2px 12px rgba(0,0,0,.35);
-}
-
-/* Le contenu hérité (liens, strong, listes…) reste lisible */
-body.theme-dark #result * { color: inherit; }
-
-/* Améliore la lisibilité monospace (optionnel) */
-body.theme-dark #result {
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  word-wrap: break-word;
-  overflow-wrap: anywhere;      /* évite les débordements */
-  white-space: pre-wrap;        /* tu l’as déjà, je le rappelle */
-}
-
-/* Sélection de texte plus visible */
-body.theme-dark #result ::selection {
-  background: #1f2937;
-  color: #e5e7eb;
-}
-
-/* Scrollbar discrète (facultatif, Chrome/Edge) */
-body.theme-dark #result::-webkit-scrollbar { height: 10px; width: 10px; }
-body.theme-dark #result::-webkit-scrollbar-thumb { background: #334155; border-radius: 8px; }
-body.theme-dark #result::-webkit-scrollbar-track { background: #0b1220; }
-
-/* Impression : reste propre sur fond clair */
-@media print {
-  #result { background: #fff !important; color: #111 !important; border-color: #ddd !important; box-shadow: none !important; }
-}
-
-/* ===== Audience ciblée — mode sombre lisible ===== */
-/* Conteneurs : audienceBubbles-enseignants / -perdir / -inspection */
-body.theme-dark [id^="audienceBubbles-"] .bubble {
-  background: #111827;          /* fond neutre sombre */
-  color: #e5e7eb;               /* texte clair */
-  border-color: #374151;        /* gris foncé */
-  box-shadow: 0 0 0 1px rgba(255,255,255,.10);
-}
-
-body.theme-dark [id^="audienceBubbles-"] .bubble:hover {
-  background: #1f2937;          /* léger éclaircissement au survol */
-}
-
-/* ÉTAT SÉLECTIONNÉ — contraste fort, cohérent avec le reste */
-body.theme-dark [id^="audienceBubbles-"] .bubble.selected {
-  background: #2563eb;          /* blue-600 */
-  color: #ffffff;
-  border-color: #93c5fd;        /* blue-300 */
-  box-shadow: 0 0 0 2px rgba(37,99,235,.35);
-  transform: translateY(-1px) scale(1.02);
-}
-
-/* Focus clavier visible (RGAA) */
-body.theme-dark [id^="audienceBubbles-"] .bubble:focus-visible {
-  outline: 3px solid #f59e0b;   /* amber-500 */
-  outline-offset: 3px;
-  border-radius: 22px;
-}
-
-/* Si tu utilises des classes pastel .bubble-soft-* pour Audience,
-   on neutralise en sombre pour éviter le manque de contraste */
-body.theme-dark [id^="audienceBubbles-"] .bubble[class*="bubble-soft-"] {
-  background: #111827;
-  color: #e5e7eb;
-  border-color: #374151;
-}
-body.theme-dark [id^="audienceBubbles-"] .bubble[class*="bubble-soft-"].selected {
-  background: #2563eb;
-  color: #fff;
-  border-color: #93c5fd;
-}
-
-/* Mise en ligne des boutons */
-.gpt-cta .btn-row {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  flex-wrap: wrap; /* passe à la ligne si l’espace manque */
-}
-
-/* Optionnel : style d’un bouton "outline" assorti à .btn-secondary */
-.btn-outline {
-  background: transparent;
-  border: 1px solid currentColor;
-}
-
-/* (facultatif) responsif: empile sous 420px de large */
-@media (max-width: 420px) {
-  .gpt-cta .btn-row {
-    flex-direction: column;
-    align-items: stretch;
-  }
-}
-
-/* rangée de boutons */
-.gpt-cta .btn-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-/* groupe des 3 liens centré */
-.ai-links {
-  display: flex;
-  gap: 12px;
-  margin: 0 auto;        /* <-- centre le groupe dans la ligne */
-}
-
-/* optionnel: empiler proprement sur petit écran */
-@media (max-width: 540px) {
-  .gpt-cta .btn-row { justify-content: center; }
-  #openGptBtn { width: 100%; }
-  .ai-links { margin: 8px 0 0; }
-}
-
-/* --- Onglets inactifs : lisibilité renforcée --- */
-
-/* Mode clair : texte plus foncé + fond un poil moins pâle */
-.tabs .tab-button:not(.active) {
-  background: #e7f0ff;        /* + contrasté que #f0f8ff */
-  color: #0b2540;              /* bleu très foncé (lisible) */
-  border-color: #0054b3;       /* bord plus net */
-  font-weight: 600;            /* léger renfort */
-}
-
-.tabs .tab-button:hover:not(.active) {
-  background: #dbe8ff;
-  border-color: #00408a;
-}
-
-/* Actif (inchangé, juste pour cohérence si besoin) */
-.tabs .tab-button.active {
-  background: #2563eb;
-  color: #ffffff;
-  border-color: #60a5fa;
-}
-
-/* Mode sombre : texte un peu moins “blanc cramé” + bouton décollé du fond */
-body.theme-dark .tabs .tab-button:not(.active) {
-  background: #141c2b;         /* plus clair que le fond #0b1220 */
-  color: #cbd5e1;              /* un cran plus sombre que #e5e7eb */
-  border-color: #475569;       /* bord visible */
-  box-shadow: 0 0 0 1px rgba(255,255,255,.06) inset;
-}
-
-body.theme-dark .tabs .tab-button:hover:not(.active) {
-  background: #1f2937;
-  border-color: #5b6b7d;
-}
-
+/*! © 2025 Académie de La Réunion – DRANE | MIT *//*! SPDX-License-Identifier: MIT */html,body{min-height:100%;margin:0;display:flex;flex-direction:column;font-family:Arial,sans-serif;background:#f7f9fc;color:#333;line-height:1.5}
+body{flex:1;padding:20px}
+.container{max-width:1100px;margin:0 auto;padding:0 30px}
+h1{text-align:center;color:#004080;margin-bottom:10px}
+p.intro{max-width:800px;margin:0 auto 20px auto;text-align:center;font-size:15px;color:#555}
+label{font-weight:bold;display:block;margin-top:15px}
+select,textarea,input,button{width:100%;margin-top:5px;padding:10px;font-size:14px;border:1px solid #ccc;border-radius:4px;box-sizing:border-box}
+textarea{min-height:100px;resize:vertical}
+button{margin-top:20px;background-color:#004080;color:white;border:none;cursor:pointer;font-weight:bold;border-radius:4px;transition:background 0.2s}
+button:hover{background-color:#0066cc}
+#result{margin-top:25px;padding:15px;border:1px solid #ccc;background:#ffffff;font-family:monospace;white-space:pre-wrap;border-radius:4px;overflow-x:auto}
+.bubble{display:inline-block;padding:8px 14px;margin:5px;border:1px solid #004080;border-radius:20px;cursor:pointer;background:#f0f8ff;font-size:14px;transition:all 0.2s ease}
+.bubble:hover{background:#e6f0ff}
+.bubble.selected{background:#004080;color:white}
+.tabs{margin:20px 0;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.tab-button{padding:10px 15px;border:1px solid #004080;background:#f0f8ff;cursor:pointer;border-radius:5px;font-size:14px}
+.tab-button.active{background:#004080;color:white}
+.tab-content{display:none;margin-top:15px}
+.tab-content.active{display:block}
+footer{margin-top:auto;padding:10px;text-align:center;font-size:13px;color:#555;background:#eef6ff;border-top:1px solid #ccc;border-radius:5px 5px 0 0;max-width:1500px;margin-left:auto;margin-right:auto}
+footer strong{color:#004080}
+@media (max-width:768px){body{padding:10px}
+h1{font-size:1.5rem}
+.tabs{flex-direction:column;align-items:stretch}
+.tab-button{width:100%;text-align:center;margin-bottom:5px}
+.bubble{display:block;width:100%;text-align:center;margin:6px 0}
+}
+.logo-bottom{text-align:center;margin:20px 0}
+.logo-bottom img{height:40px;width:auto}
+.toggle{display:flex;align-items:center;gap:.5rem;margin:.25rem 0 1rem}
+.toggle input{transform:scale(1.2)}
+.bubble-soft-blue{background-color:#dceeff;color:#004c6d}
+.bubble-soft-green{background-color:#d9f2e6;color:#14532d}
+.bubble-soft-yellow{background-color:#fff8dc;color:#665c00}
+.bubble-soft-orange{background-color:#fff0e0;color:#8b4000}
+.bubble-soft-purple{background-color:#f0e6ff;color:#4b0082}
+.bubble-soft-pink{background-color:#ffe6f0;color:#8c2c5a}
+.bubble-soft-teal{background-color:#e0f7f7;color:#006666}
+.bubble-soft-grey{background-color:#f2f2f2;color:#333333}
+.bubble.selected{border:2px solid #000}
+.gpt-cta{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;margin:.75rem auto 0;text-align:center;max-width:48rem}
+.gpt-cta .btn-secondary,.gpt-card .btn-link{padding:.6rem 1rem;border-radius:.6rem;border:1px solid transparent;cursor:pointer;font-weight:600}
+.gpt-cta .btn-secondary{background:#eef2ff;color:#1e3a8a;border-color:#c7d2fe}
+.gpt-cta .btn-secondary:hover{background:#e0e7ff}
+.gpt-cta .btn-secondary:focus-visible,.gpt-card .btn-link:focus-visible{outline:2px solid #3b82f6;outline-offset:2px}
+.gpt-note{text-align:center;max-width:48rem;color:#475569;margin:0}
+.gpt-card{border:1px solid #e5e7eb;background:#f8fafc;border-radius:.8rem;padding:1rem;margin:1rem auto 1.25rem;max-width:60rem}
+.gpt-card h2{margin:0 0 .25rem}
+.gpt-card p{margin:0 0 .75rem;color:#334155}
+.gpt-card .btn-link{display:inline-block;text-decoration:none;background:#0ea5e9;color:#fff}
+.gpt-card .btn-link:hover{filter:brightness(1.05)}
+@media (max-width:480px){.gpt-cta,.gpt-note,.gpt-card{max-width:100%}
+}
+#socleBubbles{display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem;padding:0;border:none;border-radius:0;background:transparent}
+#socleBubbles .bubble{padding:0.4rem 0.8rem;border-radius:20px;font-size:0.9rem;font-weight:500;cursor:pointer;transition:transform 0.2s,opacity 0.2s;color:#222}
+#socleBubbles .bubble:hover{transform:scale(1.05);opacity:0.9}
+#socleBubbles .bubble.selected{border:2px solid #333;font-weight:600}
+.bubble-socle-langages{background:#b6d87a}
+.bubble-socle-methodes{background:#7bd0f1}
+.bubble-socle-citoyen{background:#f08a6b}
+.bubble-socle-techniques{background:#4ba6a8}
+.bubble-socle-monde{background:#f7c934}
+.btn-secondary{margin-left:.5rem}
+.print-container{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,"Noto Sans","Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";line-height:1.4;color:#111;padding:20mm}
+.print-header{margin-bottom:12mm;border-bottom:1px solid #ddd;padding-bottom:4mm}
+.print-header h1{margin:0 0 4mm 0;font-size:20px}
+.print-meta{font-size:12px;color:#666}
+.print-content{white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-size:13px}
+@page{size:A4;margin:12mm}
+@media print{body *{visibility:hidden!important}
+#__printRoot,#__printRoot *{visibility:visible!important}
+#__printRoot{position:absolute;inset:0;margin:0;padding:0}
+}
+.ip-badge{position:fixed;right:14px;bottom:14px;width:56px;height:56px;opacity:.6;transition:opacity .2s ease,transform .2s ease;z-index:9999}
+.ip-badge:hover,.ip-badge:focus-visible{opacity:.95;transform:scale(1.03);outline:none}
+.ip-badge img{width:100%;height:100%;display:block;filter:drop-shadow(0 2px 6px rgba(0,0,0,.25))}
+@media (prefers-reduced-motion:reduce){.ip-badge{transition:none}
+}
+@media print{.ip-badge{display:none!important}
+}
+:root{--app-font-size:16px}
+body{font-size:var(--app-font-size)}
+.access-widget{position:fixed;right:16px;bottom:120px;z-index:10000;background:#111827;color:#e5e7eb;border:1px solid #243040;border-radius:14px;box-shadow:0 10px 24px rgba(0,0,0,.35);padding:.6rem .7rem;width:max-content;max-width:calc(100vw - 32px);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Noto Sans",Arial}
+.aw-row{display:flex;align-items:center;gap:.4rem}
+.aw-btn{border:1px solid #334155;background:#1f2937;color:#e5e7eb;border-radius:10px;padding:.35rem .55rem;min-width:2.2rem;text-align:center;font-weight:650;cursor:pointer}
+.aw-btn:hover{filter:brightness(1.06)}
+.aw-btn:focus-visible{outline:3px solid #f59e0b;outline-offset:2px}
+.aw-font .aw-btn:nth-child(2){font-weight:800}
+.aw-sep{width:1px;height:1.6rem;background:#334155;margin:0 .15rem}
+.aw-caption{margin-top:.35rem;font-size:.85rem;color:#cbd5e1;text-align:center}
+.ip-badge{bottom:180px}
+body.theme-dark{background:#0f172a;color:#e5e7eb}
+body.theme-dark .container{background:#0b1220;color:#e5e7eb;border-radius:16px}
+body.theme-dark h1,body.theme-dark h2,body.theme-dark h3{color:#e5e7eb}
+body.theme-dark .intro{color:#e5e7eb}
+body.theme-dark .tabs{background:#0b1220}
+body.theme-dark .tab-button{background:#111827;color:#e5e7eb;border:1px solid #243040}
+body.theme-dark .tab-button.active{background:#1f2937}
+body.theme-dark button,body.theme-dark .btn-secondary{background:#111827;color:#e5e7eb;border:1px solid #243040}
+body.theme-dark input[type="text"],body.theme-dark textarea{background:#0b1220;color:#e5e7eb;border:1px solid #243040}
+body.theme-dark .bubbles-container>*{background:#111827;color:#e5e7eb;border-color:#243040}
+body.theme-dark footer{background:#111827;color:#e5e7eb;border:1px solid #243040;border-radius:12px;padding:.9rem 1rem}
+body.theme-dark footer a{color:#7dd3fc}
+body.theme-dark footer a:hover{color:#38bdf8}
+@media (max-width:520px){.access-widget{right:12px;bottom:130px;padding:.5rem}
+}
+.access-widget--mini{right:12px;bottom:100px;padding:.38rem .45rem;border-radius:10px;box-shadow:0 6px 14px rgba(0,0,0,.28)}
+.access-widget--mini .aw-row{gap:.25rem}
+.access-widget--mini .aw-btn{padding:.25rem .35rem;min-width:1.9rem;font-size:.85rem;border-radius:8px}
+.access-widget--mini .aw-sep{height:1.2rem}
+.access-widget--mini .aw-caption{display:none}
+.ip-badge{bottom:160px}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+:root{--app-font-size:16px}
+body{font-size:var(--app-font-size)}
+#aw-fab{position:fixed;right:14px;bottom:110px;z-index:10000;width:44px;height:44px;border-radius:999px;cursor:pointer;border:1px solid #334155;background:#111827;color:#e5e7eb;display:grid;place-items:center;box-shadow:0 8px 18px rgba(0,0,0,.35)}
+#aw-fab:hover{filter:brightness(1.06)}
+#aw-fab:focus-visible{outline:3px solid #f59e0b;outline-offset:3px}
+#aw-menu{position:fixed;right:14px;bottom:164px;z-index:10001;min-width:180px;border:1px solid #243040;border-radius:12px;background:#111827;color:#e5e7eb;box-shadow:0 12px 28px rgba(0,0,0,.4);padding:.4rem;display:none}
+#aw-menu[data-open="true"]{display:block}
+.aw-sec{padding:.25rem .25rem .4rem}
+.aw-sec h4{font:700 0.9rem/1.1 system-ui,Segoe UI,Roboto;margin:.15rem .25rem .35rem;color:#cbd5e1}
+.aw-row{display:flex;gap:.35rem;padding:0 .25rem}
+.aw-btn{border:1px solid #334155;background:#1f2937;color:#e5e7eb;border-radius:9px;padding:.32rem .5rem;min-width:2.1rem;cursor:pointer;font:600 .9rem/1 system-ui,Segoe UI,Roboto;text-align:center}
+.aw-btn:hover{filter:brightness(1.06)}
+.aw-btn[aria-pressed="true"]{outline:2px solid #38bdf8}
+.aw-btn:focus-visible{outline:3px solid #f59e0b;outline-offset:2px}
+.aw-sep{height:1px;background:#243040;margin:.35rem .25rem}
+body.theme-dark{background:#0f172a;color:#e5e7eb}
+body.theme-dark footer{background:#111827;color:#e5e7eb;border:1px solid #243040;border-radius:12px;padding:.9rem 1rem}
+body.theme-dark footer a{color:#7dd3fc}
+body.theme-dark .container{background:#0b1220;border-radius:16px}
+.ip-badge{bottom:170px}
+@media (max-width:520px){#aw-fab{right:12px;bottom:115px}
+#aw-menu{right:12px;bottom:168px;min-width:170px}
+}
+:root{--aw-x:14px;--aw-y:14px;--aw-menu-offset:54px}
+#aw-fab{top:var(--aw-y);right:var(--aw-x);bottom:auto;left:auto}
+#aw-menu{top:calc(var(--aw-y) + var(--aw-menu-offset));right:var(--aw-x);bottom:auto;left:auto}
+@media (max-width:520px){:root{--aw-x:10px;--aw-y:10px}
+}
+body.theme-dark #socleBubbles .bubble{box-shadow:0 0 0 1px rgba(255,255,255,.14),0 3px 10px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.16);color:#0b1324}
+body.theme-dark #socleBubbles .bubble:hover{transform:translateY(-1px) scale(1.03);opacity:1}
+body.theme-dark #socleBubbles .bubble.selected{border:2px solid #38bdf8;box-shadow:0 0 0 2px rgba(56,189,248,.35)}
+body.theme-dark #socleBubbles .bubble:focus-visible{outline:3px solid #f59e0b;outline-offset:3px;border-radius:22px}
+body.theme-dark #socleBubbles .bubble.bubble-socle-techniques{color:#f8fafc}
+body.theme-dark #socleBubbles .bubble.bubble-socle-monde{color:#0b1324}
+body.theme-dark #socleBubbles .bubble{box-shadow:0 0 0 1px rgba(255,255,255,.14),0 3px 10px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.16);color:#0b1324}
+body.theme-dark #socleBubbles .bubble{--bub-bg:initial;background:color-mix(in srgb,currentColor 0%,white 14%)}
+#socleBubbles .bubble{--bub-bg:initial}
+#socleBubbles .bubble.bubble-socle-langages{--bub-bg:#b6d87a}
+#socleBubbles .bubble.bubble-socle-methodes{--bub-bg:#7bd0f1}
+#socleBubbles .bubble.bubble-socle-citoyen{--bub-bg:#f08a6b}
+#socleBubbles .bubble.bubble-socle-techniques{--bub-bg:#4ba6a8}
+#socleBubbles .bubble.bubble-socle-monde{--bub-bg:#f7c934}
+#socleBubbles .bubble{background:var(--bub-bg)}
+body.theme-dark #socleBubbles .bubble{background:color-mix(in srgb,var(--bub-bg) 86%,white 14%)}
+body.theme-dark #socleBubbles .bubble.bubble-socle-techniques{background:color-mix(in srgb,var(--bub-bg) 92%,black 8%);color:#f8fafc}
+body.theme-dark #socleBubbles .bubble:hover{transform:translateY(-1px) scale(1.03);opacity:1}
+body.theme-dark #socleBubbles .bubble.selected{border:2px solid #38bdf8;box-shadow:0 0 0 2px rgba(56,189,248,.35)}
+body.theme-dark #socleBubbles .bubble:focus-visible{outline:3px solid #f59e0b;outline-offset:3px;border-radius:22px}
+#socleBubbles .bubble:focus-visible{outline:3px solid #f59e0b;outline-offset:3px;border-radius:22px}
+#socleBubbles .bubble.selected{border:2px solid #333}
+body.theme-dark #socleBubbles .bubble.selected{border:2px solid #38bdf8;box-shadow:0 0 0 2px rgba(56,189,248,.35)}
+body.theme-dark #bubbles-enseignants .bubble,body.theme-dark #bubbles-perdir .bubble,body.theme-dark #bubbles-inspection .bubble,body.theme-dark [id^="productionBubbles-"] .bubble{background:#111827;color:#e5e7eb;border-color:#374151;box-shadow:0 0 0 1px rgba(255,255,255,.10)}
+body.theme-dark #bubbles-enseignants .bubble:hover,body.theme-dark #bubbles-perdir .bubble:hover,body.theme-dark #bubbles-inspection .bubble:hover,body.theme-dark [id^="productionBubbles-"] .bubble:hover{background:#1f2937}
+body.theme-dark #bubbles-enseignants .bubble.selected,body.theme-dark #bubbles-perdir .bubble.selected,body.theme-dark #bubbles-inspection .bubble.selected,body.theme-dark [id^="productionBubbles-"] .bubble.selected{background:#2563eb;color:#ffffff;border-color:#93c5fd;box-shadow:0 0 0 2px rgba(37,99,235,.35);transform:translateY(-1px) scale(1.02)}
+body.theme-dark #bubbles-enseignants .bubble:focus-visible,body.theme-dark #bubbles-perdir .bubble:focus-visible,body.theme-dark #bubbles-inspection .bubble:focus-visible,body.theme-dark [id^="productionBubbles-"] .bubble:focus-visible{outline:3px solid #f59e0b;outline-offset:3px;border-radius:22px}
+body.theme-dark #result{background:#0b1220;color:#e5e7eb;border:1px solid #243040;box-shadow:0 2px 12px rgba(0,0,0,.35)}
+body.theme-dark #result *{color:inherit}
+body.theme-dark #result{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;word-wrap:break-word;overflow-wrap:anywhere;white-space:pre-wrap}
+body.theme-dark #result ::selection{background:#1f2937;color:#e5e7eb}
+body.theme-dark #result::-webkit-scrollbar{height:10px;width:10px}
+body.theme-dark #result::-webkit-scrollbar-thumb{background:#334155;border-radius:8px}
+body.theme-dark #result::-webkit-scrollbar-track{background:#0b1220}
+@media print{#result{background:#fff!important;color:#111!important;border-color:#ddd!important;box-shadow:none!important}
+}
+body.theme-dark [id^="audienceBubbles-"] .bubble{background:#111827;color:#e5e7eb;border-color:#374151;box-shadow:0 0 0 1px rgba(255,255,255,.10)}
+body.theme-dark [id^="audienceBubbles-"] .bubble:hover{background:#1f2937}
+body.theme-dark [id^="audienceBubbles-"] .bubble.selected{background:#2563eb;color:#ffffff;border-color:#93c5fd;box-shadow:0 0 0 2px rgba(37,99,235,.35);transform:translateY(-1px) scale(1.02)}
+body.theme-dark [id^="audienceBubbles-"] .bubble:focus-visible{outline:3px solid #f59e0b;outline-offset:3px;border-radius:22px}
+body.theme-dark [id^="audienceBubbles-"] .bubble[class*="bubble-soft-"]{background:#111827;color:#e5e7eb;border-color:#374151}
+body.theme-dark [id^="audienceBubbles-"] .bubble[class*="bubble-soft-"].selected{background:#2563eb;color:#fff;border-color:#93c5fd}
+.gpt-cta .btn-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn-outline{background:transparent;border:1px solid currentColor}
+@media (max-width:420px){.gpt-cta .btn-row{flex-direction:column;align-items:stretch}
+}
+.gpt-cta .btn-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.ai-links{display:flex;gap:12px;margin:0 auto}
+@media (max-width:540px){.gpt-cta .btn-row{justify-content:center}
+#openGptBtn{width:100%}
+.ai-links{margin:8px 0 0}
+}
+.tabs .tab-button:not(.active){background:#e7f0ff;color:#0b2540;border-color:#0054b3;font-weight:600}
+.tabs .tab-button:hover:not(.active){background:#dbe8ff;border-color:#00408a}
+.tabs .tab-button.active{background:#2563eb;color:#ffffff;border-color:#60a5fa}
+body.theme-dark .tabs .tab-button:not(.active){background:#141c2b;color:#cbd5e1;border-color:#475569;box-shadow:0 0 0 1px rgba(255,255,255,.06) inset}
+body.theme-dark .tabs .tab-button:hover:not(.active){background:#1f2937;border-color:#5b6b7d}
