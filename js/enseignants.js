@@ -314,6 +314,8 @@ const parentsProdWhitelistExisting = new Set([
   "Brique partenariats & sorties"       // infos pratiques + autorisations
 ]);
 
+
+
 // 5) PRODUCTIONS dédiées aux Parents qu'on injecte dynamiquement en mode Parents-only
 const parentsExtraProductions = {
   "Note d’information aux familles": 
@@ -327,6 +329,8 @@ const parentsExtraProductions = {
   "Infos sorties & autorisations":
     "Prépare un document familles pour une sortie/voyage : objectifs, programme, budget indicatif, sécurité, trousseau, autorisations."
 };
+
+
 
 // On mémorise les bulles extra insérées pour pouvoir les retirer proprement
 const parentExtraBubbles = new Map(); // label -> HTMLElement
@@ -411,6 +415,62 @@ audienceBubblesEnseignants.addEventListener("click", applyAudienceFiltering);
 
 // 9) Appel initial
 applyAudienceFiltering();
+
+// === Filtrage ENSEIGNANTS : masquage quand "Administration" est sélectionnée ===
+
+// Helper : vérifier si une audience est sélectionnée (insensible à la casse)
+function isAudienceSelectedEnseignants(name) {
+  const wanted = (name || "").toLowerCase();
+  return Array.from(document.querySelectorAll("#audienceBubbles-enseignants .bubble.selected"))
+    .some(b => (b.dataset.audience || "").toLowerCase() === wanted);
+}
+
+// Listes à CACHER si "Administration" est sélectionnée
+const ADMIN_HIDE_PRESETS = new Set([
+  "Création de leçon",
+  "Activités interdisciplinaires"
+]);
+
+const ADMIN_HIDE_PRODUCTIONS = new Set([
+  "Plan d’enseignement (séquence)",
+  "Exercices différenciés",
+  "Activité interdisciplinaire",
+  "Activité interactive/numérique",
+  "Fiche de préparation de séance",
+  "Évaluation (formative/sommative)",
+  "Scénario de jeu pédagogique"
+]);
+
+// On étend la fonction existante applyAudienceFiltering sans casser le reste
+const _applyAudienceFiltering_original = applyAudienceFiltering;
+applyAudienceFiltering = function applyAudienceFiltering_withAdmin() {
+  // 1) d’abord, exécuter le filtrage existant (Parents-only + extras)
+  _applyAudienceFiltering_original();
+
+  // 2) puis appliquer le masque "Administration" si sélectionnée
+  //    (on ne l’applique pas en mode Parents-only qui a sa propre whitelist stricte)
+  const adminOn = isAudienceSelectedEnseignants("Administration");
+  if (!isParentsOnlyMode() && adminOn) {
+    // Problématiques
+    bubblesEnseignants.querySelectorAll(".bubble").forEach(b => {
+      const label = b.dataset.label || "";
+      if (ADMIN_HIDE_PRESETS.has(label)) hideBubble(b);
+    });
+    // Types de production
+    prodBubblesEnseignants.querySelectorAll(".bubble").forEach(b => {
+      const label = b.dataset.type || "";
+      if (ADMIN_HIDE_PRODUCTIONS.has(label)) hideBubble(b);
+    });
+  }
+};
+
+// S’assurer que le nouveau handler est utilisé
+audienceBubblesEnseignants.removeEventListener("click", _applyAudienceFiltering_original);
+audienceBubblesEnseignants.addEventListener("click", applyAudienceFiltering);
+
+// Refiltrer immédiatement avec la version étendue
+applyAudienceFiltering();
+
 
   // Conception pédagogique / planification / interdisciplinarité
   const vert = [
